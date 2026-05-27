@@ -11,11 +11,18 @@ import { Router } from '@angular/router';
 import { FirestoreService } from '../../../../core/firestore.service';  // Base de datos
 import { AuthService } from '../../../../core/auth.service';
 import { EmptyStateComponent } from "../../../../shared/ui/empty-state/empty-state.component";              // Autenticación
+import { CardComponent } from '../../../../shared/ui/card/card.component'; // UI Card
+import { BadgeComponent } from '../../../../shared/ui/badge/badge.component'; // UI Badge
+import { SectionTitleComponent } from '../../../../shared/ui/section-title/section-title.component'; // UI Section Title
+
+
 
 @Component({
   selector: 'app-biblioteca',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, EmptyStateComponent],
+ imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule,
+   MatFormFieldModule, MatInputModule, MatSelectModule, EmptyStateComponent,
+    CardComponent, BadgeComponent, SectionTitleComponent],
   templateUrl: './biblioteca.component.html',
   styleUrl: './biblioteca.component.css'
 })

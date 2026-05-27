@@ -12,13 +12,16 @@ import { FirestoreService } from '../../../../core/firestore.service';  // Base 
 import { AuthService } from '../../../../core/auth.service';
 import { SectionTitleComponent } from "../../../../shared/ui/section-title/section-title.component";
 import { EmptyStateComponent } from "../../../../shared/ui/empty-state/empty-state.component";              // Autenticación
+import { CardComponent } from '../../../../shared/ui/card/card.component'; // UI Card
+import { BadgeComponent } from '../../../../shared/ui/badge/badge.component'; // UI Badge
+
 
 @Component({
   selector: 'app-tareas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, 
-    MatFormFieldModule, MatInputModule,
-     MatSelectModule, SectionTitleComponent, EmptyStateComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, 
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, 
+    SectionTitleComponent, EmptyStateComponent, CardComponent, BadgeComponent],
   templateUrl: './tareas.component.html',
   styleUrl: './tareas.component.css'
 })

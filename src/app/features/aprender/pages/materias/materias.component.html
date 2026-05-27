@@ -58,11 +58,15 @@
   <!-- Lista de materias -->
   <ui-section-title *ngIf="materias.length > 0">Mis Materias</ui-section-title>
   
-  <div class="materia-card" *ngFor="let materia of materias" [class]="'materia-card ' + materia.estado">
+  <!-- Tarjeta con UI Kit -->
+  <ui-card 
+    *ngFor="let materia of materias" 
+    [accent]="materia.estado === 'cursando' ? 'blue' : materia.estado === 'regular' ? 'orange' : 'red'"
+    [clickable]="true">
+    
     <div class="materia-info">
       <p class="materia-nombre">{{ materia.nombre }}</p>
       
-      <!-- Badge de estado usando el UI Kit -->
       <ui-badge [variant]="materia.estado === 'cursando' ? 'blue' : materia.estado === 'regular' ? 'orange' : 'red'">
         {{ materia.estado === 'cursando' ? 'Cursando' : materia.estado === 'regular' ? 'Regular' : 'A rendir' }}
       </ui-badge>
@@ -71,17 +75,19 @@
       <p class="materia-detalle" *ngIf="materia.fechaLlamado">📅 Próximo llamado: {{ materia.fechaLlamado }}</p>
       <p class="materia-detalle" *ngIf="materia.fechaExamen">📅 Examen: {{ materia.fechaExamen }}</p>
     </div>
+    
     <div class="materia-acciones">
       <button (click)="editarMateria(materia)" class="btn-editar">✏️</button>
       <button (click)="eliminarMateria(materia.id)" class="btn-eliminar">🗑️</button>
     </div>
-  </div>
+    
+  </ui-card>
 
- <ui-empty-state 
-  *ngIf="materias.length === 0 && !mostrarForm"
-  icon="📖"
-  title="Sin materias"
-  text="Todavía no tenés materias. ¡Agregá la primera!">
-</ui-empty-state>
+  <ui-empty-state 
+    *ngIf="materias.length === 0 && !mostrarForm"
+    icon="📖"
+    title="Sin materias"
+    text="Todavía no tenés materias. ¡Agregá la primera!">
+  </ui-empty-state>
 
 </div>

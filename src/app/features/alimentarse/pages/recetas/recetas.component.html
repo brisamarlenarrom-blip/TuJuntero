@@ -6,7 +6,6 @@
     + Agregar receta
   </button>
 
-  <!-- Formulario -->
   <mat-card *ngIf="mostrarForm" class="form-card">
     <h3>{{ editando ? 'Editar Receta' : 'Nueva Receta' }}</h3>
     <form [formGroup]="recetaForm" (ngSubmit)="guardarReceta()">
@@ -49,22 +48,27 @@
     </form>
   </mat-card>
 
-  <!-- Lista de recetas -->
   <ui-section-title *ngIf="recetas.length > 0">Mis Recetas</ui-section-title>
 
-  <div class="receta-card" *ngFor="let receta of recetas">
-    <div class="receta-info">
-      <p class="receta-nombre">{{ receta.nombre }}</p>
-      <ui-badge [variant]="receta.nivel === 'facil' ? 'green' : receta.nivel === 'medio' ? 'orange' : 'red'">
-        {{ receta.nivel }}
-      </ui-badge>
-      <p class="receta-detalle">⏱️ {{ receta.tiempoPreparacion }} min</p>
-    </div>
+  <ui-card 
+    *ngFor="let receta of recetas" 
+    [accent]="receta.nivel === 'facil' ? 'green' : receta.nivel === 'medio' ? 'orange' : 'red'" 
+    [clickable]="true">
+    
+    <p class="receta-nombre">{{ receta.nombre }}</p>
+    
+    <ui-badge [variant]="receta.nivel === 'facil' ? 'green' : receta.nivel === 'medio' ? 'orange' : 'red'">
+      {{ receta.nivel }}
+    </ui-badge>
+    
+    <p class="receta-detalle">⏱️ {{ receta.tiempoPreparacion }} min</p>
+    
     <div class="receta-acciones">
       <button (click)="editarReceta(receta)" class="btn-editar">✏️</button>
       <button (click)="eliminarReceta(receta.id)" class="btn-eliminar">🗑️</button>
     </div>
-  </div>
+    
+  </ui-card>
 
   <ui-empty-state 
     *ngIf="recetas.length === 0 && !mostrarForm"

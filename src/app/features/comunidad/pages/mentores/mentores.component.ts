@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { FirestoreService } from '../../../../core/firestore.service';
 import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
 import { SectionTitleComponent } from '../../../../shared/ui/section-title/section-title.component';
+import { CardComponent } from '../../../../shared/ui/card/card.component'; // UI Card
 
 @Component({
   selector: 'app-mentores',
   standalone: true,
-  imports: [CommonModule, EmptyStateComponent, SectionTitleComponent],
+  imports: [CommonModule, EmptyStateComponent, SectionTitleComponent, CardComponent],
   templateUrl: './mentores.component.html',
   styleUrl: './mentores.component.css'
 })

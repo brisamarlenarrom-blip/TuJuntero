@@ -22,7 +22,7 @@
 
   <ui-section-title *ngIf="posts.length > 0">Publicaciones</ui-section-title>
 
-  <div class="post-card" *ngFor="let post of posts">
+  <ui-card *ngFor="let post of posts" accent="purple" [clickable]="true">
     <div class="post-header">
       <span class="post-avatar">👤</span>
       <div>
@@ -35,7 +35,7 @@
       <button (click)="darLike(post)" class="btn-like">❤️ {{ post.likes }}</button>
       <button *ngIf="post.usuarioId === usuarioId" (click)="eliminarPost(post.id)" class="btn-eliminar">🗑️</button>
     </div>
-  </div>
+  </ui-card>
 
   <ui-empty-state *ngIf="posts.length === 0 && !mostrarForm" icon="📝" title="Sin publicaciones" text="¡Sé el primero en compartir algo!"></ui-empty-state>
 

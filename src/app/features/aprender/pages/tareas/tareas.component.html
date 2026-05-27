@@ -1,6 +1,9 @@
+<!-- Botón para volver al resumen de Aprender -->
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
 <div class="tareas-container">
 
-  <!-- Botón para mostrar formulario -->
+  <!-- Botón para mostrar el formulario -->
   <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">
     + Agregar tarea
   </button>
@@ -8,7 +11,6 @@
   <!-- Formulario -->
   <mat-card *ngIf="mostrarForm" class="form-card">
     <h3>{{ editando ? 'Editar Tarea' : 'Nueva Tarea' }}</h3>
-    
     <form [formGroup]="tareaForm" (ngSubmit)="guardarTarea()">
       
       <mat-form-field appearance="outline" class="full-width">
@@ -18,7 +20,7 @@
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Descripción</mat-label>
-        <textarea matInput formControlName="descripcion" placeholder="Resolver ejercicios del 1 al 15" rows="2"></textarea>
+        <textarea matInput formControlName="descripcion" placeholder="Resolver ejercicios" rows="2"></textarea>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
@@ -65,31 +67,37 @@
   </mat-card>
 
   <!-- Lista de tareas -->
-<ui-section-title *ngIf="tareas.length > 0">Mis Tareas</ui-section-title>
+  <ui-section-title *ngIf="tareas.length > 0">Mis Tareas</ui-section-title>
 
-  <div class="tarea-card" *ngFor="let tarea of tareas" [class]="'tarea-card ' + tarea.prioridad + ' ' + tarea.estado">
-    <div class="tarea-info">
-      <p class="tarea-titulo">{{ tarea.titulo }}</p>
-      <p class="tarea-descripcion" *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
-      <div class="tarea-badges">
-        <span class="tipo-badge" [class]="tarea.tipo">{{ tarea.tipo }}</span>
-        <span class="prioridad-badge" [class]="tarea.prioridad">{{ tarea.prioridad }}</span>
-        <span class="estado-badge" [class]="tarea.estado">{{ tarea.estado === 'pendiente' ? 'Pendiente' : tarea.estado === 'en_progreso' ? 'En progreso' : 'Completada' }}</span>
-      </div>
-      <p class="tarea-fecha" *ngIf="tarea.fechaLimite">📅 {{ tarea.fechaLimite }}</p>
-    </div>
+  <!-- Tarjeta con UI Kit -->
+  <ui-card 
+    *ngFor="let tarea of tareas" 
+    [accent]="tarea.prioridad === 'alta' ? 'red' : tarea.prioridad === 'media' ? 'orange' : 'green'" 
+    [clickable]="true">
+    
+    <p class="tarea-titulo">{{ tarea.titulo }}</p>
+    <p class="tarea-descripcion" *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
+    
+    <ui-badge [variant]="tarea.tipo === 'tarea' ? 'blue' : 'purple'">{{ tarea.tipo }}</ui-badge>
+    <ui-badge [variant]="tarea.prioridad === 'alta' ? 'red' : tarea.prioridad === 'media' ? 'orange' : 'green'">{{ tarea.prioridad }}</ui-badge>
+    <ui-badge [variant]="tarea.estado === 'completada' ? 'green' : tarea.estado === 'en_progreso' ? 'blue' : 'gray'">
+      {{ tarea.estado === 'pendiente' ? 'Pendiente' : tarea.estado === 'en_progreso' ? 'En progreso' : 'Completada' }}
+    </ui-badge>
+    
+    <p class="tarea-fecha" *ngIf="tarea.fechaLimite">📅 {{ tarea.fechaLimite }}</p>
+    
     <div class="tarea-acciones">
       <button (click)="editarTarea(tarea)" class="btn-editar">✏️</button>
       <button (click)="eliminarTarea(tarea.id)" class="btn-eliminar">🗑️</button>
     </div>
-  </div>
+    
+  </ui-card>
 
   <ui-empty-state 
-  *ngIf="tareas.length === 0 && !mostrarForm"
-  icon="📝"
-  title="Sin tareas"
-  text="Todavía no tenés tareas. ¡Agregá la primera!">
-</ui-empty-state>
- <button class="btn-volver" (click)="volver()">← Volver</button>
+    *ngIf="tareas.length === 0 && !mostrarForm"
+    icon="📝"
+    title="Sin tareas"
+    text="Todavía no tenés tareas. ¡Agregá la primera!">
+  </ui-empty-state>
 
 </div>

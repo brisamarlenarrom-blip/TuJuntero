@@ -1,8 +1,9 @@
-
+<!-- Botón para volver al resumen de Aprender -->
+<button class="btn-volver" (click)="volver()">← Volver</button>
 
 <div class="biblioteca-container">
 
-  <!-- Botón para agregar -->
+  <!-- Botón para mostrar el formulario -->
   <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">
     + Agregar libro
   </button>
@@ -57,33 +58,36 @@
   </mat-card>
 
   <!-- Lista de libros -->
-  <ui-empty-state 
-  *ngIf="libros.length === 0 && !mostrarForm"
-  icon="📚"
-  title="Sin libros"
-  text="Todavía no tenés libros. ¡Agregá el primero!">
-</ui-empty-state>
+  <ui-section-title *ngIf="libros.length > 0">Mi Biblioteca</ui-section-title>
 
-  <div class="libro-card" *ngFor="let libro of libros" [class]="'libro-card ' + libro.estadoLectura">
-    <div class="libro-info">
-      <p class="libro-titulo">📖 {{ libro.titulo }}</p>
-      <p class="libro-autor" *ngIf="libro.autor">✍️ {{ libro.autor }}</p>
-      <div class="libro-badges">
-        <span class="estado-lectura" [class]="libro.estadoLectura">
-          {{ libro.estadoLectura === 'quiero_leer' ? 'Quiero leer' : libro.estadoLectura === 'leyendo' ? 'Leyendo' : 'Leído' }}
-        </span>
-        <span class="puntuacion" *ngIf="libro.puntuacion > 0">
-          {{ '⭐'.repeat(libro.puntuacion) }}
-        </span>
-      </div>
-      <p class="libro-resenia" *ngIf="libro.resenia">💬 {{ libro.resenia }}</p>
-    </div>
+  <!-- Tarjeta con UI Kit -->
+  <ui-card 
+    *ngFor="let libro of libros" 
+    [accent]="libro.estadoLectura === 'leyendo' ? 'blue' : libro.estadoLectura === 'leido' ? 'green' : 'orange'" 
+    [clickable]="true">
+    
+    <p class="libro-titulo">📖 {{ libro.titulo }}</p>
+    <p class="libro-autor" *ngIf="libro.autor">✍️ {{ libro.autor }}</p>
+    
+    <ui-badge [variant]="libro.estadoLectura === 'leyendo' ? 'blue' : libro.estadoLectura === 'leido' ? 'green' : 'orange'">
+      {{ libro.estadoLectura === 'quiero_leer' ? 'Quiero leer' : libro.estadoLectura === 'leyendo' ? 'Leyendo' : 'Leído' }}
+    </ui-badge>
+    
+    <p *ngIf="libro.puntuacion > 0">{{ '⭐'.repeat(libro.puntuacion) }}</p>
+    <p class="libro-resenia" *ngIf="libro.resenia">💬 {{ libro.resenia }}</p>
+    
     <div class="libro-acciones">
       <button (click)="editarLibro(libro)" class="btn-editar">✏️</button>
       <button (click)="eliminarLibro(libro.id)" class="btn-eliminar">🗑️</button>
     </div>
-  </div>
+    
+  </ui-card>
 
-  
- <button class="btn-volver" (click)="volver()">← Volver</button>
+  <ui-empty-state 
+    *ngIf="libros.length === 0 && !mostrarForm"
+    icon="📚"
+    title="Sin libros"
+    text="Todavía no tenés libros. ¡Agregá el primero!">
+  </ui-empty-state>
+
 </div>

@@ -13,11 +13,12 @@ import { AuthService } from '../../../../core/auth.service';                    
 import { BadgeComponent } from '../../../../shared/ui/badge/badge.component';                 // UI Kit: badge
 import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
 import { SectionTitleComponent } from "../../../../shared/ui/section-title/section-title.component"; // UI Kit: empty state
+import { CardComponent } from '../../../../shared/ui/card/card.component'; // UI Card
 
 @Component({
   selector: 'app-materias',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, BadgeComponent, EmptyStateComponent, SectionTitleComponent,SectionTitleComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, BadgeComponent, EmptyStateComponent, SectionTitleComponent, CardComponent],
   templateUrl: './materias.component.html',
   styleUrl: './materias.component.css'
 })

@@ -57,7 +57,10 @@
 
   <ui-section-title *ngIf="rutinas.length > 0">Mis Rutinas</ui-section-title>
 
-  <div class="rutina-card" *ngFor="let rutina of rutinas">
+<ui-card 
+  *ngFor="let rutina of rutinas" 
+  [accent]="rutina.objetivo === 'fuerza' ? 'red' : rutina.objetivo === 'cardio' ? 'blue' : 'green'" 
+  [clickable]="true"> 
     <div class="rutina-info">
       <p class="rutina-nombre">{{ rutina.nombre }}</p>
       <ui-badge [variant]="rutina.objetivo === 'fuerza' ? 'red' : rutina.objetivo === 'cardio' ? 'blue' : 'green'">{{ rutina.objetivo }}</ui-badge>
@@ -71,7 +74,7 @@
       <button (click)="editarRutina(rutina)" class="btn-editar">✏️</button>
       <button (click)="eliminarRutina(rutina.id)" class="btn-eliminar">🗑️</button>
     </div>
-  </div>
+  </ui-card>
 
   <ui-empty-state *ngIf="rutinas.length === 0 && !mostrarForm" icon="📋" title="Sin rutinas" text="Todavía no tenés rutinas. ¡Agregá la primera!"></ui-empty-state>
 

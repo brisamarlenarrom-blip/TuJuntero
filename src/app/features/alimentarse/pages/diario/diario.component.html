@@ -2,18 +2,12 @@
 
 <div class="diario-container">
 
-  <!-- Resumen del día -->
-  <div class="resumen-dia">
-    <p class="resumen-fecha">📅 {{ hoy }}</p>
-    <p class="resumen-total">{{ comidas.length }} comidas registradas</p>
-  </div>
+  
 
-  <!-- Botón agregar -->
   <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="mostrarForm = true">
     + Registrar comida
   </button>
 
-  <!-- Formulario -->
   <mat-card *ngIf="mostrarForm" class="form-card">
     <h3>Registrar comida</h3>
     <form [formGroup]="comidaForm" (ngSubmit)="guardarComida()">
@@ -46,27 +40,31 @@
       </mat-form-field>
 
       <div class="botones-form">
-        <button mat-raised-button color="primary" type="submit" [disabled]="comidaForm.invalid">
-          Guardar
-        </button>
-        <button mat-button type="button" (click)="mostrarForm = false; comidaForm.reset({tipo:'almuerzo',satisfaccion:3,fecha:hoy})">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="comidaForm.invalid">Guardar</button>
+        <button mat-button type="button" (click)="mostrarForm = false">Cancelar</button>
       </div>
     </form>
   </mat-card>
 
-  <!-- Lista de comidas del día -->
   <ui-section-title *ngIf="comidas.length > 0">Comidas de hoy</ui-section-title>
 
-  <div class="comida-card" *ngFor="let comida of comidas">
+  <ui-card 
+    *ngFor="let comida of comidas" 
+    [accent]="comida.satisfaccion >= 4 ? 'green' : comida.satisfaccion >= 3 ? 'blue' : 'orange'" 
+    [clickable]="true">
+    
     <div class="comida-info">
       <p class="comida-tipo">{{ comida.tipo }}</p>
       <p class="comida-desc">{{ comida.descripcion }}</p>
     </div>
-    <div class="comida-emoji">
-      <span>{{ getEmoji(comida.satisfaccion) }}</span>
-      <button (click)="eliminarComida(comida.id)" class="btn-eliminar">🗑️</button>
-    </div>
-  </div>
+    
+    <ui-badge [variant]="comida.satisfaccion >= 4 ? 'green' : comida.satisfaccion >= 3 ? 'blue' : 'orange'">
+      {{ getEmoji(comida.satisfaccion) }}
+    </ui-badge>
+    
+    <button (click)="eliminarComida(comida.id)" class="btn-eliminar">🗑️</button>
+    
+  </ui-card>
 
   <ui-empty-state 
     *ngIf="comidas.length === 0 && !mostrarForm"

@@ -2,11 +2,6 @@
 
 <div class="bitacora-container">
 
-  <div class="resumen-dia">
-    <p class="resumen-fecha">📅 {{ hoy }}</p>
-    <p class="resumen-total">{{ entrenamientos.length }} entrenos hoy</p>
-  </div>
-
   <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="mostrarForm = true">+ Registrar entrenamiento</button>
 
   <mat-card *ngIf="mostrarForm" class="form-card">
@@ -46,14 +41,17 @@
 
   <ui-section-title *ngIf="entrenamientos.length > 0">Entrenamientos de hoy</ui-section-title>
 
-  <div class="entreno-card" *ngFor="let e of entrenamientos">
+ <ui-card 
+  *ngFor="let e of entrenamientos" 
+  [accent]="e.intensidad === 'alta' ? 'red' : e.intensidad === 'media' ? 'orange' : 'green'" 
+  [clickable]="true"> 
     <div class="entreno-info">
       <p class="entreno-rutina">{{ e.rutina }}</p>
       <p class="entreno-detalle">⏱️ {{ e.duracion }} min | {{ e.intensidad === 'alta' ? '🔴' : e.intensidad === 'media' ? '🟡' : '🟢' }} {{ e.intensidad }}</p>
       <p class="entreno-sensacion" *ngIf="e.sensacion">💬 {{ e.sensacion }}</p>
     </div>
     <button (click)="eliminarEntreno(e.id)" class="btn-eliminar">🗑️</button>
-  </div>
+  </ui-card>
 
   <ui-empty-state *ngIf="entrenamientos.length === 0 && !mostrarForm" icon="🏋️" title="Sin entrenamientos hoy" text="Registrá tu primer entrenamiento del día"></ui-empty-state>
 

@@ -13,11 +13,13 @@ import { AuthService } from '../../../../core/auth.service';
 import { BadgeComponent } from '../../../../shared/ui/badge/badge.component';
 import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
 import { SectionTitleComponent } from '../../../../shared/ui/section-title/section-title.component';
+import { CardComponent } from '../../../../shared/ui/card/card.component'; // UI Card
+
 
 @Component({
   selector: 'app-recetas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, BadgeComponent, EmptyStateComponent, SectionTitleComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, BadgeComponent, EmptyStateComponent, SectionTitleComponent, CardComponent],
   templateUrl: './recetas.component.html',
   styleUrl: './recetas.component.css'
 })
