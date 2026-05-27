@@ -1,0 +1,23 @@
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
+<div class="mentores-container">
+
+  <ui-section-title *ngIf="mentores.length > 0">🌟 Nuestros Mentores</ui-section-title>
+
+  <div class="mentor-card" *ngFor="let mentor of mentores">
+    <div class="mentor-avatar">👤</div>
+    <div class="mentor-info">
+      <p class="mentor-nombre">{{ mentor.nombre }}</p>
+      <p class="mentor-especialidad">{{ mentor.especialidad }}</p>
+      <p class="mentor-frase" *ngIf="mentor.frase">"{{ mentor.frase }}"</p>
+    </div>
+  </div>
+
+  <ui-empty-state 
+    *ngIf="mentores.length === 0" 
+    icon="🌟" 
+    title="Próximamente" 
+    text="Los mentores estarán disponibles muy pronto. ¡Mientras tanto, vos podés ser tu propio mentor!">
+  </ui-empty-state>
+
+</div>

@@ -1,0 +1,67 @@
+<!-- Contenedor principal del Inicio -->
+<div class="inicio-container">
+
+  <!-- Tarjeta de saludo: "¡Buenos días, Brisa!" -->
+  <div class="saludo-card">
+    <h1 class="saludo-texto">{{ saludo }}, {{ nombre }}!</h1>
+    <p class="fecha-texto">{{ fechaActual }}</p>
+  </div>
+
+  <!-- Tarjeta del versículo diario -->
+  <div class="versiculo-card">
+    <p class="versiculo-texto">{{ frase }}</p>
+    <p class="versiculo-ref">{{ referencia }}</p>
+  </div>
+
+  <!-- Check-in emocional: ¿Cómo te sentís hoy? -->
+  <div class="checkin-card">
+    <p class="checkin-titulo">¿Cómo te sentís hoy?</p>
+    <div class="emojis-row">
+      <!-- Cada botón selecciona un estado de ánimo (1 al 5) -->
+      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 1" (click)="seleccionarAnimo(1)">😔</button>
+      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 2" (click)="seleccionarAnimo(2)">😐</button>
+      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 3" (click)="seleccionarAnimo(3)">🙂</button>
+      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 4" (click)="seleccionarAnimo(4)">😊</button>
+      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 5" (click)="seleccionarAnimo(5)">🤩</button>
+    </div>
+  </div>
+
+  <!-- Acceso rápido a las 3 áreas principales -->
+  <div class="accesos-grid">
+  
+  <!-- Aprender: clickea para ir a /aprender -->
+ <ui-card accent="blue" [clickable]="true" routerLink="/aprender">
+  <span class="acceso-icono">📚</span>
+  <div>
+    <p class="acceso-titulo">Aprender</p>
+    <p class="acceso-sub" *ngIf="tareasPendientes > 0">{{ tareasPendientes }} tareas pendientes</p>
+    <p class="acceso-sub" *ngIf="tareasPendientes === 0">¡Al día!</p>
+  </div>
+</ui-card>
+  
+  <!-- Alimentarse: clickea para ir a /alimentarse -->
+  <ui-card accent="cyan" [clickable]="true" routerLink="/alimentarse">
+    <span class="acceso-icono">🍳</span>
+    <div>
+      <p class="acceso-titulo">Alimentarse</p>
+      <p class="acceso-sub" *ngIf="!almuerzoRegistrado">No registraste tu almuerzo</p>
+      <p class="acceso-sub" *ngIf="almuerzoRegistrado">¡Todo registrado!</p>
+    </div>
+  </ui-card>
+  
+  <!-- Entrenamiento: clickea para ir a /entrenamiento -->
+  <ui-card accent="blue" [clickable]="true" routerLink="/entrenamiento">
+    <span class="acceso-icono">💪</span>
+    <div>
+      <p class="acceso-titulo">Entrenamiento</p>
+      <p class="acceso-sub">Hoy: {{ entrenamientoHoy }}</p>
+    </div>
+  </ui-card>
+</div>
+
+  <!-- Frase inspiradora al final -->
+  <div class="frase-final-card">
+    <p class="frase-texto">🌱 "Cada paso, por pequeño que sea, te acerca a quien querés ser."</p>
+  </div>
+
+</div>

@@ -1,0 +1,45 @@
+<div class="aprender-container">
+
+  <!-- Cabecera con título y navegación -->
+  <div class="aprender-header">
+    <h1 class="aprender-titulo">Aprender</h1>
+    <nav class="aprender-nav">
+      <a routerLink="materias" routerLinkActive="nav-activo" class="nav-item">
+        <span class="nav-icono">📖</span> Materias
+      </a>
+      <a routerLink="tareas" routerLinkActive="nav-activo" class="nav-item">
+        <span class="nav-icono">📝</span> Tareas
+      </a>
+      <a routerLink="biblioteca" routerLinkActive="nav-activo" class="nav-item">
+        <span class="nav-icono">📚</span> Biblioteca
+      </a>
+    </nav>
+  </div>
+
+  <!-- Resumen -->
+  <div class="resumen-grid">
+    <a class="resumen-card" routerLink="materias">
+      <span class="resumen-icono">📖</span>
+      <p class="resumen-numero">{{ totalMaterias }}</p>
+      <p class="resumen-texto">Materias</p>
+      <p class="resumen-detalle" *ngIf="materiasARendir > 0">{{ materiasARendir }} para rendir</p>
+    </a>
+    <a class="resumen-card" routerLink="tareas">
+      <span class="resumen-icono">📝</span>
+      <p class="resumen-numero">{{ totalTareas }}</p>
+      <p class="resumen-texto">Tareas</p>
+      <p class="resumen-detalle" *ngIf="tareasPendientes > 0">{{ tareasPendientes }} pendientes</p>
+    </a>
+  </div>
+
+  <!-- Próxima entrega -->
+  <div class="proxima-card" *ngIf="proximaTarea">
+    <p class="proxima-etiqueta">⏰ PRÓXIMA ENTREGA</p>
+    <p class="proxima-titulo">{{ proximaTarea.titulo }}</p>
+    <p class="proxima-fecha">📅 {{ proximaTarea.fechaLimite }}</p>
+  </div>
+
+  <!-- Contenido de las subrutas -->
+  <router-outlet></router-outlet>
+
+</div>

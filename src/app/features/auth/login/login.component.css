@@ -1,0 +1,172 @@
+/* Contenedor centrado vertical y horizontalmente */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 112px);  /* Resta navbar + footer */
+  padding: 16px;
+}
+
+/* Tarjeta del formulario */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #0D1B2A;
+  border: 2px solid #1E88E5;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(30, 136, 229, 0.2);  /* Brillo azul */
+}
+
+/* Título "Iniciar Sesión" */
+.auth-title {
+  color: #64B5F6;
+  font-size: 22px;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+}
+
+/* Campos que ocupan todo el ancho */
+.full-width {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+/* Mensaje de error en rojo */
+.error-msg {
+  color: #ef5350;
+  font-size: 14px;
+  text-align: center;
+  margin: 8px 0;
+}
+
+/* Link de registro */
+.register-link {
+  text-align: center;
+  color: #B0BEC5;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #64B5F6;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}/* Contenedor centrado vertical y horizontalmente */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 112px);  /* Resta navbar + footer */
+  padding: 16px;
+}
+
+/* Tarjeta del formulario */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #0D1B2A;
+  border: 2px solid #1E88E5;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(30, 136, 229, 0.2);  /* Brillo azul */
+}
+
+/* Título "Iniciar Sesión" */
+.auth-title {
+  color: #64B5F6;
+  font-size: 22px;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+}
+
+/* Campos que ocupan todo el ancho */
+.full-width {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+/* Mensaje de error en rojo */
+.error-msg {
+  color: #ef5350;
+  font-size: 14px;
+  text-align: center;
+  margin: 8px 0;
+}
+
+/* Link de registro */
+.register-link {
+  text-align: center;
+  color: #B0BEC5;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #64B5F6;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}/* Contenedor centrado vertical y horizontalmente */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 112px);  /* Resta navbar + footer */
+  padding: 16px;
+}
+
+/* Tarjeta del formulario */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #0D1B2A;
+  border: 2px solid #1E88E5;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(30, 136, 229, 0.2);  /* Brillo azul */
+}
+
+/* Título "Iniciar Sesión" */
+.auth-title {
+  color: #64B5F6;
+  font-size: 22px;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+}
+
+/* Campos que ocupan todo el ancho */
+.full-width {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+/* Mensaje de error en rojo */
+.error-msg {
+  color: #ef5350;
+  font-size: 14px;
+  text-align: center;
+  margin: 8px 0;
+}
+
+/* Link de registro */
+.register-link {
+  text-align: center;
+  color: #B0BEC5;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #64B5F6;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}

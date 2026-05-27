@@ -1,0 +1,78 @@
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
+<div class="rutinas-container">
+
+  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">+ Agregar rutina</button>
+
+  <mat-card *ngIf="mostrarForm" class="form-card">
+    <h3>{{ editando ? 'Editar Rutina' : 'Nueva Rutina' }}</h3>
+    <form [formGroup]="rutinaForm" (ngSubmit)="guardarRutina()">
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej: Piernas y glúteos">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Objetivo</mat-label>
+        <mat-select formControlName="objetivo">
+          <mat-option value="fuerza">Fuerza</mat-option>
+          <mat-option value="cardio">Cardio</mat-option>
+          <mat-option value="flexibilidad">Flexibilidad</mat-option>
+          <mat-option value="mixto">Mixto</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Días</mat-label>
+        <input matInput formControlName="diasSemana" placeholder="Ej: Lunes, Miércoles, Viernes">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Duración (min)</mat-label>
+        <input matInput formControlName="duracionEstimada" type="number">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>🔥 Calentamiento</mat-label>
+        <textarea matInput formControlName="calentamiento" placeholder="Ej: 5 min de salto de soga..." rows="2"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>💪 Ejercicios</mat-label>
+        <textarea matInput formControlName="ejercicios" placeholder="1. Sentadillas 4x12&#10;2. Zancadas 3x10..." rows="4"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>🧘 Estiramiento</mat-label>
+        <textarea matInput formControlName="estiramiento" placeholder="Ej: Estiramiento de cuádriceps 30 seg..." rows="2"></textarea>
+      </mat-form-field>
+
+      <div class="botones-form">
+        <button mat-raised-button color="primary" type="submit" [disabled]="rutinaForm.invalid">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
+        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <ui-section-title *ngIf="rutinas.length > 0">Mis Rutinas</ui-section-title>
+
+  <div class="rutina-card" *ngFor="let rutina of rutinas">
+    <div class="rutina-info">
+      <p class="rutina-nombre">{{ rutina.nombre }}</p>
+      <ui-badge [variant]="rutina.objetivo === 'fuerza' ? 'red' : rutina.objetivo === 'cardio' ? 'blue' : 'green'">{{ rutina.objetivo }}</ui-badge>
+      <p class="rutina-detalle" *ngIf="rutina.diasSemana">📅 {{ rutina.diasSemana }}</p>
+      <p class="rutina-detalle">⏱️ {{ rutina.duracionEstimada }} min</p>
+      <p class="rutina-detalle" *ngIf="rutina.calentamiento">🔥 {{ rutina.calentamiento }}</p>
+      <p class="rutina-detalle" *ngIf="rutina.ejercicios">💪 {{ rutina.ejercicios }}</p>
+      <p class="rutina-detalle" *ngIf="rutina.estiramiento">🧘 {{ rutina.estiramiento }}</p>
+    </div>
+    <div class="rutina-acciones">
+      <button (click)="editarRutina(rutina)" class="btn-editar">✏️</button>
+      <button (click)="eliminarRutina(rutina.id)" class="btn-eliminar">🗑️</button>
+    </div>
+  </div>
+
+  <ui-empty-state *ngIf="rutinas.length === 0 && !mostrarForm" icon="📋" title="Sin rutinas" text="Todavía no tenés rutinas. ¡Agregá la primera!"></ui-empty-state>
+
+</div>

@@ -1,0 +1,76 @@
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
+<div class="recetas-container">
+
+  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">
+    + Agregar receta
+  </button>
+
+  <!-- Formulario -->
+  <mat-card *ngIf="mostrarForm" class="form-card">
+    <h3>{{ editando ? 'Editar Receta' : 'Nueva Receta' }}</h3>
+    <form [formGroup]="recetaForm" (ngSubmit)="guardarReceta()">
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej: Lentejas con verduras">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Ingredientes</mat-label>
+        <textarea matInput formControlName="ingredientes" placeholder="1 taza lentejas, 2 zanahorias..." rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Pasos</mat-label>
+        <textarea matInput formControlName="pasos" placeholder="1. Lavar lentejas. 2. Picar verduras..." rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nivel</mat-label>
+        <mat-select formControlName="nivel">
+          <mat-option value="facil">Fácil</mat-option>
+          <mat-option value="medio">Medio</mat-option>
+          <mat-option value="dificil">Difícil</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tiempo (minutos)</mat-label>
+        <input matInput formControlName="tiempoPreparacion" type="number">
+      </mat-form-field>
+
+      <div class="botones-form">
+        <button mat-raised-button color="primary" type="submit" [disabled]="recetaForm.invalid">
+          {{ editando ? 'Actualizar' : 'Agregar' }}
+        </button>
+        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Lista de recetas -->
+  <ui-section-title *ngIf="recetas.length > 0">Mis Recetas</ui-section-title>
+
+  <div class="receta-card" *ngFor="let receta of recetas">
+    <div class="receta-info">
+      <p class="receta-nombre">{{ receta.nombre }}</p>
+      <ui-badge [variant]="receta.nivel === 'facil' ? 'green' : receta.nivel === 'medio' ? 'orange' : 'red'">
+        {{ receta.nivel }}
+      </ui-badge>
+      <p class="receta-detalle">⏱️ {{ receta.tiempoPreparacion }} min</p>
+    </div>
+    <div class="receta-acciones">
+      <button (click)="editarReceta(receta)" class="btn-editar">✏️</button>
+      <button (click)="eliminarReceta(receta.id)" class="btn-eliminar">🗑️</button>
+    </div>
+  </div>
+
+  <ui-empty-state 
+    *ngIf="recetas.length === 0 && !mostrarForm"
+    icon="🍳"
+    title="Sin recetas"
+    text="Todavía no tenés recetas. ¡Agregá la primera!">
+  </ui-empty-state>
+
+</div>

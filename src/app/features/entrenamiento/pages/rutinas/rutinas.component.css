@@ -1,0 +1,12 @@
+.rutinas-container { padding: 16px 12px 40px 12px; }
+.btn-volver { background: none; border: none; color: #64B5F6; font-size: 15px; cursor: pointer; padding: 0 0 0 12px; margin-bottom: 16px; }
+.form-card { background-color: var(--surface-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px; }
+.form-card h3 { color: #64B5F6; font-size: 18px; margin: 0 0 14px 0; }
+.full-width { width: 100%; margin-bottom: 10px; }
+.botones-form { display: flex; gap: 10px; margin-top: 10px; }
+.rutina-card { background-color: var(--surface-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+.rutina-nombre { color: white; font-size: 18px; font-weight: 500; margin: 0; }
+.rutina-detalle { color: #B0BEC5; font-size: 13px; margin: 4px 0 0 0; }
+.rutina-acciones { display: flex; gap: 6px; }
+.btn-editar, .btn-eliminar { font-size: 22px; cursor: pointer; background: none; border: none; padding: 6px; }
+.btn-editar:hover, .btn-eliminar:hover { transform: scale(1.2); }

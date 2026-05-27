@@ -1,0 +1,11 @@
+<div 
+  class="ui-card"
+  [class.ui-card--clickable]="clickable"
+  [class.ui-card--blue]="accent === 'blue'"
+  [class.ui-card--cyan]="accent === 'cyan'"
+  [class.ui-card--green]="accent === 'green'"
+  [class.ui-card--orange]="accent === 'orange'"
+  [class.ui-card--red]="accent === 'red'"
+  [class.ui-card--purple]="accent === 'purple'">
+  <ng-content></ng-content>
+</div>

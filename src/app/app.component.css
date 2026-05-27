@@ -1,0 +1,7 @@
+/* Contenedor principal de la app */
+.content {
+  padding-top: 56px;        /* Altura del navbar */
+  padding-bottom: 56px;     /* Altura del footer */
+  min-height: 100vh;
+  background-color: var(--bg-primary);  /* Usa la variable nueva */
+}

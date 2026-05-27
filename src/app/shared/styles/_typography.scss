@@ -1,0 +1,42 @@
+// ============ TIPOGRAFÍA TUJUNTERO ============
+
+// Tamaños de fuente
+.text-xs  { font-size: 11px; }
+.text-sm  { font-size: 13px; }
+.text-base { font-size: 15px; }
+.text-lg  { font-size: 18px; }
+.text-xl  { font-size: 22px; }
+.text-2xl { font-size: 28px; }
+.text-3xl { font-size: 36px; }
+
+// Pesos
+.font-light  { font-weight: 300; }
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold  { font-weight: 700; }
+
+// Colores de texto
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-blue { color: var(--blue-soft); }
+
+// Títulos de sección
+.section-title {
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: var(--space-lg);
+}
+
+// Texto de tarjeta
+.card-title {
+  color: var(--text-primary);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.card-subtitle {
+  color: var(--text-secondary);
+  font-size: 13px;
+}

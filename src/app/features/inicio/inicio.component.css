@@ -1,0 +1,162 @@
+/* Contenedor principal del Inicio */
+.inicio-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-xl);
+}
+
+/* Tarjeta de saludo */
+.saludo-card {
+  background: linear-gradient(135deg, #1E3A5F, #0F2B3D);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.saludo-texto {
+  color: var(--text-primary);
+  font-size: 22px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.fecha-texto {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin: var(--space-xs) 0 0 0;
+}
+
+/* Versículo del día */
+.versiculo-card {
+  background-color: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.versiculo-texto {
+  color: var(--blue-soft);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.versiculo-ref {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  margin: var(--space-sm) 0 0 0;
+}
+
+/* Check-in emocional */
+.checkin-card {
+  background-color: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.checkin-titulo {
+  color: var(--text-primary);
+  font-size: 15px;
+  margin: 0 0 var(--space-md) 0;
+}
+
+.emojis-row {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.emoji-btn {
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  font-size: 30px;
+  padding: var(--space-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.emoji-btn:hover {
+  border-color: var(--blue-soft);
+  transform: scale(1.15);
+}
+
+.emoji-btn.seleccionado {
+  border-color: var(--blue-soft);
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.4);
+}
+
+/* Acceso rápido */
+.accesos-grid {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.acceso-card {
+  background-color: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.acceso-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue-soft);
+}
+
+.acceso-icono { font-size: 28px; }
+
+.acceso-titulo {
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.acceso-sub {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin: var(--space-xs) 0 0 0;
+}
+
+/* Frase final */
+.frase-final-card {
+  background-color: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  text-align: center;
+}
+
+.frase-texto {
+  color: var(--blue-soft);
+  font-size: 13px;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Celular */
+@media (max-width: 768px) {
+  .accesos-grid {
+    flex-direction: column;
+  }
+  .inicio-container {
+    padding: var(--space-lg) var(--space-md);
+  }
+}

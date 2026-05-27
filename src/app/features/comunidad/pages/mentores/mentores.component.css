@@ -1,0 +1,7 @@
+.mentores-container { padding: 16px 12px 40px 12px; }
+.btn-volver { background: none; border: none; color: #64B5F6; font-size: 15px; cursor: pointer; padding: 0 0 0 12px; margin-bottom: 16px; }
+.mentor-card { background-color: var(--surface-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 12px; display: flex; gap: 16px; align-items: center; }
+.mentor-avatar { font-size: 40px; }
+.mentor-nombre { color: white; font-size: 18px; font-weight: 500; margin: 0; }
+.mentor-especialidad { color: var(--blue-soft); font-size: 14px; margin: 4px 0; }
+.mentor-frase { color: var(--text-secondary); font-size: 13px; font-style: italic; margin: 4px 0 0 0; }

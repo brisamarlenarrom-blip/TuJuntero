@@ -1,0 +1,78 @@
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
+<div class="diario-container">
+
+  <!-- Resumen del día -->
+  <div class="resumen-dia">
+    <p class="resumen-fecha">📅 {{ hoy }}</p>
+    <p class="resumen-total">{{ comidas.length }} comidas registradas</p>
+  </div>
+
+  <!-- Botón agregar -->
+  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="mostrarForm = true">
+    + Registrar comida
+  </button>
+
+  <!-- Formulario -->
+  <mat-card *ngIf="mostrarForm" class="form-card">
+    <h3>Registrar comida</h3>
+    <form [formGroup]="comidaForm" (ngSubmit)="guardarComida()">
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="tipo">
+          <mat-option value="desayuno">🌅 Desayuno</mat-option>
+          <mat-option value="almuerzo">☀️ Almuerzo</mat-option>
+          <mat-option value="merienda">🍪 Merienda</mat-option>
+          <mat-option value="cena">🌙 Cena</mat-option>
+          <mat-option value="snack">🍎 Snack</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>¿Qué comiste?</mat-label>
+        <textarea matInput formControlName="descripcion" placeholder="Ej: Ensalada con pollo y agua" rows="2"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>¿Cómo te sentiste?</mat-label>
+        <mat-select formControlName="satisfaccion">
+          <mat-option [value]="1">😔 Mal</mat-option>
+          <mat-option [value]="2">😐 Regular</mat-option>
+          <mat-option [value]="3">🙂 Bien</mat-option>
+          <mat-option [value]="4">😊 Muy bien</mat-option>
+          <mat-option [value]="5">🤩 Excelente</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="botones-form">
+        <button mat-raised-button color="primary" type="submit" [disabled]="comidaForm.invalid">
+          Guardar
+        </button>
+        <button mat-button type="button" (click)="mostrarForm = false; comidaForm.reset({tipo:'almuerzo',satisfaccion:3,fecha:hoy})">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Lista de comidas del día -->
+  <ui-section-title *ngIf="comidas.length > 0">Comidas de hoy</ui-section-title>
+
+  <div class="comida-card" *ngFor="let comida of comidas">
+    <div class="comida-info">
+      <p class="comida-tipo">{{ comida.tipo }}</p>
+      <p class="comida-desc">{{ comida.descripcion }}</p>
+    </div>
+    <div class="comida-emoji">
+      <span>{{ getEmoji(comida.satisfaccion) }}</span>
+      <button (click)="eliminarComida(comida.id)" class="btn-eliminar">🗑️</button>
+    </div>
+  </div>
+
+  <ui-empty-state 
+    *ngIf="comidas.length === 0 && !mostrarForm"
+    icon="🍽️"
+    title="Sin registros hoy"
+    text="Registrá tu primera comida del día">
+  </ui-empty-state>
+
+</div>

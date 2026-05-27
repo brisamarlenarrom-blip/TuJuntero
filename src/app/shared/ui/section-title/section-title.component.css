@@ -1,0 +1,11 @@
+/* ============ UI-SECTION-TITLE: Título de sección TuJuntero ============ */
+
+.ui-section-title {
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 500;
+  margin: var(--space-2xl) 0 var(--space-lg) 0;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-color);
+  letter-spacing: -0.3px;
+}

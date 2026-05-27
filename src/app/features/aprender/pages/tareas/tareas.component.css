@@ -1,0 +1,147 @@
+.tareas-container {
+  padding: 16px 12px 40px 12px;
+}
+
+.form-card {
+  background-color: #121215;
+  border: 1px solid #1A237E;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.form-card h3 {
+  color: #64B5F6;
+  font-size: 18px;
+  margin: 0 0 14px 0;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.botones-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.subtitulo {
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 24px 0 14px 0;
+}
+
+.tarea-card {
+  background-color: #121215;
+  border: 1px solid #1A237E;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Borde izquierdo según prioridad */
+.tarea-card.alta { border-left: 4px solid #ef5350; }
+.tarea-card.media { border-left: 4px solid #FFA726; }
+.tarea-card.baja { border-left: 4px solid #66BB6A; }
+
+/* Opacidad si está completada */
+.tarea-card.completada { opacity: 0.6; }
+
+.tarea-titulo {
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.tarea-descripcion {
+  color: #B0BEC5;
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.tarea-badges {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.tipo-badge, .prioridad-badge, .estado-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+.tipo-badge.tarea { background-color: #1E88E5; color: white; }
+.tipo-badge.examen, .tipo-badge.parcial, .tipo-badge.final { background-color: #7B1FA2; color: white; }
+.tipo-badge.entrega { background-color: #00838F; color: white; }
+
+.prioridad-badge.alta { background-color: #ef5350; color: white; }
+.prioridad-badge.media { background-color: #FFA726; color: black; }
+.prioridad-badge.baja { background-color: #66BB6A; color: black; }
+
+.estado-badge.pendiente { background-color: #546E7A; color: white; }
+.estado-badge.en_progreso { background-color: #1E88E5; color: white; }
+.estado-badge.completada { background-color: #66BB6A; color: black; }
+
+.tarea-fecha {
+  color: #B0BEC5;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.tarea-acciones {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-editar, .btn-eliminar {
+  font-size: 22px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 6px;
+}
+
+.btn-editar:hover { transform: scale(1.2); }
+.btn-eliminar:hover { transform: scale(1.2); }
+
+.vacio {
+  color: #B0BEC5;
+  text-align: center;
+  font-style: italic;
+  font-size: 15px;
+  margin-top: 20px;
+}
+.btn-volver {
+  background: none;
+  border: none;
+  color: #64B5F6;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0 0 0 12px;
+  margin-bottom: 8px;
+}
+
+.btn-volver:hover {
+  color: #4DD0E1;
+}
+@media (max-width: 600px) {
+  .materia-card, .tarea-card, .libro-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .materia-acciones, .tarea-acciones, .libro-acciones {
+    align-self: flex-end;
+  }
+}

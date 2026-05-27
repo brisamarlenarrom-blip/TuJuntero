@@ -1,0 +1,16 @@
+.muro-container { padding: 16px 12px 40px 12px; }
+.btn-volver { background: none; border: none; color: #64B5F6; font-size: 15px; cursor: pointer; padding: 0 0 0 12px; margin-bottom: 16px; }
+.form-card { background-color: var(--surface-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px; }
+.form-card h3 { color: #64B5F6; font-size: 18px; margin: 0 0 14px 0; }
+.full-width { width: 100%; margin-bottom: 10px; }
+.botones-form { display: flex; gap: 10px; margin-top: 10px; }
+.post-card { background-color: var(--surface-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px; }
+.post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.post-avatar { font-size: 28px; }
+.post-autor { color: white; font-size: 14px; font-weight: 500; margin: 0; }
+.post-tiempo { color: var(--text-secondary); font-size: 11px; margin: 2px 0 0 0; }
+.post-contenido { color: white; font-size: 15px; margin: 0 0 12px 0; line-height: 1.5; }
+.post-acciones { display: flex; gap: 12px; }
+.btn-like { background: none; border: none; color: var(--text-secondary); font-size: 13px; cursor: pointer; padding: 4px 0; }
+.btn-like:hover { color: #ef5350; }
+.btn-eliminar { background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; }

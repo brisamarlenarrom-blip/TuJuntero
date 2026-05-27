@@ -1,0 +1,23 @@
+/* Barra inferior */
+.footer {
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  height: 56px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.nav-icon {
+  color: var(--text-secondary);
+  font-size: 24px;
+}
+
+.nav-icon:hover {
+  color: var(--blue-soft);
+}

@@ -1,0 +1,37 @@
+<div class="alimentarse-container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1 class="hero-titulo">🍳 Alimentarse</h1>
+    <p class="hero-subtitulo">Nutrí tu cuerpo, nutrí tu vida</p>
+  </div>
+
+  <!-- Navegación -->
+  <div class="nav">
+    <a routerLink="recetas" routerLinkActive="nav-activo" class="nav-item">📖 Mis Recetas</a>
+    <a routerLink="diario" routerLinkActive="nav-activo" class="nav-item">📝 Diario</a>
+  </div>
+
+  <!-- Cards con números -->
+  <div class="resumen-grid">
+    <a class="resumen-card" routerLink="recetas">
+      <span class="resumen-icono">🍽️</span>
+      <p class="resumen-numero">{{ totalRecetas }}</p>
+      <p class="resumen-texto">Recetas</p>
+    </a>
+    <a class="resumen-card" routerLink="diario">
+      <span class="resumen-icono">📝</span>
+      <p class="resumen-numero">{{ comidasHoy }}</p>
+      <p class="resumen-texto">Registros hoy</p>
+    </a>
+  </div>
+
+  <!-- Frase -->
+  <div class="frase">
+    <p>🥗 "Que tu alimento sea tu medicina, y tu medicina sea tu alimento."</p>
+    <span>— Hipócrates</span>
+  </div>
+
+  <router-outlet></router-outlet>
+
+</div>

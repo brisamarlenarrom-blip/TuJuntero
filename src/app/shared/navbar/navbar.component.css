@@ -1,0 +1,59 @@
+/* Barra de navegación superior */
+.navbar {
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 var(--space-lg);
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--blue-soft);
+  letter-spacing: 1px;
+}
+
+.spacer { flex: 1; }
+
+/* Botones de navegación */
+.nav-link {
+  color: var(--text-primary) !important;
+  font-size: 14px;
+  text-transform: none;
+}
+
+.nav-link:hover {
+  color: var(--blue-soft) !important;
+}
+
+/* Botón Ingresar */
+.login-btn {
+  background-color: var(--blue-primary) !important;
+  color: white !important;
+  font-size: 14px;
+  text-transform: none;
+  margin-left: var(--space-sm);
+}
+
+/* Botón Salir */
+.logout-btn {
+  color: var(--danger);
+  font-size: 14px;
+  text-transform: none;
+}
+
+.logout-btn:hover {
+  color: #ff8a80;
+}
+
+/* Celular: esconde los botones de navegación */
+@media (max-width: 768px) {
+  .nav-link {
+    display: none !important;
+  }
+  .logo { font-size: 17px; }
+  .navbar { padding: 0 var(--space-sm); }
+}

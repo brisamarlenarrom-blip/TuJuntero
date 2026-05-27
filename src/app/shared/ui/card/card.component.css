@@ -1,0 +1,72 @@
+/* ============ UI-CARD: Identidad visual de TuJuntero ============ */
+
+/* Tarjeta base */
+.ui-card {
+  background-color: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto de brillo superior sutil */
+.ui-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ui-card:hover::before {
+  opacity: 1;
+}
+
+/* Modo clickeable */
+.ui-card--clickable {
+  cursor: pointer;
+}
+
+.ui-card--clickable:hover {
+  transform: translateY(-3px);
+  border-color: rgba(96, 165, 250, 0.5);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ============ VARIANTES DE BORDE IZQUIERDO ============ */
+
+.ui-card--blue {
+  border-left: 3px solid var(--blue-primary);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.ui-card--cyan {
+  border-left: 3px solid var(--blue-soft);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.ui-card--green {
+  border-left: 3px solid var(--success);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.ui-card--orange {
+  border-left: 3px solid var(--warning);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.ui-card--red {
+  border-left: 3px solid var(--danger);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.ui-card--purple {
+  border-left: 3px solid var(--purple-primary);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}

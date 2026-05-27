@@ -1,0 +1,60 @@
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
+<div class="bitacora-container">
+
+  <div class="resumen-dia">
+    <p class="resumen-fecha">📅 {{ hoy }}</p>
+    <p class="resumen-total">{{ entrenamientos.length }} entrenos hoy</p>
+  </div>
+
+  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="mostrarForm = true">+ Registrar entrenamiento</button>
+
+  <mat-card *ngIf="mostrarForm" class="form-card">
+    <h3>Registrar entrenamiento</h3>
+    <form [formGroup]="entrenoForm" (ngSubmit)="guardarEntreno()">
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Rutina realizada</mat-label>
+        <input matInput formControlName="rutina" placeholder="Ej: Piernas y glúteos">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Duración (min)</mat-label>
+        <input matInput formControlName="duracion" type="number">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Intensidad</mat-label>
+        <mat-select formControlName="intensidad">
+          <mat-option value="baja">🟢 Baja</mat-option>
+          <mat-option value="media">🟡 Media</mat-option>
+          <mat-option value="alta">🔴 Alta</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>¿Cómo te sentiste?</mat-label>
+        <textarea matInput formControlName="sensacion" placeholder="Ej: Me sentí fuerte, buena energía..." rows="2"></textarea>
+      </mat-form-field>
+
+      <div class="botones-form">
+        <button mat-raised-button color="primary" type="submit" [disabled]="entrenoForm.invalid">Guardar</button>
+        <button mat-button type="button" (click)="mostrarForm = false">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <ui-section-title *ngIf="entrenamientos.length > 0">Entrenamientos de hoy</ui-section-title>
+
+  <div class="entreno-card" *ngFor="let e of entrenamientos">
+    <div class="entreno-info">
+      <p class="entreno-rutina">{{ e.rutina }}</p>
+      <p class="entreno-detalle">⏱️ {{ e.duracion }} min | {{ e.intensidad === 'alta' ? '🔴' : e.intensidad === 'media' ? '🟡' : '🟢' }} {{ e.intensidad }}</p>
+      <p class="entreno-sensacion" *ngIf="e.sensacion">💬 {{ e.sensacion }}</p>
+    </div>
+    <button (click)="eliminarEntreno(e.id)" class="btn-eliminar">🗑️</button>
+  </div>
+
+  <ui-empty-state *ngIf="entrenamientos.length === 0 && !mostrarForm" icon="🏋️" title="Sin entrenamientos hoy" text="Registrá tu primer entrenamiento del día"></ui-empty-state>
+
+</div>

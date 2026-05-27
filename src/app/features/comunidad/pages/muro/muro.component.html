@@ -1,0 +1,42 @@
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
+<div class="muro-container">
+
+  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="mostrarForm = true">
+    + Nueva publicación
+  </button>
+
+  <mat-card *ngIf="mostrarForm" class="form-card">
+    <h3>¿Qué querés compartir?</h3>
+    <form [formGroup]="postForm" (ngSubmit)="guardarPost()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Escribí algo...</mat-label>
+        <textarea matInput formControlName="contenido" placeholder="Compartí un logro, una reflexión..." rows="3"></textarea>
+      </mat-form-field>
+      <div class="botones-form">
+        <button mat-raised-button color="primary" type="submit" [disabled]="postForm.invalid">Publicar</button>
+        <button mat-button type="button" (click)="mostrarForm = false">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <ui-section-title *ngIf="posts.length > 0">Publicaciones</ui-section-title>
+
+  <div class="post-card" *ngFor="let post of posts">
+    <div class="post-header">
+      <span class="post-avatar">👤</span>
+      <div>
+        <p class="post-autor">{{ post.usuarioNombre || 'Anónimo' }}</p>
+        <p class="post-tiempo">{{ tiempoRelativo(post.fecha) }}</p>
+      </div>
+    </div>
+    <p class="post-contenido">{{ post.contenido }}</p>
+    <div class="post-acciones">
+      <button (click)="darLike(post)" class="btn-like">❤️ {{ post.likes }}</button>
+      <button *ngIf="post.usuarioId === usuarioId" (click)="eliminarPost(post.id)" class="btn-eliminar">🗑️</button>
+    </div>
+  </div>
+
+  <ui-empty-state *ngIf="posts.length === 0 && !mostrarForm" icon="📝" title="Sin publicaciones" text="¡Sé el primero en compartir algo!"></ui-empty-state>
+
+</div>

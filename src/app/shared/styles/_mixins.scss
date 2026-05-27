@@ -1,0 +1,38 @@
+// ============ MIXINS TUJUNTERO ============
+
+// Tarjeta base (usado en cards de materias, tareas, recetas, etc.)
+@mixin card-base {
+  background-color: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  transition: all 0.2s ease;
+}
+
+// Efecto hover: levanta la tarjeta y cambia el borde
+@mixin hover-lift {
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--blue-soft);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
+  }
+}
+
+// Responsive: tablet y celular
+@mixin respond-mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+// Responsive: solo celular chico
+@mixin respond-small {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+// Borde izquierdo de color (para estados: cursando, regular, etc.)
+@mixin left-border($color) {
+  border-left: 4px solid $color;
+}

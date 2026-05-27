@@ -1,0 +1,89 @@
+
+
+<div class="biblioteca-container">
+
+  <!-- Botón para agregar -->
+  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">
+    + Agregar libro
+  </button>
+
+  <!-- Formulario -->
+  <mat-card *ngIf="mostrarForm" class="form-card">
+    <h3>{{ editando ? 'Editar Libro' : 'Nuevo Libro' }}</h3>
+    <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="titulo" placeholder="Ej: El hombre en busca de sentido">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Autor</mat-label>
+        <input matInput formControlName="autor" placeholder="Ej: Viktor Frankl">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estadoLectura">
+          <mat-option value="quiero_leer">📚 Quiero leer</mat-option>
+          <mat-option value="leyendo">📖 Leyendo</mat-option>
+          <mat-option value="leido">✅ Leído</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width" *ngIf="libroForm.value.estadoLectura === 'leido'">
+        <mat-label>Puntuación (1 a 5)</mat-label>
+        <mat-select formControlName="puntuacion">
+          <mat-option [value]="1">⭐</mat-option>
+          <mat-option [value]="2">⭐⭐</mat-option>
+          <mat-option [value]="3">⭐⭐⭐</mat-option>
+          <mat-option [value]="4">⭐⭐⭐⭐</mat-option>
+          <mat-option [value]="5">⭐⭐⭐⭐⭐</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Reseña</mat-label>
+        <textarea matInput formControlName="resenia" placeholder="¿Qué te pareció?" rows="2"></textarea>
+      </mat-form-field>
+
+      <div class="botones-form">
+        <button mat-raised-button color="primary" type="submit" [disabled]="libroForm.invalid">
+          {{ editando ? 'Actualizar' : 'Agregar' }}
+        </button>
+        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Lista de libros -->
+  <ui-empty-state 
+  *ngIf="libros.length === 0 && !mostrarForm"
+  icon="📚"
+  title="Sin libros"
+  text="Todavía no tenés libros. ¡Agregá el primero!">
+</ui-empty-state>
+
+  <div class="libro-card" *ngFor="let libro of libros" [class]="'libro-card ' + libro.estadoLectura">
+    <div class="libro-info">
+      <p class="libro-titulo">📖 {{ libro.titulo }}</p>
+      <p class="libro-autor" *ngIf="libro.autor">✍️ {{ libro.autor }}</p>
+      <div class="libro-badges">
+        <span class="estado-lectura" [class]="libro.estadoLectura">
+          {{ libro.estadoLectura === 'quiero_leer' ? 'Quiero leer' : libro.estadoLectura === 'leyendo' ? 'Leyendo' : 'Leído' }}
+        </span>
+        <span class="puntuacion" *ngIf="libro.puntuacion > 0">
+          {{ '⭐'.repeat(libro.puntuacion) }}
+        </span>
+      </div>
+      <p class="libro-resenia" *ngIf="libro.resenia">💬 {{ libro.resenia }}</p>
+    </div>
+    <div class="libro-acciones">
+      <button (click)="editarLibro(libro)" class="btn-editar">✏️</button>
+      <button (click)="eliminarLibro(libro.id)" class="btn-eliminar">🗑️</button>
+    </div>
+  </div>
+
+  
+ <button class="btn-volver" (click)="volver()">← Volver</button>
+</div>

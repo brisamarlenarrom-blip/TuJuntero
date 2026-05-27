@@ -1,0 +1,6 @@
+.main-content {
+  padding-top: 56px;
+  padding-bottom: 56px;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+}

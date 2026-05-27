@@ -1,0 +1,50 @@
+/* Contenedor centrado */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 112px);
+  padding: 16px;
+}
+
+/* Tarjeta del formulario */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #0D1B2A;
+  border: 2px solid #1E88E5;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(30, 136, 229, 0.2);
+}
+
+/* Título "Registrarse" */
+.auth-title {
+  color: #64B5F6;
+  font-size: 22px;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+}
+
+/* Campos de ancho completo */
+.full-width {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+/* Link de inicio de sesión */
+.register-link {
+  text-align: center;
+  color: #B0BEC5;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #64B5F6;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,87 @@
+<!-- Botón para volver al resumen de Aprender -->
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
+<div class="materias-container">
+
+  <!-- Botón para mostrar el formulario -->
+  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">
+    + Agregar materia
+  </button>
+
+  <!-- Formulario (solo visible al agregar/editar) -->
+  <mat-card *ngIf="mostrarForm" class="form-card">
+    <h3>{{ editando ? 'Editar Materia' : 'Nueva Materia' }}</h3>
+    
+    <form [formGroup]="materiaForm" (ngSubmit)="guardarMateria()">
+      
+      <!-- Nombre de la materia -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej: Álgebra Lineal">
+      </mat-form-field>
+      
+      <!-- Estado -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          <mat-option value="cursando">Cursando</mat-option>
+          <mat-option value="regular">Regular (debo final)</mat-option>
+          <mat-option value="a_rendir">A rendir</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Campos según estado -->
+      <mat-form-field *ngIf="materiaForm.value.estado === 'cursando'" appearance="outline" class="full-width">
+        <mat-label>Día y horario</mat-label>
+        <input matInput formControlName="diaHorario" placeholder="Ej: Lunes y Miércoles 14:00">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="materiaForm.value.estado === 'regular'" appearance="outline" class="full-width">
+        <mat-label>Próximo llamado</mat-label>
+        <input matInput formControlName="fechaLlamado" type="date">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="materiaForm.value.estado === 'a_rendir'" appearance="outline" class="full-width">
+        <mat-label>Fecha de examen</mat-label>
+        <input matInput formControlName="fechaExamen" type="date">
+      </mat-form-field>
+
+      <div class="botones-form">
+        <button mat-raised-button color="primary" type="submit" [disabled]="materiaForm.invalid">
+          {{ editando ? 'Actualizar' : 'Agregar' }}
+        </button>
+        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Lista de materias -->
+  <ui-section-title *ngIf="materias.length > 0">Mis Materias</ui-section-title>
+  
+  <div class="materia-card" *ngFor="let materia of materias" [class]="'materia-card ' + materia.estado">
+    <div class="materia-info">
+      <p class="materia-nombre">{{ materia.nombre }}</p>
+      
+      <!-- Badge de estado usando el UI Kit -->
+      <ui-badge [variant]="materia.estado === 'cursando' ? 'blue' : materia.estado === 'regular' ? 'orange' : 'red'">
+        {{ materia.estado === 'cursando' ? 'Cursando' : materia.estado === 'regular' ? 'Regular' : 'A rendir' }}
+      </ui-badge>
+      
+      <p class="materia-detalle" *ngIf="materia.diaHorario">🕐 {{ materia.diaHorario }}</p>
+      <p class="materia-detalle" *ngIf="materia.fechaLlamado">📅 Próximo llamado: {{ materia.fechaLlamado }}</p>
+      <p class="materia-detalle" *ngIf="materia.fechaExamen">📅 Examen: {{ materia.fechaExamen }}</p>
+    </div>
+    <div class="materia-acciones">
+      <button (click)="editarMateria(materia)" class="btn-editar">✏️</button>
+      <button (click)="eliminarMateria(materia.id)" class="btn-eliminar">🗑️</button>
+    </div>
+  </div>
+
+ <ui-empty-state 
+  *ngIf="materias.length === 0 && !mostrarForm"
+  icon="📖"
+  title="Sin materias"
+  text="Todavía no tenés materias. ¡Agregá la primera!">
+</ui-empty-state>
+
+</div>

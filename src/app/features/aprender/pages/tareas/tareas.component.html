@@ -1,0 +1,95 @@
+<div class="tareas-container">
+
+  <!-- Botón para mostrar formulario -->
+  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">
+    + Agregar tarea
+  </button>
+
+  <!-- Formulario -->
+  <mat-card *ngIf="mostrarForm" class="form-card">
+    <h3>{{ editando ? 'Editar Tarea' : 'Nueva Tarea' }}</h3>
+    
+    <form [formGroup]="tareaForm" (ngSubmit)="guardarTarea()">
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="titulo" placeholder="Ej: TP N°3 - Matrices">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcion" placeholder="Resolver ejercicios del 1 al 15" rows="2"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="tipo">
+          <mat-option value="tarea">Tarea</mat-option>
+          <mat-option value="examen">Examen</mat-option>
+          <mat-option value="parcial">Parcial</mat-option>
+          <mat-option value="final">Final</mat-option>
+          <mat-option value="entrega">Entrega</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha límite</mat-label>
+        <input matInput formControlName="fechaLimite" type="date">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Prioridad</mat-label>
+        <mat-select formControlName="prioridad">
+          <mat-option value="baja">🟢 Baja</mat-option>
+          <mat-option value="media">🟡 Media</mat-option>
+          <mat-option value="alta">🔴 Alta</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          <mat-option value="pendiente">Pendiente</mat-option>
+          <mat-option value="en_progreso">En progreso</mat-option>
+          <mat-option value="completada">Completada</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="botones-form">
+        <button mat-raised-button color="primary" type="submit" [disabled]="tareaForm.invalid">
+          {{ editando ? 'Actualizar' : 'Agregar' }}
+        </button>
+        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Lista de tareas -->
+<ui-section-title *ngIf="tareas.length > 0">Mis Tareas</ui-section-title>
+
+  <div class="tarea-card" *ngFor="let tarea of tareas" [class]="'tarea-card ' + tarea.prioridad + ' ' + tarea.estado">
+    <div class="tarea-info">
+      <p class="tarea-titulo">{{ tarea.titulo }}</p>
+      <p class="tarea-descripcion" *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
+      <div class="tarea-badges">
+        <span class="tipo-badge" [class]="tarea.tipo">{{ tarea.tipo }}</span>
+        <span class="prioridad-badge" [class]="tarea.prioridad">{{ tarea.prioridad }}</span>
+        <span class="estado-badge" [class]="tarea.estado">{{ tarea.estado === 'pendiente' ? 'Pendiente' : tarea.estado === 'en_progreso' ? 'En progreso' : 'Completada' }}</span>
+      </div>
+      <p class="tarea-fecha" *ngIf="tarea.fechaLimite">📅 {{ tarea.fechaLimite }}</p>
+    </div>
+    <div class="tarea-acciones">
+      <button (click)="editarTarea(tarea)" class="btn-editar">✏️</button>
+      <button (click)="eliminarTarea(tarea.id)" class="btn-eliminar">🗑️</button>
+    </div>
+  </div>
+
+  <ui-empty-state 
+  *ngIf="tareas.length === 0 && !mostrarForm"
+  icon="📝"
+  title="Sin tareas"
+  text="Todavía no tenés tareas. ¡Agregá la primera!">
+</ui-empty-state>
+ <button class="btn-volver" (click)="volver()">← Volver</button>
+
+</div>

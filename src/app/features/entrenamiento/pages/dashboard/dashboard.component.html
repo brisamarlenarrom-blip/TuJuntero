@@ -1,0 +1,32 @@
+<div class="entrenamiento-container">
+
+  <div class="hero">
+    <h1 class="hero-titulo">💪 Entrenamiento</h1>
+    <p class="hero-subtitulo">Movete, superate, transformate</p>
+  </div>
+
+  <div class="nav">
+    <a routerLink="rutinas" routerLinkActive="nav-activo" class="nav-item">📋 Mis Rutinas</a>
+    <a routerLink="bitacora" routerLinkActive="nav-activo" class="nav-item">📊 Bitácora</a>
+  </div>
+
+  <div class="resumen-grid">
+    <a class="resumen-card" routerLink="rutinas">
+      <span class="resumen-icono">📋</span>
+      <p class="resumen-numero">{{ totalRutinas }}</p>
+      <p class="resumen-texto">Rutinas</p>
+    </a>
+    <a class="resumen-card" routerLink="bitacora">
+      <span class="resumen-icono">🏋️</span>
+      <p class="resumen-numero">{{ entrenamientosHoy }}</p>
+      <p class="resumen-texto">Entrenos hoy</p>
+    </a>
+  </div>
+
+  <div class="frase">
+    <p>🔥 "No te rindas. Cada gota de sudor te acerca a tu mejor versión."</p>
+  </div>
+
+  <router-outlet></router-outlet>
+
+</div>

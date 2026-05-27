@@ -1,0 +1,41 @@
+// ============ PALETA DE COLORES ============
+:root {
+  // Fondos
+  --bg-primary: #070B14;
+  --bg-secondary: #101826;
+
+  // Superficies (cards, modales)
+  --surface-primary: #121826;
+  --surface-secondary: #1A2233;
+
+  // Acentos
+  --blue-primary: #3B82F6;
+  --blue-soft: #60A5FA;
+  --purple-primary: #8B5CF6;
+
+  // Estados
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+
+  // Texto
+  --text-primary: #FFFFFF;
+  --text-secondary: #94A3B8;
+
+  // Bordes
+  --border-color: #1E2A3A;
+
+  // Radios
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+
+  // Espaciado
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+  --space-3xl: 40px;
+}
