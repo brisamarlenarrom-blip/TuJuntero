@@ -1,0 +1,4 @@
+.destacados-container { padding: 16px 12px 40px 12px; }
+.btn-volver { background: none; border: none; color: #64B5F6; font-size: 15px; cursor: pointer; padding: 0 0 0 12px; margin-bottom: 16px; }
+.rutina-nombre { color: white; font-size: 18px; font-weight: 500; margin: 0; }
+.rutina-detalle { color: #B0BEC5; font-size: 13px; margin: 4px 0 0 0; }

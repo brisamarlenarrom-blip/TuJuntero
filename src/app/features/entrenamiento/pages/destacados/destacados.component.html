@@ -1,0 +1,32 @@
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
+<div class="destacados-container">
+
+  <ui-section-title *ngIf="rutinasPublicas.length > 0">🌟 Rutinas Destacadas</ui-section-title>
+
+  <ui-card 
+    *ngFor="let rutina of rutinasPublicas" 
+    [accent]="'purple'" 
+    [clickable]="true">
+    
+    <div class="rutina-info">
+      <p class="rutina-nombre">{{ rutina.nombre }}</p>
+      <p class="rutina-detalle">🌟 Por {{ rutina.nombreMentor }}</p>
+      <ui-badge [variant]="rutina.objetivo === 'fuerza' ? 'red' : rutina.objetivo === 'cardio' ? 'blue' : 'green'">{{ rutina.objetivo }}</ui-badge>
+      <p class="rutina-detalle" *ngIf="rutina.diasSemana">📅 {{ rutina.diasSemana }}</p>
+      <p class="rutina-detalle">⏱️ {{ rutina.duracionEstimada }} min</p>
+      <p class="rutina-detalle" *ngIf="rutina.calentamiento">🔥 {{ rutina.calentamiento }}</p>
+      <p class="rutina-detalle" *ngIf="rutina.ejercicios">💪 {{ rutina.ejercicios }}</p>
+      <p class="rutina-detalle" *ngIf="rutina.estiramiento">🧘 {{ rutina.estiramiento }}</p>
+    </div>
+    
+  </ui-card>
+
+  <ui-empty-state 
+    *ngIf="rutinasPublicas.length === 0"
+    icon="🌟"
+    title="Sin destacados"
+    text="Próximamente rutinas de nuestros mentores.">
+  </ui-empty-state>
+
+</div>

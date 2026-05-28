@@ -39,6 +39,13 @@
         <input matInput formControlName="tiempoPreparacion" type="number">
       </mat-form-field>
 
+      <!-- Solo visible si es mentor -->
+      <div class="mentor-check" *ngIf="esMentor">
+        <mat-checkbox formControlName="esPublica" color="primary">
+          🌟 Publicar como {{ nombreMentor }} (visible para todos)
+        </mat-checkbox>
+      </div>
+
       <div class="botones-form">
         <button mat-raised-button color="primary" type="submit" [disabled]="recetaForm.invalid">
           {{ editando ? 'Actualizar' : 'Agregar' }}
@@ -56,6 +63,11 @@
     [clickable]="true">
     
     <p class="receta-nombre">{{ receta.nombre }}</p>
+    
+    <!-- Muestra quién publicó si es una receta de mentor -->
+    <p class="receta-detalle" *ngIf="receta.esPublica && receta.nombreMentor">
+      🌟 Por {{ receta.nombreMentor }}
+    </p>
     
     <ui-badge [variant]="receta.nivel === 'facil' ? 'green' : receta.nivel === 'medio' ? 'orange' : 'red'">
       {{ receta.nivel }}

@@ -3,7 +3,9 @@
 
   <!-- Tarjeta de saludo: "¡Buenos días, Brisa!" -->
   <div class="saludo-card">
-    <h1 class="saludo-texto">{{ saludo }}, {{ nombre }}!</h1>
+    <!-- Saludo dinámico: muestra coma y nombre solo si hay sesión -->
+      <h1 class="saludo-texto">{{ saludo }}<span *ngIf="nombre">, {{ nombre }}</span>!</h1>
+
     <p class="fecha-texto">{{ fechaActual }}</p>
   </div>
 

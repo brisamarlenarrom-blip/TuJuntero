@@ -12,11 +12,13 @@ import { AuthService } from '../../../../core/auth.service';
 import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
 import { SectionTitleComponent } from '../../../../shared/ui/section-title/section-title.component';
 import { CardComponent } from '../../../../shared/ui/card/card.component'; // UI Card
+import { TiempoRelativoPipe } from '../../../../shared/pipes/tiempo-relativo.pipe'; // Pipe fechas
+
 
 @Component({
   selector: 'app-muro',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, EmptyStateComponent, SectionTitleComponent, CardComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, EmptyStateComponent, SectionTitleComponent, CardComponent, TiempoRelativoPipe],
   templateUrl: './muro.component.html',
   styleUrl: './muro.component.css'
 })
@@ -82,14 +84,5 @@ export class MuroComponent implements OnInit {
 
   volver() { this.router.navigate(['/comunidad']); }
 
-  // Fecha relativa
-  tiempoRelativo(fecha: string): string {
-    const ahora = new Date();
-    const entonces = new Date(fecha);
-    const minutos = Math.floor((ahora.getTime() - entonces.getTime()) / 60000);
-    if (minutos < 1) return 'Ahora';
-    if (minutos < 60) return `Hace ${minutos} min`;
-    if (minutos < 1440) return `Hace ${Math.floor(minutos / 60)} h`;
-    return `Hace ${Math.floor(minutos / 1440)} d`;
-  }
+ 
 }

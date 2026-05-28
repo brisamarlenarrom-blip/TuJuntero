@@ -48,6 +48,13 @@
         <textarea matInput formControlName="estiramiento" placeholder="Ej: Estiramiento de cuádriceps 30 seg..." rows="2"></textarea>
       </mat-form-field>
 
+      <!-- Solo visible si es mentor -->
+      <div class="mentor-check" *ngIf="esMentor">
+        <mat-checkbox formControlName="esPublica" color="primary">
+          🌟 Publicar como {{ nombreMentor }} (visible para todos)
+        </mat-checkbox>
+      </div>
+
       <div class="botones-form">
         <button mat-raised-button color="primary" type="submit" [disabled]="rutinaForm.invalid">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
         <button mat-button type="button" (click)="cancelar()">Cancelar</button>
@@ -57,12 +64,19 @@
 
   <ui-section-title *ngIf="rutinas.length > 0">Mis Rutinas</ui-section-title>
 
-<ui-card 
-  *ngFor="let rutina of rutinas" 
-  [accent]="rutina.objetivo === 'fuerza' ? 'red' : rutina.objetivo === 'cardio' ? 'blue' : 'green'" 
-  [clickable]="true"> 
+  <ui-card 
+    *ngFor="let rutina of rutinas" 
+    [accent]="rutina.objetivo === 'fuerza' ? 'red' : rutina.objetivo === 'cardio' ? 'blue' : 'green'" 
+    [clickable]="true"> 
+    
     <div class="rutina-info">
       <p class="rutina-nombre">{{ rutina.nombre }}</p>
+      
+      <!-- Muestra quién publicó si es una rutina de mentor -->
+      <p class="rutina-detalle" *ngIf="rutina.esPublica && rutina.nombreMentor">
+        🌟 Por {{ rutina.nombreMentor }}
+      </p>
+      
       <ui-badge [variant]="rutina.objetivo === 'fuerza' ? 'red' : rutina.objetivo === 'cardio' ? 'blue' : 'green'">{{ rutina.objetivo }}</ui-badge>
       <p class="rutina-detalle" *ngIf="rutina.diasSemana">📅 {{ rutina.diasSemana }}</p>
       <p class="rutina-detalle">⏱️ {{ rutina.duracionEstimada }} min</p>

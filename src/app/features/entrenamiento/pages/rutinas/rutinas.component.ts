@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox'; // Checkbox para publicar como mentor
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,7 +19,7 @@ import { CardComponent } from '../../../../shared/ui/card/card.component'; // UI
 @Component({
   selector: 'app-rutinas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, BadgeComponent, EmptyStateComponent, SectionTitleComponent, CardComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatSelectModule, BadgeComponent, EmptyStateComponent, SectionTitleComponent, CardComponent],
   templateUrl: './rutinas.component.html',
   styleUrl: './rutinas.component.css'
 })
@@ -29,6 +30,8 @@ export class RutinasComponent implements OnInit {
   editando = false;
   rutinaEditId: string | null = null;
   usuarioId = '';
+  esMentor = false;          // Si el usuario logueado es mentor
+  nombreMentor = '';         // Nombre del mentor
 
   constructor(
     private fs: FirestoreService,
@@ -41,15 +44,20 @@ export class RutinasComponent implements OnInit {
       objetivo: ['fuerza'],
       diasSemana: [''],
       duracionEstimada: [45],
-      calentamiento: [''],     // 🔥 Calentamiento
-      ejercicios: [''],        // 💪 Ejercicios principales
-      estiramiento: ['']       // 🧘 Estiramiento
+      calentamiento: [''],
+      ejercicios: [''],
+      estiramiento: [''],
+      esPublica: [false]       // Checkbox: publicar como mentor (visible para todos)
     });
   }
 
   ngOnInit() {
     const usuario = this.auth.getUsuarioActual();
-    if (usuario) this.usuarioId = usuario.id;
+    if (usuario) {
+      this.usuarioId = usuario.id;
+      this.esMentor = usuario.esMentor || false;
+      this.nombreMentor = usuario.nombre || '';
+    }
     this.cargarRutinas();
   }
 
@@ -61,7 +69,11 @@ export class RutinasComponent implements OnInit {
 
   guardarRutina() {
     if (this.rutinaForm.invalid) return;
-    const datos = { ...this.rutinaForm.value, usuarioId: this.usuarioId };
+    const datos = { 
+      ...this.rutinaForm.value, 
+      usuarioId: this.usuarioId,
+      nombreMentor: this.esMentor ? this.nombreMentor : ''
+    };
     if (this.editando && this.rutinaEditId) {
       this.fs.update('rutinas', this.rutinaEditId, datos).then(() => { this.cancelar(); this.cargarRutinas(); });
     } else {

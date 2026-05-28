@@ -14,11 +14,16 @@ import { BadgeComponent } from '../../../../shared/ui/badge/badge.component';   
 import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
 import { SectionTitleComponent } from "../../../../shared/ui/section-title/section-title.component"; // UI Kit: empty state
 import { CardComponent } from '../../../../shared/ui/card/card.component'; // UI Card
+import { DestacarHoverDirective } from '../../../../shared/directives/destacar-hover.directive'; // Efecto hover
+
 
 @Component({
   selector: 'app-materias',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, BadgeComponent, EmptyStateComponent, SectionTitleComponent, CardComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, 
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, 
+    BadgeComponent, EmptyStateComponent, SectionTitleComponent, 
+    CardComponent, DestacarHoverDirective],
   templateUrl: './materias.component.html',
   styleUrl: './materias.component.css'
 })

@@ -59,10 +59,11 @@
   <ui-section-title *ngIf="materias.length > 0">Mis Materias</ui-section-title>
   
   <!-- Tarjeta con UI Kit -->
-  <ui-card 
-    *ngFor="let materia of materias" 
-    [accent]="materia.estado === 'cursando' ? 'blue' : materia.estado === 'regular' ? 'orange' : 'red'"
-    [clickable]="true">
+ <ui-card 
+  *ngFor="let materia of materias" 
+  [accent]="materia.estado === 'cursando' ? 'blue' : materia.estado === 'regular' ? 'orange' : 'red'"
+  [clickable]="true"
+  appDestacarHover>
     
     <div class="materia-info">
       <p class="materia-nombre">{{ materia.nombre }}</p>

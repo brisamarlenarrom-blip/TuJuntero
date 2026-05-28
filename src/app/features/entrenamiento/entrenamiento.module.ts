@@ -5,11 +5,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { RutinasComponent } from './pages/rutinas/rutinas.component';
 import { BitacoraComponent } from './pages/bitacora/bitacora.component';
+import { DestacadosComponent } from './pages/destacados/destacados.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'rutinas', component: RutinasComponent },
-  { path: 'bitacora', component: BitacoraComponent }
+  { path: 'bitacora', component: BitacoraComponent },
+  { path: 'destacados', component: DestacadosComponent }
 ];
 
 @NgModule({
@@ -18,7 +20,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     DashboardComponent,
     RutinasComponent,
-    BitacoraComponent
+    BitacoraComponent,
+    DestacadosComponent
   ]
 })
 export class EntrenamientoModule { }

@@ -27,7 +27,8 @@
       <span class="post-avatar">👤</span>
       <div>
         <p class="post-autor">{{ post.usuarioNombre || 'Anónimo' }}</p>
-        <p class="post-tiempo">{{ tiempoRelativo(post.fecha) }}</p>
+        <!-- Fecha relativa usando el pipe personalizado -->
+        <p class="post-tiempo">{{ post.fecha | tiempoRelativo }}</p> 
       </div>
     </div>
     <p class="post-contenido">{{ post.contenido }}</p>

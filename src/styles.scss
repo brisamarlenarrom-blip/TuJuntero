@@ -20,3 +20,51 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ============ INPUTS: TEXTO BLANCO ============ */
+
+/* Lo que el usuario escribe */
+.mat-mdc-input-element,
+.mdc-text-field__input,
+input,
+textarea {
+  color: var(--text-primary) !important;
+  caret-color: var(--blue-soft) !important;
+}
+
+/* Placeholder (texto de ayuda) */
+.mat-mdc-input-element::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-secondary) !important;
+  opacity: 0.7;
+}
+
+/* Label flotante */
+.mat-mdc-form-field-label,
+.mdc-floating-label {
+  color: var(--text-secondary) !important;
+}
+
+/* Select */
+.mat-mdc-select-value-text {
+  color: var(--text-primary) !important;
+}
+
+/* Borde del input */
+.mat-mdc-form-field-outline {
+  border-color: var(--border-color);
+}
+/* ============ BOTONES DE FORMULARIO ============ */
+
+/* Botón principal (submit) */
+button[type="submit"] {
+  color: var(--text-primary) !important;
+}
+
+/* Botón cancelar / secundario */
+.botones-form button[type="button"],
+button.cancelar-btn {
+  color: var(--blue-soft) !important;
+  font-weight: 400;
+}
