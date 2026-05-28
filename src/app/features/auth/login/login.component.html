@@ -1,38 +1,31 @@
-<!-- Pantalla de inicio de sesión -->
 <div class="auth-container">
   <mat-card class="auth-card">
     <mat-card-header>
       <mat-card-title class="auth-title">Iniciar Sesión</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <!-- Formulario reactivo -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        
-        <!-- Email -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" type="email" placeholder="tu@email.com">
           <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email requerido</mat-error>
           <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Email inválido</mat-error>
         </mat-form-field>
-
-        <!-- Contraseña -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Contraseña</mat-label>
           <input matInput formControlName="password" type="password" placeholder="Mínimo 6 caracteres">
           <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Contraseña requerida</mat-error>
           <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Mínimo 6 caracteres</mat-error>
         </mat-form-field>
-
-        <!-- Error -->
         <p class="error-msg" *ngIf="error">{{ error }}</p>
-
-        <!-- Botón enviar -->
+        
+         <p class="register-link"><a routerLink="/auth/forgot-password">¿Olvidaste tu contraseña?</a></p>
         <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid" class="full-width">Ingresar</button>
       </form>
 
-      <!-- Link a registro -->
+     
       <p class="register-link">¿No tenés cuenta? <a routerLink="/auth/register">Registrate</a></p>
+    
     </mat-card-content>
   </mat-card>
 </div>

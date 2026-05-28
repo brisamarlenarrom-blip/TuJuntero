@@ -71,17 +71,17 @@ export class AuthService {
 
   // Registro: crea un usuario nuevo en Firestore
   register(usuario: Partial<Usuario>): Observable<any> {
-    const nuevoUsuario = {
-      ...usuario,
-      rol: 'usuario',
-      esMentor: false,
-      avatarUrl: usuario.avatarUrl || 'assets/default-avatar.png',
-      trabaja: usuario.trabaja || false,
-      haceDeporte: usuario.haceDeporte || false
-    };
-    // Firestore devuelve una Promise, la convertimos a Observable
-    return from(this.fs.create('usuarios', nuevoUsuario));
-  }
+  const nuevoUsuario = {
+    ...usuario,
+    rol: 'usuario',
+    esMentor: false,
+    avatarUrl: usuario.avatarUrl || 'assets/default-avatar.png',
+    trabaja: usuario.trabaja || false,
+    haceDeporte: usuario.haceDeporte || false
+  };
+  // Usa el email como ID del documento
+    return from(this.fs.createWithId('usuarios', usuario.email || 'sin-email', nuevoUsuario));
+}
 
   logout(): void {
     this.usuarioActual.set(null);
