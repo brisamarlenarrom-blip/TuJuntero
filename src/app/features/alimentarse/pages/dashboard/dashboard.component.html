@@ -1,35 +1,116 @@
 <div class="alimentarse-container">
 
-  <!-- Hero -->
-  <div class="hero">
-    <h1 class="hero-titulo">🍳 Alimentarse</h1>
-    <p class="hero-subtitulo">Nutrí tu cuerpo, nutrí tu vida</p>
+  <!-- ── HERO BANNER + TABS ────────────────────────────────── -->
+  <div class="alimentarse-hero">
+    <div class="hero-content">
+      <div class="hero-icon">🥗</div>
+      <div class="hero-text">
+        <h1 class="hero-titulo">Alimentarse</h1>
+        <p class="hero-subtitulo">Descubrí recetas saludables<br>y mejorá tus hábitos.</p>
+      </div>
+    </div>
+    <nav class="alimentarse-tabs">
+      <a routerLink="recetas" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📖</span> Mis Recetas
+      </a>
+      <a routerLink="diario" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📝</span> Diario
+      </a>
+    </nav>
   </div>
 
-  <!-- Navegación -->
-  <div class="nav">
-    <a routerLink="recetas" routerLinkActive="nav-activo" class="nav-item">📖 Mis Recetas</a>
-    <a routerLink="diario" routerLinkActive="nav-activo" class="nav-item">📝 Diario</a>
+  <!-- ── BARRA DE BÚSQUEDA ─────────────────────────────────── -->
+  <div class="busqueda-card">
+    <div class="busqueda-input">
+      <span class="busqueda-icono">🔍</span>
+      <input type="text" placeholder="Buscar recetas, ingredientes...">
+    </div>
   </div>
 
-  <!-- Cards con números -->
-  <div class="resumen-grid">
-    <a class="resumen-card" routerLink="recetas">
-      <span class="resumen-icono">🍽️</span>
-      <p class="resumen-numero">{{ totalRecetas }}</p>
-      <p class="resumen-texto">Recetas</p>
-    </a>
-    <a class="resumen-card" routerLink="diario">
-      <span class="resumen-icono">📝</span>
-      <p class="resumen-numero">{{ comidasHoy }}</p>
-      <p class="resumen-texto">Registros hoy</p>
-    </a>
+  <!-- ── CATEGORÍAS ────────────────────────────────────────── -->
+  <div class="categorias-grid">
+    <button
+      *ngFor="let cat of categorias"
+      class="categoria-btn"
+      [class.categoria-activa]="categoriaActiva === cat.label"
+      (click)="setCategoria(cat.label)">
+      <span class="cat-icono">{{ cat.icono }}</span>
+      <span class="cat-label">{{ cat.label }}</span>
+    </button>
   </div>
 
-  <!-- Frase -->
-  <div class="frase">
-    <p>🥗 "Que tu alimento sea tu medicina, y tu medicina sea tu alimento."</p>
-    <span>— Hipócrates</span>
+  <!-- ── RESUMEN ───────────────────────────────────────────── -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">Resumen de hoy</h2>
+    <div class="stats-grid">
+
+      <div class="stat-card stat-verde">
+        <span class="stat-icono">🍽️</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ totalRecetas }}</span>
+          <span class="stat-label">Recetas guardadas</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-azul">
+        <span class="stat-icono">📝</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ comidasHoy }}</span>
+          <span class="stat-label">Registros hoy</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-violeta">
+        <span class="stat-icono">❤️</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ recetasFavoritas }}</span>
+          <span class="stat-label">Favoritas</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-naranja">
+        <span class="stat-icono">🔥</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ caloriasHoy }}</span>
+          <span class="stat-label">Calorías hoy</span>
+        </div>
+      </div>
+      
+
+    </div>
+  </div>
+
+  <!-- ── RECETAS RECIENTES ─────────────────────────────────── -->
+  <div class="seccion-card" *ngIf="recetasRecientes.length > 0">
+    <div class="seccion-header">
+      <h2 class="seccion-titulo">Recetas recientes</h2>
+      <a routerLink="recetas" class="ver-todas">Ver todas</a>
+    </div>
+
+    <div class="receta-row" *ngFor="let r of recetasRecientes">
+      <div class="receta-icono-box">🍳</div>
+      <div class="receta-info">
+        <span class="receta-nombre">{{ r.nombre }}</span>
+        <span class="receta-sub" *ngIf="r.calorias">🔥 {{ r.calorias }} kcal</span>
+      </div>
+      <span class="receta-tiempo" *ngIf="r.tiempo">⏱ {{ r.tiempo }} min</span>
+    </div>
+  </div>
+
+  <!-- ── NO SÉ QUÉ COCINAR (IA visual) ────────────────────── -->
+  <div class="ia-card">
+    <div class="ia-izq">
+      <p class="ia-titulo">🤔 ¿No sabés qué cocinar?</p>
+      <p class="ia-sub">Contanos qué ingredientes tenés y te recomendamos recetas ideales para vos.</p>
+      <button class="ia-btn">Probar ahora →</button>
+    </div>
+    <div class="ia-emojis">🍌🥚🥣</div>
+  </div>
+
+  <!-- ── FRASE ─────────────────────────────────────────────── -->
+  <div class="frase-card">
+    <p class="frase-texto">"Que tu alimento sea tu medicina, y tu medicina sea tu alimento."</p>
+    <span class="frase-autor">— Hipócrates</span>
   </div>
 
   <router-outlet></router-outlet>

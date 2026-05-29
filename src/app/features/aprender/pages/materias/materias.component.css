@@ -116,20 +116,19 @@
 
 .form-modal {
   position: fixed;
-  bottom: 0;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 32px);
   max-width: 480px;
   background: #0f1117;
   border: 1px solid #1E1E2E;
-  border-radius: 24px 24px 0 0;
-  padding: 24px 20px 40px;
+  border-radius: 20px;
+  padding: 24px 20px;
   z-index: 201;
   max-height: 85vh;
   overflow-y: auto;
 }
-
 .form-titulo {
   color: #ffffff;
   font-size: 18px;
