@@ -1,94 +1,107 @@
-<!-- Botón para volver al resumen de Aprender -->
-<button class="btn-volver" (click)="volver()">← Volver</button>
+<div class="page-wrapper">
 
-<div class="materias-container">
-
-  <!-- Botón para mostrar el formulario -->
-  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">
-    + Agregar materia
-  </button>
-
-  <!-- Formulario (solo visible al agregar/editar) -->
-  <mat-card *ngIf="mostrarForm" class="form-card">
-    <h3>{{ editando ? 'Editar Materia' : 'Nueva Materia' }}</h3>
-    
-    <form [formGroup]="materiaForm" (ngSubmit)="guardarMateria()">
-      
-      <!-- Nombre de la materia -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nombre" placeholder="Ej: Álgebra Lineal">
-      </mat-form-field>
-      
-      <!-- Estado -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Estado</mat-label>
-        <mat-select formControlName="estado">
-          <mat-option value="cursando">Cursando</mat-option>
-          <mat-option value="regular">Regular (debo final)</mat-option>
-          <mat-option value="a_rendir">A rendir</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <!-- Campos según estado -->
-      <mat-form-field *ngIf="materiaForm.value.estado === 'cursando'" appearance="outline" class="full-width">
-        <mat-label>Día y horario</mat-label>
-        <input matInput formControlName="diaHorario" placeholder="Ej: Lunes y Miércoles 14:00">
-      </mat-form-field>
-
-      <mat-form-field *ngIf="materiaForm.value.estado === 'regular'" appearance="outline" class="full-width">
-        <mat-label>Próximo llamado</mat-label>
-        <input matInput formControlName="fechaLlamado" type="date">
-      </mat-form-field>
-
-      <mat-form-field *ngIf="materiaForm.value.estado === 'a_rendir'" appearance="outline" class="full-width">
-        <mat-label>Fecha de examen</mat-label>
-        <input matInput formControlName="fechaExamen" type="date">
-      </mat-form-field>
-
-      <div class="botones-form">
-        <button mat-raised-button color="primary" type="submit" [disabled]="materiaForm.invalid">
-          {{ editando ? 'Actualizar' : 'Agregar' }}
-        </button>
-        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+  <!-- ── HERO BANNER + TABS ────────────────────────────────── -->
+  <div class="aprender-hero">
+    <div class="hero-content">
+      <div class="hero-icon">📖</div>
+      <div class="hero-text">
+        <h1 class="aprender-titulo">Aprender</h1>
+        <p class="hero-subtitulo">Organiza tus materias, tareas y lecturas<br>y sigue creciendo cada día.</p>
       </div>
-    </form>
-  </mat-card>
-
-  <!-- Lista de materias -->
-  <ui-section-title *ngIf="materias.length > 0">Mis Materias</ui-section-title>
-  
-  <!-- Tarjeta con UI Kit -->
- <ui-card 
-  *ngFor="let materia of materias" 
-  [accent]="materia.estado === 'cursando' ? 'blue' : materia.estado === 'regular' ? 'orange' : 'red'"
-  [clickable]="true"
-  appDestacarHover>
-    
-    <div class="materia-info">
-      <p class="materia-nombre">{{ materia.nombre }}</p>
-      
-      <ui-badge [variant]="materia.estado === 'cursando' ? 'blue' : materia.estado === 'regular' ? 'orange' : 'red'">
-        {{ materia.estado === 'cursando' ? 'Cursando' : materia.estado === 'regular' ? 'Regular' : 'A rendir' }}
-      </ui-badge>
-      
-      <p class="materia-detalle" *ngIf="materia.diaHorario">🕐 {{ materia.diaHorario }}</p>
-      <p class="materia-detalle" *ngIf="materia.fechaLlamado">📅 Próximo llamado: {{ materia.fechaLlamado }}</p>
-      <p class="materia-detalle" *ngIf="materia.fechaExamen">📅 Examen: {{ materia.fechaExamen }}</p>
     </div>
-    
-    <div class="materia-acciones">
-      <button (click)="editarMateria(materia)" class="btn-editar">✏️</button>
-      <button (click)="eliminarMateria(materia.id)" class="btn-eliminar">🗑️</button>
-    </div>
-    
-  </ui-card>
+    <nav class="aprender-tabs">
+      <a routerLink="/aprender/materias" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">🎓</span> Materias
+      </a>
+      <a routerLink="/aprender/tareas" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">☑️</span> Tareas
+      </a>
+      <a routerLink="/aprender/biblioteca" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📖</span> Biblioteca
+      </a>
+    </nav>
+  </div>
 
-  <ui-empty-state 
-    *ngIf="materias.length === 0 && !mostrarForm"
-    icon="📖"
-    title="Sin materias"
-    text="Todavía no tenés materias. ¡Agregá la primera!">
-  </ui-empty-state>
+  <div class="materias-wrapper">
+
+    <!-- ── FORMULARIO MODAL ──────────────────────────────── -->
+    <div class="form-overlay" *ngIf="mostrarForm" (click)="cancelar()"></div>
+    <div class="form-modal" *ngIf="mostrarForm">
+      <h3 class="form-titulo">{{ editando ? 'Editar materia' : 'Nueva materia' }}</h3>
+      <form [formGroup]="materiaForm" (ngSubmit)="guardarMateria()">
+        <div class="form-field">
+          <label>Nombre</label>
+          <input formControlName="nombre" placeholder="Ej: Álgebra Lineal">
+        </div>
+        <div class="form-field">
+          <label>Estado</label>
+          <select formControlName="estado">
+            <option value="cursando">Cursando</option>
+            <option value="regular">Regular (debo final)</option>
+            <option value="a_rendir">A rendir</option>
+          </select>
+        </div>
+        <div class="form-field" *ngIf="materiaForm.value.estado === 'cursando'">
+          <label>Día y horario</label>
+          <input formControlName="diaHorario" placeholder="Ej: Lunes y Miércoles 14:00">
+        </div>
+        <div class="form-field" *ngIf="materiaForm.value.estado === 'regular'">
+          <label>Próximo llamado</label>
+          <input formControlName="fechaLlamado" type="date">
+        </div>
+        <div class="form-field" *ngIf="materiaForm.value.estado === 'a_rendir'">
+          <label>Fecha de examen</label>
+          <input formControlName="fechaExamen" type="date">
+        </div>
+        <div class="form-botones">
+          <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn-guardar" [disabled]="materiaForm.invalid">
+            {{ editando ? 'Actualizar' : 'Agregar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── LISTA DE MATERIAS ─────────────────────────────── -->
+    <div class="seccion-card">
+      <div class="seccion-header">
+        <h2 class="seccion-titulo">Mis materias</h2>
+      </div>
+
+      <div class="materia-row" *ngFor="let m of materias">
+        <div class="materia-icono-box" [style.background-color]="getColorEstado(m.estado) + '22'">
+          <span [style.color]="getColorEstado(m.estado)">{{ getIconoEstado(m.estado) }}</span>
+        </div>
+        <div class="materia-info">
+          <span class="materia-nombre">{{ m.nombre }}</span>
+          <span class="materia-estado-badge"
+            [style.background-color]="getColorEstado(m.estado) + '22'"
+            [style.color]="getColorEstado(m.estado)">
+            {{ getLabelEstado(m.estado) }}
+          </span>
+        </div>
+        <div class="materia-meta" *ngIf="getProximaFecha(m) as prox">
+          <span class="prox-label">{{ prox.label }}</span>
+          <span class="prox-fecha">📅 {{ prox.fecha }}</span>
+        </div>
+        <div class="materia-acciones">
+          <button class="btn-accion" (click)="editarMateria(m)">✏️</button>
+          <button class="btn-accion" (click)="eliminarMateria(m.id)">🗑️</button>
+        </div>
+      </div>
+
+      <ui-empty-state
+        *ngIf="materias.length === 0 && !mostrarForm"
+        icon="📖"
+        title="Sin materias"
+        text="¡Agregá tu primera materia!">
+      </ui-empty-state>
+
+      <button class="btn-nueva-materia" (click)="abrirForm()">
+        + Nueva materia
+      </button>
+    </div>
+
+  </div>
 
 </div>

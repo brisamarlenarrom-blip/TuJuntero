@@ -1,147 +1,433 @@
-.tareas-container {
-  padding: 16px 12px 40px 12px;
+/* ── WRAPPER ── */
+.tareas-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 12px 16px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.form-card {
-  background-color: #121215;
-  border: 1px solid #1A237E;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 24px;
+/* ── FORM OVERLAY ── */
+.form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  backdrop-filter: blur(4px);
 }
 
-.form-card h3 {
-  color: #64B5F6;
+.form-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 32px);
+  max-width: 480px;
+  background: #0f1117;
+  border: 1px solid #1E1E2E;
+  border-radius: 20px;
+  padding: 24px 20px;
+  z-index: 201;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.form-titulo {
+  color: #ffffff;
   font-size: 18px;
-  margin: 0 0 14px 0;
+  font-weight: 600;
+  margin: 0 0 20px 0;
 }
 
-.full-width {
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.form-field label {
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s;
   width: 100%;
-  margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
-.botones-form {
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: #4A9EFF;
+}
+
+.form-field select option {
+  background: #0f1117;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-botones {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
-.subtitulo {
+.btn-cancelar {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-guardar {
+  flex: 2;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #4A9EFF;
   color: white;
-  font-size: 20px;
-  font-weight: 400;
-  margin: 24px 0 14px 0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.tarea-card {
-  background-color: #121215;
-  border: 1px solid #1A237E;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
+.btn-guardar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── SECCIÓN CARD ── */
+.seccion-card {
+  background-color: #0f1117;
+  border: 1px solid #1E1E2E;
+  border-radius: 20px;
+  padding: 18px 16px;
+}
+
+.tareas-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-/* Borde izquierdo según prioridad */
-.tarea-card.alta { border-left: 4px solid #ef5350; }
-.tarea-card.media { border-left: 4px solid #FFA726; }
-.tarea-card.baja { border-left: 4px solid #66BB6A; }
-
-/* Opacidad si está completada */
-.tarea-card.completada { opacity: 0.6; }
-
-.tarea-titulo {
-  color: white;
-  font-size: 18px;
+.seccion-titulo {
+  color: #ffffff;
+  font-size: 15px;
   font-weight: 500;
   margin: 0;
 }
 
-.tarea-descripcion {
-  color: #B0BEC5;
-  font-size: 14px;
-  margin: 4px 0;
-}
-
-.tarea-badges {
+/* ── FILTROS ── */
+.filtros {
   display: flex;
   gap: 6px;
-  margin-top: 6px;
-  flex-wrap: wrap;
 }
 
-.tipo-badge, .prioridad-badge, .estado-badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 20px;
+.filtro-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 99px;
+  padding: 5px 12px;
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filtro-activo {
+  background: rgba(74,158,255,0.15);
+  border-color: #4A9EFF;
+  color: #4A9EFF;
+  font-weight: 500;
+}
+
+/* ── TAREA ROW ── */
+.tarea-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: opacity 0.2s;
+}
+
+.tarea-row:last-of-type {
+  border-bottom: none;
+}
+
+.tarea-row.completada {
+  opacity: 0.5;
+}
+
+.tarea-icono-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.tarea-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tarea-titulo {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tarea-sub {
+  color: rgba(255,255,255,0.4);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tarea-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.tarea-fecha {
+  color: rgba(255,255,255,0.4);
   font-size: 11px;
 }
 
-.tipo-badge.tarea { background-color: #1E88E5; color: white; }
-.tipo-badge.examen, .tipo-badge.parcial, .tipo-badge.final { background-color: #7B1FA2; color: white; }
-.tipo-badge.entrega { background-color: #00838F; color: white; }
-
-.prioridad-badge.alta { background-color: #ef5350; color: white; }
-.prioridad-badge.media { background-color: #FFA726; color: black; }
-.prioridad-badge.baja { background-color: #66BB6A; color: black; }
-
-.estado-badge.pendiente { background-color: #546E7A; color: white; }
-.estado-badge.en_progreso { background-color: #1E88E5; color: white; }
-.estado-badge.completada { background-color: #66BB6A; color: black; }
-
-.tarea-fecha {
-  color: #B0BEC5;
-  font-size: 13px;
-  margin-top: 4px;
+/* Badges de estado */
+.tarea-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 99px;
 }
+
+.badge-azul   { background: rgba(74,158,255,0.15); color: #4A9EFF; }
+.badge-violeta{ background: rgba(167,139,250,0.15); color: #A78BFA; }
+.badge-verde  { background: rgba(52,211,153,0.15);  color: #34D399; }
+.badge-gris   { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
 
 .tarea-acciones {
   display: flex;
-  gap: 6px;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
-.btn-editar, .btn-eliminar {
-  font-size: 22px;
-  cursor: pointer;
+.btn-accion {
   background: none;
   border: none;
-  padding: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.2s;
 }
 
-.btn-editar:hover { transform: scale(1.2); }
-.btn-eliminar:hover { transform: scale(1.2); }
+.btn-accion:hover {
+  background: rgba(255,255,255,0.08);
+}
 
-.vacio {
-  color: #B0BEC5;
+/* ── BOTÓN NUEVA TAREA ── */
+.btn-nueva-tarea {
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px;
+  background: rgba(74,158,255,0.06);
+  border: 1px dashed rgba(74,158,255,0.3);
+  border-radius: 12px;
+  color: #4A9EFF;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-nueva-tarea:hover {
+  background: rgba(74,158,255,0.1);
+}
+
+/* ── ASISTENTE IA ── */
+.ia-card {
+  background: linear-gradient(135deg, #1a1a3e, #0f1117);
+  border: 1px solid rgba(167,139,250,0.2);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ia-izq {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ia-titulo {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.ia-sub {
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ia-btn {
+  background: rgba(167,139,250,0.15);
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: 10px;
+  padding: 10px 16px;
+  color: #A78BFA;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  width: fit-content;
+}
+
+.ia-btn:hover {
+  background: rgba(167,139,250,0.25);
+}
+
+.ia-der {
+  font-size: 52px;
+  flex-shrink: 0;
+}
+
+/* ── HERO (copiado del dashboard) ── */
+.aprender-hero {
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f1b2d 0%, #1a2a4a 40%, #2d1f0e 70%, #3d2a0a 100%);
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.aprender-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 60%, rgba(255,140,30,0.25) 0%, rgba(180,60,10,0.15) 40%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 20px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-icon {
+  font-size: 36px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-text { display: flex; flex-direction: column; gap: 4px; }
+
+.aprender-titulo {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff;
+}
+
+.hero-subtitulo {
+  color: rgba(255,255,255,0.6);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.aprender-tabs {
+  display: flex;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  z-index: 1;
+  background: rgba(0,0,0,0.2);
+}
+
+.tab-item {
+  flex: 1;
   text-align: center;
-  font-style: italic;
-  font-size: 15px;
-  margin-top: 20px;
-}
-.btn-volver {
-  background: none;
-  border: none;
-  color: #64B5F6;
-  font-size: 15px;
-  cursor: pointer;
-  padding: 0 0 0 12px;
-  margin-bottom: 8px;
+  padding: 12px 8px;
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
 }
 
-.btn-volver:hover {
-  color: #4DD0E1;
+.tab-item:hover {
+  color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.04);
 }
-@media (max-width: 600px) {
-  .materia-card, .tarea-card, .libro-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
 
-  .materia-acciones, .tarea-acciones, .libro-acciones {
-    align-self: flex-end;
-  }
+.tab-activo {
+  color: #4A9EFF;
+  border-bottom: 2px solid #4A9EFF;
+  font-weight: 500;
 }
+
+.tab-icono { font-size: 15px; }

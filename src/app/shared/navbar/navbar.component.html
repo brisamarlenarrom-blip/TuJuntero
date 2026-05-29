@@ -1,21 +1,11 @@
-<!-- Barra de navegación superior de TuJuntero -->
-<mat-toolbar class="navbar">
-  
-  <!-- Logo -->
+<div class="navbar">
   <span class="logo">TuJuntero</span>
-  <span class="spacer"></span>
-  
-  <!-- Navegación principal -->
-  <button mat-button class="nav-link" routerLink="/inicio">Inicio</button>
-  <button mat-button class="nav-link" routerLink="/aprender">Aprender</button>
-  <button mat-button class="nav-link" routerLink="/alimentarse">Alimentarse</button>
-  <button mat-button class="nav-link" routerLink="/entrenamiento">Entrenamiento</button>
-  <button mat-button class="nav-link" routerLink="/comunidad">Comunidad</button>
-
-  <!-- Sin sesión: botón Ingresar -->
-  <button *ngIf="!auth.getIsLogged()" mat-raised-button class="login-btn" routerLink="/auth/login">Ingresar</button>
-
-  <!-- Con sesión: botón Salir -->
-  <button *ngIf="auth.getIsLogged()" mat-button class="logout-btn" (click)="logout()">Salir</button>
-  
-</mat-toolbar>
+  <div class="navbar-actions">
+    <button class="icon-btn" *ngIf="auth.getIsLogged()">🔔</button>
+    <div class="avatar" *ngIf="auth.getIsLogged()">
+      {{ nombre?.charAt(0)?.toUpperCase() }}
+    </div>
+    <button *ngIf="!auth.getIsLogged()" class="login-btn" routerLink="/auth/login">Ingresar</button>
+    <button *ngIf="auth.getIsLogged()" class="logout-btn" (click)="logout()">Salir</button>
+  </div>
+</div>

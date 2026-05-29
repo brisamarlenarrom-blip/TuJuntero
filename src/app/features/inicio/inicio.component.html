@@ -1,69 +1,84 @@
-<!-- Contenedor principal del Inicio -->
-<div class="inicio-container">
+<div class="inicio-wrapper">
 
-  <!-- Tarjeta de saludo: "¡Buenos días, Brisa!" -->
-  <div class="saludo-card">
-    <!-- Saludo dinámico: muestra coma y nombre solo si hay sesión -->
-      <h1 class="saludo-texto">{{ saludo }}<span *ngIf="nombre">, {{ nombre }}</span>!</h1>
+  <!-- ── HERO con imagen de fondo ─────────────────────── -->
+  <div class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-saludo">
+        {{ saludo }}, <span class="hero-nombre">{{ nombre }}</span>! 👋
+      </h1>
+      <p class="hero-subtitulo">Hoy es un buen día para crecer 🌱</p>
 
-    <p class="fecha-texto">{{ fechaActual }}</p>
-  </div>
-
-  <!-- Tarjeta del versículo diario -->
-  <div class="versiculo-card">
-    <p class="versiculo-texto">{{ frase }}</p>
-    <p class="versiculo-ref">{{ referencia }}</p>
-  </div>
-
-  <!-- Check-in emocional: ¿Cómo te sentís hoy? -->
-  <div class="checkin-card">
-    <p class="checkin-titulo">¿Cómo te sentís hoy?</p>
-    <div class="emojis-row">
-      <!-- Cada botón selecciona un estado de ánimo (1 al 5) -->
-      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 1" (click)="seleccionarAnimo(1)">😔</button>
-      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 2" (click)="seleccionarAnimo(2)">😐</button>
-      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 3" (click)="seleccionarAnimo(3)">🙂</button>
-      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 4" (click)="seleccionarAnimo(4)">😊</button>
-      <button class="emoji-btn" [class.seleccionado]="estadoAnimo === 5" (click)="seleccionarAnimo(5)">🤩</button>
+      <!-- Badges de racha y meta -->
+      <div class="hero-badges">
+        <div class="hero-badge">
+          🔥 {{ diasSeguidos }} días seguidos
+        </div>
+        <div class="hero-badge">
+          🎯 Meta diaria <span class="badge-highlight">{{ metaDiaria }}/{{ metaDiariaTotal }}</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Acceso rápido a las 3 áreas principales -->
-  <div class="accesos-grid">
-  
-  <!-- Aprender: clickea para ir a /aprender -->
- <ui-card accent="blue" [clickable]="true" routerLink="/aprender">
-  <span class="acceso-icono">📚</span>
-  <div>
-    <p class="acceso-titulo">Aprender</p>
-    <p class="acceso-sub" *ngIf="tareasPendientes > 0">{{ tareasPendientes }} tareas pendientes</p>
-    <p class="acceso-sub" *ngIf="tareasPendientes === 0">¡Al día!</p>
-  </div>
-</ui-card>
-  
-  <!-- Alimentarse: clickea para ir a /alimentarse -->
-  <ui-card accent="cyan" [clickable]="true" routerLink="/alimentarse">
-    <span class="acceso-icono">🍳</span>
-    <div>
-      <p class="acceso-titulo">Alimentarse</p>
-      <p class="acceso-sub" *ngIf="!almuerzoRegistrado">No registraste tu almuerzo</p>
-      <p class="acceso-sub" *ngIf="almuerzoRegistrado">¡Todo registrado!</p>
-    </div>
-  </ui-card>
-  
-  <!-- Entrenamiento: clickea para ir a /entrenamiento -->
-  <ui-card accent="blue" [clickable]="true" routerLink="/entrenamiento">
-    <span class="acceso-icono">💪</span>
-    <div>
-      <p class="acceso-titulo">Entrenamiento</p>
-      <p class="acceso-sub">Hoy: {{ entrenamientoHoy }}</p>
-    </div>
-  </ui-card>
-</div>
+  <div class="inicio-container">
 
-  <!-- Frase inspiradora al final -->
-  <div class="frase-final-card">
-    <p class="frase-texto">🌱 "Cada paso, por pequeño que sea, te acerca a quien querés ser."</p>
-  </div>
+    <!-- ── CHECK-IN EMOCIONAL ────────────────────────── -->
+    <div class="seccion-card">
+      <p class="checkin-titulo">¿Cómo te sentís hoy?</p>
+      <div class="emojis-row">
+        <button
+          *ngFor="let e of emojis"
+          class="emoji-btn"
+          [class.seleccionado]="estadoAnimo === e.valor"
+          (click)="seleccionarAnimo(e.valor)">
+          <span class="emoji-icon">{{ e.emoji }}</span>
+          <span class="emoji-label">{{ e.label }}</span>
+        </button>
+      </div>
+    </div>
 
+    <!-- ── ACCESOS RÁPIDOS ───────────────────────────── -->
+    <div class="seccion-card">
+      <h2 class="seccion-titulo">Accesos rápidos</h2>
+      <div class="accesos-grid">
+
+        <a class="acceso-item" routerLink="/aprender">
+          <div class="acceso-icono-box acceso-azul">📖</div>
+          <p class="acceso-titulo">Aprender</p>
+          <p class="acceso-sub">Materias, tareas<br>y libros</p>
+        </a>
+
+        <a class="acceso-item" routerLink="/alimentarse">
+          <div class="acceso-icono-box acceso-verde">🥗</div>
+          <p class="acceso-titulo">Alimentarse</p>
+          <p class="acceso-sub">Recetas y<br>hábitos</p>
+        </a>
+
+        <a class="acceso-item" routerLink="/entrenamiento">
+          <div class="acceso-icono-box acceso-violeta">🏋️</div>
+          <p class="acceso-titulo">Entrenamiento</p>
+          <p class="acceso-sub">Rutinas y<br>bitácora</p>
+        </a>
+
+        <a class="acceso-item" routerLink="/comunidad">
+        <div class="acceso-icono-box acceso-rosa">👥</div>
+        <p class="acceso-titulo">Comunidad</p>
+        <p class="acceso-sub">Conectá con<br>tu juntero</p>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── VERSÍCULO DEL DÍA ─────────────────────────── -->
+    <div class="seccion-card versiculo-card">
+      <div class="versiculo-header">
+        <p class="versiculo-label">Versículo del día</p>
+        <span class="versiculo-bookmark">🔖</span>
+      </div>
+      <p class="versiculo-texto">"{{ frase }}"</p>
+      <p class="versiculo-ref">{{ referencia }}</p>
+    </div>
+
+  </div>
 </div>

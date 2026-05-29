@@ -1,8 +1,7 @@
-/* Barra inferior */
 .footer {
-  background-color: var(--bg-primary);
-  border-top: 1px solid var(--border-color);
-  height: 56px;
+  background-color: #0a0a12;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  height: 64px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -11,13 +10,46 @@
   left: 0;
   right: 0;
   z-index: 100;
+  padding: 0 8px;
+  backdrop-filter: blur(12px);
 }
 
-.nav-icon {
-  color: var(--text-secondary);
-  font-size: 24px;
+.footer-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  flex: 1;
+  padding: 8px 4px;
+  border-radius: 12px;
+  transition: all 0.2s;
 }
 
-.nav-icon:hover {
-  color: var(--blue-soft);
+.footer-item:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+.footer-icon {
+  font-size: 22px;
+  line-height: 1;
+  filter: grayscale(0.3);
+  transition: all 0.2s;
+}
+
+.footer-label {
+  color: rgba(255,255,255,0.35);
+  font-size: 10px;
+  font-weight: 400;
+  transition: color 0.2s;
+}
+
+/* Ítem activo */
+.footer-activo .footer-icon {
+  filter: none;
+}
+
+.footer-activo .footer-label {
+  color: #4A9EFF;
+  font-weight: 600;
 }

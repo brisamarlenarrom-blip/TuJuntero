@@ -1,162 +1,251 @@
-/* Contenedor principal del Inicio */
-.inicio-container {
+/* ── WRAPPER ────────────────────────────────────────── */
+.inicio-wrapper {
   width: 100%;
+  max-width: 480px;
   margin: 0 auto;
-  padding: var(--space-2xl) var(--space-xl);
+  min-height: 100vh;
+  background-color: #080810;
 }
 
-/* Tarjeta de saludo */
-.saludo-card {
-  background: linear-gradient(135deg, #1E3A5F, #0F2B3D);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl);
-  margin-bottom: var(--space-lg);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+/* ── HERO ───────────────────────────────────────────── */
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 180px;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(8,8,16,0.9) 100%),
+    radial-gradient(ellipse at 60% 80%, rgba(220,100,20,0.5) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 60%, rgba(180,60,10,0.3) 0%, transparent 50%),
+    linear-gradient(160deg, #0a1628 0%, #1a2a0a 40%, #2d1505 70%, #0a0a18 100%);
+  padding: 24px 20px 28px;
+  overflow: hidden;
 }
 
-.saludo-texto {
-  color: var(--text-primary);
+.hero-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, #080810, transparent);
+  pointer-events: none;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(255,150,50,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-saludo {
+  color: #ffffff;
   font-size: 22px;
-  font-weight: 400;
-  margin: 0;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
 }
 
-.fecha-texto {
-  color: var(--text-secondary);
+.hero-nombre {
+  color: #4A9EFF;
+}
+
+.hero-subtitulo {
+  color: rgba(255,255,255,0.6);
   font-size: 13px;
-  margin: var(--space-xs) 0 0 0;
+  margin: 0 0 16px 0;
 }
 
-/* Versículo del día */
-.versiculo-card {
-  background-color: var(--surface-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: var(--space-xl);
-  margin-bottom: var(--space-lg);
-  text-align: center;
+.hero-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.versiculo-texto {
-  color: var(--blue-soft);
-  font-style: italic;
+.hero-badge {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 99px;
+  padding: 5px 12px;
+  color: rgba(255,255,255,0.85);
+  font-size: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.badge-highlight {
+  color: #4A9EFF;
+  font-weight: 600;
+}
+
+/* ── CONTENEDOR ─────────────────────────────────────── */
+.inicio-container {
+  padding: 16px 16px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── SECCIÓN CARD ───────────────────────────────────── */
+.seccion-card {
+  background-color: #0f1117;
+  border: 1px solid #1E1E2E;
+  border-radius: 18px;
+  padding: 18px 16px;
+}
+
+.seccion-titulo {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.versiculo-ref {
-  color: var(--text-secondary);
-  font-size: 13px;
   font-weight: 500;
-  margin: var(--space-sm) 0 0 0;
+  margin: 0 0 14px 0;
 }
 
-/* Check-in emocional */
-.checkin-card {
-  background-color: var(--surface-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: var(--space-xl);
-  margin-bottom: var(--space-lg);
-  text-align: center;
-}
-
+/* ── CHECK-IN EMOCIONAL ─────────────────────────────── */
 .checkin-titulo {
-  color: var(--text-primary);
-  font-size: 15px;
-  margin: 0 0 var(--space-md) 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 14px 0;
+  text-align: center;
 }
 
 .emojis-row {
   display: flex;
-  justify-content: center;
-  gap: var(--space-md);
+  justify-content: space-between;
+  gap: 4px;
 }
 
 .emoji-btn {
   background: none;
   border: 2px solid transparent;
-  border-radius: 50%;
-  font-size: 30px;
-  padding: var(--space-sm);
+  border-radius: 12px;
+  padding: 8px 4px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
   transition: all 0.2s;
 }
 
 .emoji-btn:hover {
-  border-color: var(--blue-soft);
-  transform: scale(1.15);
+  background: rgba(255,255,255,0.05);
 }
 
 .emoji-btn.seleccionado {
-  border-color: var(--blue-soft);
-  box-shadow: 0 0 12px rgba(96, 165, 250, 0.4);
+  border-color: #4A9EFF;
+  background: rgba(74,158,255,0.08);
 }
 
-/* Acceso rápido */
+.emoji-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.emoji-label {
+  color: rgba(255,255,255,0.45);
+  font-size: 10px;
+}
+
+.emoji-btn.seleccionado .emoji-label {
+  color: #4A9EFF;
+}
+
+/* ── ACCESOS RÁPIDOS ────────────────────────────────── */
 .accesos-grid {
-  display: flex;
-  flex-direction: row;
-  gap: var(--space-md);
-  margin-bottom: var(--space-lg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-.acceso-card {
-  background-color: var(--surface-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: var(--space-xl);
-  flex: 1;
+.acceso-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 14px 10px;
+  text-decoration: none;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-md);
-  cursor: pointer;
+  text-align: center;
+  gap: 6px;
   transition: all 0.2s ease;
 }
 
-.acceso-card:hover {
+.acceso-item:hover {
+  background: rgba(255,255,255,0.06);
   transform: translateY(-2px);
-  border-color: var(--blue-soft);
 }
 
-.acceso-icono { font-size: 28px; }
+.acceso-icono-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acceso-azul    { background: rgba(59,100,200,0.2); }
+.acceso-verde   { background: rgba(30,140,80,0.2);  }
+.acceso-violeta { background: rgba(120,60,200,0.2); }
+.acceso-rosa    { background: rgba(220,60,120,0.2); }
 
 .acceso-titulo {
-  color: var(--text-primary);
-  font-size: 15px;
-  font-weight: 500;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
   margin: 0;
 }
 
 .acceso-sub {
-  color: var(--text-secondary);
-  font-size: 13px;
-  margin: var(--space-xs) 0 0 0;
-}
-
-/* Frase final */
-.frase-final-card {
-  background-color: var(--surface-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: var(--space-xl);
-  text-align: center;
-}
-
-.frase-texto {
-  color: var(--blue-soft);
-  font-size: 13px;
-  font-style: italic;
+  color: rgba(255,255,255,0.4);
+  font-size: 10px;
   margin: 0;
+  line-height: 1.4;
 }
 
-/* Celular */
-@media (max-width: 768px) {
-  .accesos-grid {
-    flex-direction: column;
-  }
-  .inicio-container {
-    padding: var(--space-lg) var(--space-md);
-  }
+/* ── VERSÍCULO ──────────────────────────────────────── */
+.versiculo-card {
+  border-left: 3px solid #4A9EFF;
+}
+
+.versiculo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.versiculo-label {
+  color: #4A9EFF;
+  font-size: 11px;
+  font-weight: 600;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.versiculo-bookmark { font-size: 16px; }
+
+.versiculo-texto {
+  color: rgba(255,255,255,0.85);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 6px 0;
+}
+
+.versiculo-ref {
+  color: rgba(255,255,255,0.4);
+  font-size: 12px;
+  margin: 0;
 }

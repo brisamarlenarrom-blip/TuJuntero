@@ -1,103 +1,145 @@
-<!-- Botón para volver al resumen de Aprender -->
-<button class="btn-volver" (click)="volver()">← Volver</button>
+<div class="tareas-wrapper">
 
-<div class="tareas-container">
+<!-- ── HERO BANNER + TABS (igual que dashboard) ─────── -->
+<div class="aprender-hero">
+  <div class="hero-content">
+    <div class="hero-icon">📖</div>
+    <div class="hero-text">
+      <h1 class="aprender-titulo">Aprender</h1>
+      <p class="hero-subtitulo">Organiza tus materias, tareas y lecturas<br>y sigue creciendo cada día.</p>
+    </div>
+  </div>
+  <nav class="aprender-tabs">
+    <a routerLink="/aprender/materias" routerLinkActive="tab-activo" class="tab-item">
+      <span class="tab-icono">🎓</span> Materias
+    </a>
+    <a routerLink="/aprender/tareas" routerLinkActive="tab-activo" class="tab-item">
+      <span class="tab-icono">☑️</span> Tareas
+    </a>
+    <a routerLink="/aprender/biblioteca" routerLinkActive="tab-activo" class="tab-item">
+      <span class="tab-icono">📖</span> Biblioteca
+    </a>
+  </nav>
+</div>
 
-  <!-- Botón para mostrar el formulario -->
-  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">
-    + Agregar tarea
-  </button>
+  <!-- ── FORMULARIO (modal overlay) ───────────────────── -->
+  <div class="form-overlay" *ngIf="mostrarForm" (click)="cancelar()"></div>
+  <div class="form-modal" *ngIf="mostrarForm">
+    <h3 class="form-titulo">{{ editando ? 'Editar tarea' : 'Nueva tarea' }}</h3>
 
-  <!-- Formulario -->
-  <mat-card *ngIf="mostrarForm" class="form-card">
-    <h3>{{ editando ? 'Editar Tarea' : 'Nueva Tarea' }}</h3>
     <form [formGroup]="tareaForm" (ngSubmit)="guardarTarea()">
-      
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Título</mat-label>
-        <input matInput formControlName="titulo" placeholder="Ej: TP N°3 - Matrices">
-      </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Descripción</mat-label>
-        <textarea matInput formControlName="descripcion" placeholder="Resolver ejercicios" rows="2"></textarea>
-      </mat-form-field>
+      <div class="form-field">
+        <label>Título</label>
+        <input formControlName="titulo" placeholder="Ej: TP N°3 - Matrices">
+      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Tipo</mat-label>
-        <mat-select formControlName="tipo">
-          <mat-option value="tarea">Tarea</mat-option>
-          <mat-option value="examen">Examen</mat-option>
-          <mat-option value="parcial">Parcial</mat-option>
-          <mat-option value="final">Final</mat-option>
-          <mat-option value="entrega">Entrega</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="form-field">
+        <label>Descripción</label>
+        <textarea formControlName="descripcion" placeholder="Detalles..." rows="2"></textarea>
+      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Fecha límite</mat-label>
-        <input matInput formControlName="fechaLimite" type="date">
-      </mat-form-field>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Tipo</label>
+          <select formControlName="tipo">
+            <option value="tarea">Tarea</option>
+            <option value="examen">Examen</option>
+            <option value="parcial">Parcial</option>
+            <option value="final">Final</option>
+            <option value="entrega">Entrega</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Prioridad</label>
+          <select formControlName="prioridad">
+            <option value="baja">🟢 Baja</option>
+            <option value="media">🟡 Media</option>
+            <option value="alta">🔴 Alta</option>
+          </select>
+        </div>
+      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Prioridad</mat-label>
-        <mat-select formControlName="prioridad">
-          <mat-option value="baja">🟢 Baja</mat-option>
-          <mat-option value="media">🟡 Media</mat-option>
-          <mat-option value="alta">🔴 Alta</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Fecha límite</label>
+          <input formControlName="fechaLimite" type="date">
+        </div>
+        <div class="form-field">
+          <label>Estado</label>
+          <select formControlName="estado">
+            <option value="pendiente">Pendiente</option>
+            <option value="en_progreso">En progreso</option>
+            <option value="completada">Completada</option>
+          </select>
+        </div>
+      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Estado</mat-label>
-        <mat-select formControlName="estado">
-          <mat-option value="pendiente">Pendiente</mat-option>
-          <mat-option value="en_progreso">En progreso</mat-option>
-          <mat-option value="completada">Completada</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <div class="botones-form">
-        <button mat-raised-button color="primary" type="submit" [disabled]="tareaForm.invalid">
+      <div class="form-botones">
+        <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+        <button type="submit" class="btn-guardar" [disabled]="tareaForm.invalid">
           {{ editando ? 'Actualizar' : 'Agregar' }}
         </button>
-        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
       </div>
+
     </form>
-  </mat-card>
+  </div>
 
-  <!-- Lista de tareas -->
-  <ui-section-title *ngIf="tareas.length > 0">Mis Tareas</ui-section-title>
-
-  <!-- Tarjeta con UI Kit -->
-  <ui-card 
-    *ngFor="let tarea of tareas" 
-    [accent]="tarea.prioridad === 'alta' ? 'red' : tarea.prioridad === 'media' ? 'orange' : 'green'" 
-    [clickable]="true">
-    
-    <p class="tarea-titulo">{{ tarea.titulo }}</p>
-    <p class="tarea-descripcion" *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
-    
-    <ui-badge [variant]="tarea.tipo === 'tarea' ? 'blue' : 'purple'">{{ tarea.tipo }}</ui-badge>
-    <ui-badge [variant]="tarea.prioridad === 'alta' ? 'red' : tarea.prioridad === 'media' ? 'orange' : 'green'">{{ tarea.prioridad }}</ui-badge>
-    <ui-badge [variant]="tarea.estado === 'completada' ? 'green' : tarea.estado === 'en_progreso' ? 'blue' : 'gray'">
-      {{ tarea.estado === 'pendiente' ? 'Pendiente' : tarea.estado === 'en_progreso' ? 'En progreso' : 'Completada' }}
-    </ui-badge>
-    
-    <p class="tarea-fecha" *ngIf="tarea.fechaLimite">📅 {{ tarea.fechaLimite }}</p>
-    
-    <div class="tarea-acciones">
-      <button (click)="editarTarea(tarea)" class="btn-editar">✏️</button>
-      <button (click)="eliminarTarea(tarea.id)" class="btn-eliminar">🗑️</button>
+  <!-- ── LISTA DE TAREAS ───────────────────────────────── -->
+  <div class="seccion-card">
+    <div class="tareas-header">
+      <h2 class="seccion-titulo">Mis tareas</h2>
+      <div class="filtros">
+        <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'todas'" (click)="setFiltro('todas')">Todas</button>
+        <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'pendientes'" (click)="setFiltro('pendientes')">Pendientes</button>
+        <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'completadas'" (click)="setFiltro('completadas')">Completadas</button>
+      </div>
     </div>
-    
-  </ui-card>
 
-  <ui-empty-state 
-    *ngIf="tareas.length === 0 && !mostrarForm"
-    icon="📝"
-    title="Sin tareas"
-    text="Todavía no tenés tareas. ¡Agregá la primera!">
-  </ui-empty-state>
+    <!-- Tarea row -->
+    <div class="tarea-row" *ngFor="let t of tareasFiltradas" [class.completada]="t.estado === 'completada'">
+      <div class="tarea-icono-box" [style.background-color]="getColorTipo(t.tipo) + '22'">
+        <span [style.color]="getColorTipo(t.tipo)">{{ getIconoTipo(t.tipo) }}</span>
+      </div>
+
+      <div class="tarea-info">
+        <span class="tarea-titulo">{{ t.titulo }}</span>
+        <span class="tarea-sub" *ngIf="t.descripcion">{{ t.descripcion }}</span>
+      </div>
+
+      <div class="tarea-meta">
+        <span class="tarea-fecha" *ngIf="t.fechaLimite">📅 {{ t.fechaLimite }}</span>
+        <span class="tarea-badge" [ngClass]="getColorEstado(t.estado)">{{ getLabelEstado(t.estado) }}</span>
+      </div>
+
+      <div class="tarea-acciones">
+        <button class="btn-accion" (click)="editarTarea(t)">✏️</button>
+        <button class="btn-accion" (click)="eliminarTarea(t.id)">🗑️</button>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <ui-empty-state
+      *ngIf="tareasFiltradas.length === 0 && !mostrarForm"
+      icon="📝"
+      title="Sin tareas"
+      text="¡Agregá tu primera tarea!">
+    </ui-empty-state>
+
+    <!-- Botón nueva tarea -->
+    <button class="btn-nueva-tarea" (click)="abrirForm()">
+      + Nueva tarea
+    </button>
+  </div>
+
+  <!-- ── ASISTENTE IA (visual) ─────────────────────────── -->
+  <div class="ia-card">
+    <div class="ia-izq">
+      <p class="ia-titulo">✨ Asistente de estudio IA</p>
+      <p class="ia-sub">Contanos sobre tu situación académica y recibí recomendaciones personalizadas para estudiar mejor.</p>
+      <button class="ia-btn">✨ Ayudame a organizarme →</button>
+    </div>
+    <div class="ia-der">🧠</div>
+  </div>
 
 </div>

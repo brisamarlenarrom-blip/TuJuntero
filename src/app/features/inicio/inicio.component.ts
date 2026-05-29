@@ -1,68 +1,76 @@
-// Importaciones para la pantalla de Inicio
-import { Component, OnInit } from '@angular/core';       // Component y OnInit (se ejecuta al cargar)
-import { CommonModule } from '@angular/common';           // Directivas *ngIf
-import { RouterModule } from '@angular/router';           // Para routerLink en las tarjetas
-import { ApiService } from '../../core/api.service';      // Servicio HTTP (MockAPI - frases)
-import { AuthService } from '../../core/auth.service';    // Servicio de autenticación
-import { FirestoreService } from '../../core/firestore.service';  // Firebase Firestore (tareas)
-import { CardComponent } from '../../shared/ui/card/card.component';   // Tarjeta genérica
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
+import { FirestoreService } from '../../core/firestore.service';
+import { CardComponent } from '../../shared/ui/card/card.component';
+
 @Component({
   selector: 'app-inicio',
   standalone: true,
-imports: [CommonModule, RouterModule, CardComponent],   // RouterModule para que funcione routerLink
+  imports: [CommonModule, RouterModule, CardComponent],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })
 export class InicioComponent implements OnInit {
-  
-  // ============ PROPIEDADES ============
-  saludo = '';              // "Buenos días", "Buenas tardes" o "Buenas noches"
-  nombre = '';              // Nombre del usuario logueado
-  frase = 'Cargando...';    // Versículo del día
-  referencia = '';          // Cita bíblica (ej: "Jeremías 29:11")
-  
-  // Fecha actual formateada en español
-  fechaActual: string = new Date().toLocaleDateString('es-AR', { 
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-  });
-  
-  estadoAnimo = 0;              // Estado de ánimo seleccionado (0 = ninguno, 1 a 5)
-  tareasPendientes = 0;         // Se carga desde Firestore
-  almuerzoRegistrado = false;   // Por ahora fijo, después se conecta a Firestore
-  entrenamientoHoy = 'Piernas y glúteos';  // Por ahora fijo
 
-  // Inyecta los servicios necesarios
+  // ── Saludo ───────────────────────────────────────────
+  saludo = '';
+  nombre = '';
+  fechaActual: string = new Date().toLocaleDateString('es-AR', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  // ── Versículo ────────────────────────────────────────
+  frase = 'Cargando...';
+  referencia = '';
+
+  // ── Check-in emocional ───────────────────────────────
+  estadoAnimo = 0;
+  emojis = [
+    { valor: 1, emoji: '😢', label: 'Mal' },
+    { valor: 2, emoji: '😐', label: 'Regular' },
+    { valor: 3, emoji: '🙂', label: 'Bien' },
+    { valor: 4, emoji: '😊', label: 'Muy bien' },
+    { valor: 5, emoji: '🤩', label: 'Excelente' }
+  ];
+
+  // ── Stats ────────────────────────────────────────────
+  diasSeguidos = 5;          // TODO: conectar con check-ins diarios
+  metaDiaria = 3;            // TODO: conectar con Firestore
+  metaDiariaTotal = 5;
+
+  // ── Accesos rápidos ──────────────────────────────────
+  tareasPendientes = 0;
+  almuerzoRegistrado = false;
+  entrenamientoHoy = 'Piernas y glúteos';
+
   constructor(
-    private api: ApiService,         // Para las frases (MockAPI)
-    private auth: AuthService,       // Para la autenticación
-    private fs: FirestoreService     // Para las tareas (Firestore)
+    private api: ApiService,
+    private auth: AuthService,
+    private fs: FirestoreService
   ) {}
 
-  // Se ejecuta al cargar la pantalla
   ngOnInit() {
-    this.setSaludo();               // Define el saludo según la hora
-    this.cargarNombre();            // Obtiene el nombre del usuario logueado
-    this.cargarFraseDelDia();       // Busca el versículo del día
-    this.cargarTareasPendientes();  // Carga las tareas reales desde Firestore
+    this.setSaludo();
+    this.cargarNombre();
+    this.cargarFraseDelDia();
+    this.cargarTareasPendientes();
   }
 
-  // Define si es "Buenos días", "Buenas tardes" o "Buenas noches"
   setSaludo() {
-    const h = new Date().getHours();  // Hora actual (0 a 23)
+    const h = new Date().getHours();
     this.saludo = h < 12 ? '¡Buenos días' : h < 19 ? '¡Buenas tardes' : '¡Buenas noches';
   }
 
-  // Obtiene el nombre del usuario logueado (si hay sesión)
   cargarNombre() {
     const usuario = this.auth.getUsuarioActual();
-    if (usuario) {
-      this.nombre = usuario.nombre;
-    }
+    if (usuario) this.nombre = usuario.nombre;
   }
 
-  // Busca el versículo del día en MockAPI según el día de la semana
   cargarFraseDelDia() {
-    const diaSemana = new Date().getDay().toString();  // 0=domingo, 1=lunes, ..., 6=sábado
+    const diaSemana = new Date().getDay().toString();
     this.api.getItemsByTipo('frase').subscribe({
       next: (data) => {
         const fraseHoy = data.find((f: any) => f.diaSemana === diaSemana);
@@ -81,7 +89,6 @@ export class InicioComponent implements OnInit {
     });
   }
 
-  // Carga la cantidad real de tareas pendientes desde Firestore
   cargarTareasPendientes() {
     const usuario = this.auth.getUsuarioActual();
     if (usuario) {
@@ -91,7 +98,6 @@ export class InicioComponent implements OnInit {
     }
   }
 
-  // Guarda el estado de ánimo seleccionado (1 a 5)
   seleccionarAnimo(valor: number) {
     this.estadoAnimo = valor;
   }

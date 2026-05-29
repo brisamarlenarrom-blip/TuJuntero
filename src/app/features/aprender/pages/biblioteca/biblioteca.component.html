@@ -1,93 +1,171 @@
-<!-- Botón para volver al resumen de Aprender -->
-<button class="btn-volver" (click)="volver()">← Volver</button>
+<div class="page-wrapper">
 
-<div class="biblioteca-container">
-
-  <!-- Botón para mostrar el formulario -->
-  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">
-    + Agregar libro
-  </button>
-
-  <!-- Formulario -->
-  <mat-card *ngIf="mostrarForm" class="form-card">
-    <h3>{{ editando ? 'Editar Libro' : 'Nuevo Libro' }}</h3>
-    <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
-      
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Título</mat-label>
-        <input matInput formControlName="titulo" placeholder="Ej: El hombre en busca de sentido">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Autor</mat-label>
-        <input matInput formControlName="autor" placeholder="Ej: Viktor Frankl">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Estado</mat-label>
-        <mat-select formControlName="estadoLectura">
-          <mat-option value="quiero_leer">📚 Quiero leer</mat-option>
-          <mat-option value="leyendo">📖 Leyendo</mat-option>
-          <mat-option value="leido">✅ Leído</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width" *ngIf="libroForm.value.estadoLectura === 'leido'">
-        <mat-label>Puntuación (1 a 5)</mat-label>
-        <mat-select formControlName="puntuacion">
-          <mat-option [value]="1">⭐</mat-option>
-          <mat-option [value]="2">⭐⭐</mat-option>
-          <mat-option [value]="3">⭐⭐⭐</mat-option>
-          <mat-option [value]="4">⭐⭐⭐⭐</mat-option>
-          <mat-option [value]="5">⭐⭐⭐⭐⭐</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Reseña</mat-label>
-        <textarea matInput formControlName="resenia" placeholder="¿Qué te pareció?" rows="2"></textarea>
-      </mat-form-field>
-
-      <div class="botones-form">
-        <button mat-raised-button color="primary" type="submit" [disabled]="libroForm.invalid">
-          {{ editando ? 'Actualizar' : 'Agregar' }}
-        </button>
-        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+  <!-- ── HERO BANNER + TABS ────────────────────────────────── -->
+  <div class="aprender-hero">
+    <div class="hero-content">
+      <div class="hero-icon">📖</div>
+      <div class="hero-text">
+        <h1 class="aprender-titulo">Aprender</h1>
+        <p class="hero-subtitulo">Organiza tus materias, tareas y lecturas<br>y sigue creciendo cada día.</p>
       </div>
-    </form>
-  </mat-card>
-
-  <!-- Lista de libros -->
-  <ui-section-title *ngIf="libros.length > 0">Mi Biblioteca</ui-section-title>
-
-  <!-- Tarjeta con UI Kit -->
-  <ui-card 
-    *ngFor="let libro of libros" 
-    [accent]="libro.estadoLectura === 'leyendo' ? 'blue' : libro.estadoLectura === 'leido' ? 'green' : 'orange'" 
-    [clickable]="true">
-    
-    <p class="libro-titulo">📖 {{ libro.titulo }}</p>
-    <p class="libro-autor" *ngIf="libro.autor">✍️ {{ libro.autor }}</p>
-    
-    <ui-badge [variant]="libro.estadoLectura === 'leyendo' ? 'blue' : libro.estadoLectura === 'leido' ? 'green' : 'orange'">
-      {{ libro.estadoLectura === 'quiero_leer' ? 'Quiero leer' : libro.estadoLectura === 'leyendo' ? 'Leyendo' : 'Leído' }}
-    </ui-badge>
-    
-    <p *ngIf="libro.puntuacion > 0">{{ '⭐'.repeat(libro.puntuacion) }}</p>
-    <p class="libro-resenia" *ngIf="libro.resenia">💬 {{ libro.resenia }}</p>
-    
-    <div class="libro-acciones">
-      <button (click)="editarLibro(libro)" class="btn-editar">✏️</button>
-      <button (click)="eliminarLibro(libro.id)" class="btn-eliminar">🗑️</button>
     </div>
-    
-  </ui-card>
+    <nav class="aprender-tabs">
+      <a routerLink="/aprender/materias" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">🎓</span> Materias
+      </a>
+      <a routerLink="/aprender/tareas" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">☑️</span> Tareas
+      </a>
+      <a routerLink="/aprender/biblioteca" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📖</span> Biblioteca
+      </a>
+    </nav>
+  </div>
 
-  <ui-empty-state 
-    *ngIf="libros.length === 0 && !mostrarForm"
-    icon="📚"
-    title="Sin libros"
-    text="Todavía no tenés libros. ¡Agregá el primero!">
-  </ui-empty-state>
+  <div class="biblioteca-wrapper">
 
+    <!-- ── FORMULARIO MODAL ──────────────────────────────── -->
+    <div class="form-overlay" *ngIf="mostrarForm" (click)="cancelar()"></div>
+    <div class="form-modal" *ngIf="mostrarForm">
+      <h3 class="form-titulo">{{ editando ? 'Editar libro' : 'Nuevo libro' }}</h3>
+      <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
+
+        <div class="form-field">
+          <label>Título</label>
+          <input formControlName="titulo" placeholder="Ej: El hombre en busca de sentido">
+        </div>
+
+        <div class="form-field">
+          <label>Autor</label>
+          <input formControlName="autor" placeholder="Ej: Viktor Frankl">
+        </div>
+
+        <div class="form-field">
+          <label>Estado</label>
+          <select formControlName="estadoLectura">
+            <option value="quiero_leer">📚 Quiero leer</option>
+            <option value="leyendo">📖 Leyendo</option>
+            <option value="leido">✅ Leído</option>
+          </select>
+        </div>
+
+        <div class="form-field" *ngIf="libroForm.value.estadoLectura === 'leido'">
+          <label>Puntuación</label>
+          <select formControlName="puntuacion">
+            <option [value]="1">⭐</option>
+            <option [value]="2">⭐⭐</option>
+            <option [value]="3">⭐⭐⭐</option>
+            <option [value]="4">⭐⭐⭐⭐</option>
+            <option [value]="5">⭐⭐⭐⭐⭐</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Reseña</label>
+          <textarea formControlName="resenia" placeholder="¿Qué te pareció?" rows="2"></textarea>
+        </div>
+
+        <div class="form-botones">
+          <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn-guardar" [disabled]="libroForm.invalid">
+            {{ editando ? 'Actualizar' : 'Agregar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── RESUMEN ───────────────────────────────────────── -->
+    <div class="seccion-card">
+      <div class="seccion-header">
+        <h2 class="seccion-titulo">Resumen de tu biblioteca</h2>
+        <button class="btn-agregar-libro" (click)="abrirForm()">+ Agregar libro</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item stat-violeta">
+          <span class="stat-icono">📄</span>
+          <span class="stat-numero">{{ totalLibros }}</span>
+          <span class="stat-label">Libros guardados</span>
+        </div>
+        <div class="stat-item stat-azul">
+          <span class="stat-icono">🔖</span>
+          <span class="stat-numero">{{ librosFavoritos }}</span>
+          <span class="stat-label">Favoritos</span>
+        </div>
+        <div class="stat-item stat-verde">
+          <span class="stat-icono">👁️</span>
+          <span class="stat-numero">{{ librosLeyendo }}</span>
+          <span class="stat-label">Leyendo</span>
+        </div>
+        <div class="stat-item stat-naranja">
+          <span class="stat-icono">✅</span>
+          <span class="stat-numero">{{ librosLeidos }}</span>
+          <span class="stat-label">Leídos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LISTA DE LIBROS ───────────────────────────────── -->
+    <div class="seccion-card">
+      <div class="seccion-header">
+        <h2 class="seccion-titulo">Mis libros</h2>
+        <div class="filtros">
+          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'todos'" (click)="setFiltro('todos')">Todos</button>
+          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'leyendo'" (click)="setFiltro('leyendo')">Leyendo</button>
+          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'leido'" (click)="setFiltro('leido')">Leídos</button>
+        </div>
+      </div>
+
+      <div class="libro-row" *ngFor="let l of librosFiltrados">
+        <div class="libro-icono-box" [style.background-color]="getColorEstado(l.estadoLectura) + '22'">
+          <span [style.color]="getColorEstado(l.estadoLectura)">{{ getIconoEstado(l.estadoLectura) }}</span>
+        </div>
+
+        <div class="libro-info">
+          <span class="libro-titulo">{{ l.titulo }}</span>
+          <span class="libro-autor" *ngIf="l.autor">{{ l.autor }}</span>
+          <span class="libro-estrellas" *ngIf="l.puntuacion > 0">{{ getEstrellas(l.puntuacion) }}</span>
+        </div>
+
+        <div class="libro-meta">
+          <span class="libro-badge"
+            [style.background-color]="getColorEstado(l.estadoLectura) + '22'"
+            [style.color]="getColorEstado(l.estadoLectura)">
+            {{ getLabelEstado(l.estadoLectura) }}
+          </span>
+        </div>
+
+        <div class="libro-acciones">
+          <button class="btn-accion" (click)="editarLibro(l)">✏️</button>
+          <button class="btn-accion" (click)="eliminarLibro(l.id)">🗑️</button>
+        </div>
+      </div>
+
+      <ui-empty-state
+        *ngIf="librosFiltrados.length === 0 && !mostrarForm"
+        icon="📚"
+        title="Sin libros"
+        text="¡Agregá tu primer libro!">
+      </ui-empty-state>
+
+      <button class="btn-nueva-materia" (click)="abrirForm()">
+        + Nuevo libro
+      </button>
+    </div>
+
+    <!-- ── ASISTENTE IA (visual) ─────────────────────────── -->
+    <div class="ia-card">
+      <div class="ia-izq">
+        <p class="ia-titulo">🧠 Asistente de estudio IA</p>
+        <p class="ia-sub">Obtén resúmenes, explicaciones y preguntas sobre tus libros con inteligencia artificial.</p>
+        <div class="ia-acciones">
+          <button class="ia-accion-btn">📋 Resumir</button>
+          <button class="ia-accion-btn">❓ Explicar</button>
+          <button class="ia-accion-btn">📝 Preguntas</button>
+          <button class="ia-accion-btn">💬 Chat</button>
+        </div>
+        <button class="ia-btn">Usar asistente →</button>
+      </div>
+    </div>
+
+  </div>
 </div>

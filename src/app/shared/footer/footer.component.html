@@ -1,23 +1,28 @@
-<!-- Barra de navegación inferior fija -->
-<mat-toolbar class="footer">
-  
-  <!-- Cada botón navega a una sección con su ícono -->
-<mat-toolbar class="footer">
-  <button mat-icon-button class="nav-icon" routerLink="/inicio">
-    <span class="icon">🏠</span>
-  </button>
-  <button mat-icon-button class="nav-icon" routerLink="/aprender">
-    <span class="icon">📖</span>
-  </button>
-  <button mat-icon-button class="nav-icon" routerLink="/alimentarse">
-    <span class="icon">🍴</span>
-  </button>
-  <button mat-icon-button class="nav-icon" routerLink="/entrenamiento">
-    <span class="icon">🏋️</span>
-  </button>
-  <button mat-icon-button class="nav-icon" routerLink="/comunidad">
-    <span class="icon">👥</span>
-  </button>
-</mat-toolbar>
-  
-</mat-toolbar>
+<div class="footer">
+
+  <a class="footer-item" routerLink="/inicio" routerLinkActive="footer-activo" [routerLinkActiveOptions]="{exact:true}">
+    <span class="footer-icon">🏠</span>
+    <span class="footer-label">Inicio</span>
+  </a>
+
+  <a class="footer-item" routerLink="/aprender" routerLinkActive="footer-activo">
+    <span class="footer-icon">📖</span>
+    <span class="footer-label">Aprender</span>
+  </a>
+
+  <a class="footer-item" routerLink="/alimentarse" routerLinkActive="footer-activo">
+    <span class="footer-icon">🍴</span>
+    <span class="footer-label">Alimentarse</span>
+  </a>
+
+  <a class="footer-item" routerLink="/entrenamiento" routerLinkActive="footer-activo">
+    <span class="footer-icon">🏋️</span>
+    <span class="footer-label">Entrenamiento</span>
+  </a>
+
+  <a class="footer-item" routerLink="/comunidad" routerLinkActive="footer-activo">
+    <span class="footer-icon">👥</span>
+    <span class="footer-label">Comunidad</span>
+  </a>
+
+</div>

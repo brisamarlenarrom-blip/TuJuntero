@@ -1,39 +1,29 @@
-// Componente Materias: CRUD con Firebase Firestore
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { Router } from '@angular/router';
-import { FirestoreService } from '../../../../core/firestore.service';                         // Base de datos
-import { AuthService } from '../../../../core/auth.service';                                   // Autenticación
-import { BadgeComponent } from '../../../../shared/ui/badge/badge.component';                 // UI Kit: badge
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { FirestoreService } from '../../../../core/firestore.service';
+import { AuthService } from '../../../../core/auth.service';
 import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
-import { SectionTitleComponent } from "../../../../shared/ui/section-title/section-title.component"; // UI Kit: empty state
-import { CardComponent } from '../../../../shared/ui/card/card.component'; // UI Card
-import { DestacarHoverDirective } from '../../../../shared/directives/destacar-hover.directive'; // Efecto hover
-
 
 @Component({
   selector: 'app-materias',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, 
-    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, 
-    BadgeComponent, EmptyStateComponent, SectionTitleComponent, 
-    CardComponent, DestacarHoverDirective],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, EmptyStateComponent],
   templateUrl: './materias.component.html',
   styleUrl: './materias.component.css'
 })
 export class MateriasComponent implements OnInit {
+
+  // ── Estado ───────────────────────────────────────────
   materias: any[] = [];
-  materiaForm: FormGroup;
   mostrarForm = false;
   editando = false;
   materiaEditId: string | null = null;
   usuarioId = '';
+
+  // ── Formulario ───────────────────────────────────────
+  materiaForm: FormGroup;
 
   constructor(
     private api: FirestoreService,
@@ -42,11 +32,18 @@ export class MateriasComponent implements OnInit {
     private router: Router
   ) {
     this.materiaForm = this.fb.group({
-      nombre: ['', Validators.required],
-      estado: ['cursando', Validators.required],
-      diaHorario: [''],
+      nombre:       ['', Validators.required],
+      estado:       ['cursando', Validators.required],
+      diaHorario:   [''],
       fechaLlamado: [''],
-      fechaExamen: ['']
+      fechaExamen:  ['']
+    });
+
+    // Recarga las materias cada vez que se navega a esta página
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd && event.url.includes('/aprender/materias')) {
+        this.cargarMaterias();
+      }
     });
   }
 
@@ -56,12 +53,49 @@ export class MateriasComponent implements OnInit {
     this.cargarMaterias();
   }
 
+  // ── Carga ────────────────────────────────────────────
   cargarMaterias() {
     this.api.getByField('materias', 'usuarioId', this.usuarioId).subscribe(data => {
       this.materias = data;
     });
   }
 
+  // ── Helpers visuales ─────────────────────────────────
+  getColorEstado(estado: string): string {
+    switch (estado) {
+      case 'cursando': return '#4A9EFF';
+      case 'regular':  return '#A78BFA';
+      case 'a_rendir': return '#FBBF24';
+      default:         return '#4A9EFF';
+    }
+  }
+
+  getIconoEstado(estado: string): string {
+    switch (estado) {
+      case 'cursando': return '📘';
+      case 'regular':  return '📙';
+      case 'a_rendir': return '📕';
+      default:         return '📚';
+    }
+  }
+
+  getLabelEstado(estado: string): string {
+    switch (estado) {
+      case 'cursando': return 'Cursando';
+      case 'regular':  return 'Regular';
+      case 'a_rendir': return 'A rendir';
+      default:         return estado;
+    }
+  }
+
+  getProximaFecha(materia: any): { label: string, fecha: string } | null {
+    if (materia.fechaLlamado) return { label: 'Próximo final',   fecha: materia.fechaLlamado };
+    if (materia.fechaExamen)  return { label: 'Próximo parcial', fecha: materia.fechaExamen  };
+    if (materia.diaHorario)   return { label: 'Horario',         fecha: materia.diaHorario   };
+    return null;
+  }
+
+  // ── CRUD ─────────────────────────────────────────────
   guardarMateria() {
     if (this.materiaForm.invalid) return;
     const datos = { ...this.materiaForm.value, usuarioId: this.usuarioId };
@@ -98,11 +132,7 @@ export class MateriasComponent implements OnInit {
     this.materiaForm.reset({ estado: 'cursando' });
   }
 
-  abrirForm() {
-    this.mostrarForm = true;
-  }
+  abrirForm() { this.mostrarForm = true; }
 
-  volver() {
-    this.router.navigate(['/aprender']);
-  }
+  volver() { this.router.navigate(['/aprender']); }
 }

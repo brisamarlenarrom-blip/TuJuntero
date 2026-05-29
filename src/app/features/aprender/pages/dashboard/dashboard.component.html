@@ -1,45 +1,134 @@
 <div class="aprender-container">
 
-  <!-- Cabecera con título y navegación -->
-  <div class="aprender-header">
-    <h1 class="aprender-titulo">Aprender</h1>
-    <nav class="aprender-nav">
-      <a routerLink="materias" routerLinkActive="nav-activo" class="nav-item">
-        <span class="nav-icono">📖</span> Materias
+  <!-- ── HERO BANNER + TABS ────────────────────────────────── -->
+  <div class="aprender-hero">
+    <div class="hero-content">
+      <div class="hero-icon">📖</div>
+      <div class="hero-text">
+        <h1 class="aprender-titulo">Aprender</h1>
+        <p class="hero-subtitulo">Organiza tus materias, tareas y lecturas<br>y sigue creciendo cada día.</p>
+      </div>
+    </div>
+    <nav class="aprender-tabs">
+      <a routerLink="materias" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">🎓</span> Materias
       </a>
-      <a routerLink="tareas" routerLinkActive="nav-activo" class="nav-item">
-        <span class="nav-icono">📝</span> Tareas
+      <a routerLink="tareas" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">☑️</span> Tareas
       </a>
-      <a routerLink="biblioteca" routerLinkActive="nav-activo" class="nav-item">
-        <span class="nav-icono">📚</span> Biblioteca
+      <a routerLink="biblioteca" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📖</span> Biblioteca
       </a>
     </nav>
   </div>
 
-  <!-- Resumen -->
-  <div class="resumen-grid">
-    <a class="resumen-card" routerLink="materias">
-      <span class="resumen-icono">📖</span>
-      <p class="resumen-numero">{{ totalMaterias }}</p>
-      <p class="resumen-texto">Materias</p>
-      <p class="resumen-detalle" *ngIf="materiasARendir > 0">{{ materiasARendir }} para rendir</p>
-    </a>
-    <a class="resumen-card" routerLink="tareas">
-      <span class="resumen-icono">📝</span>
-      <p class="resumen-numero">{{ totalTareas }}</p>
-      <p class="resumen-texto">Tareas</p>
-      <p class="resumen-detalle" *ngIf="tareasPendientes > 0">{{ tareasPendientes }} pendientes</p>
-    </a>
-  </div>
-
-  <!-- Próxima entrega -->
-  <div class="proxima-card" *ngIf="proximaTarea">
-    <p class="proxima-etiqueta">⏰ PRÓXIMA ENTREGA</p>
-    <p class="proxima-titulo">{{ proximaTarea.titulo }}</p>
-    <p class="proxima-fecha">📅 {{ proximaTarea.fechaLimite }}</p>
-  </div>
-
-  <!-- Contenido de las subrutas -->
+  <!-- ── SUBRUTAS (se muestra solo cuando navegás a materias/tareas/biblioteca) ── -->
   <router-outlet></router-outlet>
 
+  <!-- ── RESUMEN (4 stats) ─────────────────────────────────── -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">Resumen</h2>
+    <div class="resumen-grid-nuevo">
+
+      <div class="stat-card stat-azul">
+        <span class="stat-icono">🎓</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ materiasActivas.length }}</span>
+          <span class="stat-label">Materias activas</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-violeta">
+        <span class="stat-icono">📋</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ tareasPendientes }}</span>
+          <span class="stat-label">Tareas pendientes</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-verde">
+        <span class="stat-icono">📗</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ librosEnProgreso }}</span>
+          <span class="stat-label">Libros en progreso</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-naranja">
+        <span class="stat-icono">🔥</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ diasEnfoque }}</span>
+          <span class="stat-label">Días de enfoque</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── MATERIAS ACTIVAS ──────────────────────────────────── -->
+  <div class="seccion-card" *ngIf="materiasActivas.length > 0">
+    <div class="seccion-header">
+      <h2 class="seccion-titulo">Materias activas</h2>
+      <a routerLink="materias" class="ver-todas">Ver todas</a>
+    </div>
+
+    <div class="materia-row" *ngFor="let m of materiasActivas">
+      <div class="materia-row-izq">
+        <div class="materia-icono-box" [style.background-color]="getColorMateria(m.estado) + '22'">
+          <span [style.color]="getColorMateria(m.estado)">📚</span>
+        </div>
+        <div class="materia-row-info">
+          <span class="materia-row-nombre">{{ m.nombre }}</span>
+          <span class="materia-row-estado">
+            {{ m.estado === 'cursando' ? 'Cursando' : m.estado === 'regular' ? 'Regular' : 'A rendir' }}
+          </span>
+          <div class="barra-fondo">
+            <div class="barra-progreso"
+              [style.width.%]="getProgresoMateria(m.estado)"
+              [style.background-color]="getColorMateria(m.estado)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="materia-row-der" *ngIf="getProximaFechaMateria(m) as prox">
+        <span class="prox-label">{{ prox.label }}</span>
+        <span class="prox-fecha">📅 {{ prox.fecha }}</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── ACCIONES RÁPIDAS ──────────────────────────────────── -->
+<div class="seccion-card">
+  <h2 class="seccion-titulo">Acciones rápidas</h2>
+  <div class="acciones-grid">
+
+    <a class="accion-item" routerLink="/aprender/materias">
+      <div class="accion-icono-box accion-azul">🎓</div>
+      <div class="accion-texto">
+        <span class="accion-titulo">Agregar materia</span>
+        <span class="accion-sub">Registra una nueva materia y su estado</span>
+      </div>
+      <span class="accion-flecha">→</span>
+    </a>
+
+    <a class="accion-item" routerLink="/aprender/tareas">
+      <div class="accion-icono-box accion-violeta">📋</div>
+      <div class="accion-texto">
+        <span class="accion-titulo">Nueva tarea</span>
+        <span class="accion-sub">Crea una nueva tarea o actividad académica</span>
+      </div>
+      <span class="accion-flecha">→</span>
+    </a>
+
+    <a class="accion-item" routerLink="/aprender/biblioteca">
+      <div class="accion-icono-box accion-verde">📗</div>
+      <div class="accion-texto">
+        <span class="accion-titulo">Agregar libro</span>
+        <span class="accion-sub">Guarda un libro en tu biblioteca personal</span>
+      </div>
+      <span class="accion-flecha">→</span>
+    </a>
+
+  </div>
 </div>
