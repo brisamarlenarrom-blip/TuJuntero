@@ -29,16 +29,17 @@
 
       <form [formGroup]="perfilForm">
 
-        <div class="form-field">
-          <label>Objetivo</label>
-          <select formControlName="objetivo">
-            <option value="fuerza">💪 Ganar fuerza</option>
-            <option value="hipertrofia">🏆 Ganar masa muscular</option>
-            <option value="cardio">❤️ Mejorar resistencia</option>
-            <option value="movilidad">🧘 Movilidad y flexibilidad</option>
-            <option value="perdida_peso">🔥 Perder peso</option>
-          </select>
+      <div class="form-field">
+        <label>Objetivo (podés elegir más de uno)</label>
+        <div class="objetivos-grid">
+         <label class="objetivo-check" *ngFor="let obj of objetivos"
+             [class.obj-activo]="perfilForm.value.objetivo?.includes(obj.value)"
+             (click)="toggleObjetivo(obj.value)">
+             <span class="obj-icono">{{ obj.icono }}</span>
+             <span class="obj-label">{{ obj.label }}</span>
+         </label>
         </div>
+      </div>
 
         <div class="form-field">
           <label>Nivel</label>

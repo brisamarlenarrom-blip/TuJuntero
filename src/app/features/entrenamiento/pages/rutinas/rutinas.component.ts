@@ -23,6 +23,15 @@ export class RutinasComponent implements OnInit {
   rutinaGenerada: any = null;
   rutinaGuardada: any = null;
 
+  // ── Opciones de objetivo ─────────────────────────────
+  objetivos = [
+    { value: 'fuerza',       label: 'Fuerza',        icono: '💪' },
+    { value: 'hipertrofia',  label: 'Masa muscular',  icono: '🏆' },
+    { value: 'cardio',       label: 'Resistencia',    icono: '❤️' },
+    { value: 'movilidad',    label: 'Movilidad',      icono: '🧘' },
+    { value: 'perdida_peso', label: 'Perder peso',    icono: '🔥' }
+  ];
+
   // ── Formulario de perfil fitness ─────────────────────
   perfilForm: FormGroup;
 
@@ -33,7 +42,7 @@ export class RutinasComponent implements OnInit {
     private router: Router
   ) {
     this.perfilForm = this.fb.group({
-      objetivo:     ['fuerza', Validators.required],
+      objetivo:     [['fuerza'], Validators.required],
       nivel:        ['principiante', Validators.required],
       diasSemana:   [3, Validators.required],
       duracion:     [45, Validators.required],
@@ -55,12 +64,23 @@ export class RutinasComponent implements OnInit {
     this.fs.getByField('rutinas_ia', 'usuarioId', this.usuarioId).subscribe(data => {
       if (data.length > 0) {
         this.rutinaGuardada = data[0];
-        // Pre-carga el formulario con los datos guardados
         if (this.rutinaGuardada.perfil) {
           this.perfilForm.patchValue(this.rutinaGuardada.perfil);
         }
       }
     });
+  }
+
+  // ── Toggle objetivo (múltiple selección) ─────────────
+  toggleObjetivo(valor: string) {
+    const actuales: string[] = this.perfilForm.value.objetivo || [];
+    const idx = actuales.indexOf(valor);
+    if (idx > -1) {
+      actuales.splice(idx, 1);
+    } else {
+      actuales.push(valor);
+    }
+    this.perfilForm.patchValue({ objetivo: [...actuales] });
   }
 
   // ── Genera rutina con IA ─────────────────────────────
@@ -70,18 +90,20 @@ export class RutinasComponent implements OnInit {
     this.rutinaGenerada = null;
 
     const perfil = this.perfilForm.value;
-    const objetivoLabel: Record<string, string> = {
-      fuerza: 'ganar fuerza', hipertrofia: 'ganar masa muscular',
-      cardio: 'mejorar resistencia cardiovascular', movilidad: 'mejorar movilidad y flexibilidad', perdida_peso: 'perder peso'
-    };
+    const objetivosSeleccionados = Array.isArray(perfil.objetivo)
+      ? perfil.objetivo.join(', ')
+      : perfil.objetivo;
+
     const equipLabel: Record<string, string> = {
       sin_equipamiento: 'sin equipamiento (solo peso corporal)',
-      mancuernas: 'mancuernas', gym_completo: 'gimnasio completo con máquinas y pesas', bandas: 'bandas elásticas'
+      mancuernas: 'mancuernas',
+      gym_completo: 'gimnasio completo con máquinas y pesas',
+      bandas: 'bandas elásticas'
     };
 
     const prompt = `Sos un entrenador personal experto. Generá una rutina de entrenamiento personalizada en español para:
 - Nombre: ${this.nombre}
-- Objetivo: ${objetivoLabel[perfil.objetivo] || perfil.objetivo}
+- Objetivos: ${objetivosSeleccionados}
 - Nivel: ${perfil.nivel}
 - Días por semana: ${perfil.diasSemana}
 - Duración por sesión: ${perfil.duracion} minutos
@@ -130,7 +152,11 @@ Respondé SOLO con un JSON válido, sin texto adicional, sin markdown, sin backt
   // ── Guarda la rutina en Firestore ────────────────────
   async guardarRutina() {
     if (!this.rutinaGenerada) return;
-    const datos = { ...this.rutinaGenerada, usuarioId: this.usuarioId, fechaActualizacion: new Date().toISOString() };
+    const datos = {
+      ...this.rutinaGenerada,
+      usuarioId: this.usuarioId,
+      fechaActualizacion: new Date().toISOString()
+    };
 
     if (this.rutinaGuardada?.id) {
       await this.fs.update('rutinas_ia', this.rutinaGuardada.id, datos);

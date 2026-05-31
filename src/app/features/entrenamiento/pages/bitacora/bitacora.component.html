@@ -1,58 +1,126 @@
-<button class="btn-volver" (click)="volver()">← Volver</button>
+<div class="page-wrapper">
 
-<div class="bitacora-container">
-
-  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="mostrarForm = true">+ Registrar entrenamiento</button>
-
-  <mat-card *ngIf="mostrarForm" class="form-card">
-    <h3>Registrar entrenamiento</h3>
-    <form [formGroup]="entrenoForm" (ngSubmit)="guardarEntreno()">
-      
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Rutina realizada</mat-label>
-        <input matInput formControlName="rutina" placeholder="Ej: Piernas y glúteos">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Duración (min)</mat-label>
-        <input matInput formControlName="duracion" type="number">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Intensidad</mat-label>
-        <mat-select formControlName="intensidad">
-          <mat-option value="baja">🟢 Baja</mat-option>
-          <mat-option value="media">🟡 Media</mat-option>
-          <mat-option value="alta">🔴 Alta</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>¿Cómo te sentiste?</mat-label>
-        <textarea matInput formControlName="sensacion" placeholder="Ej: Me sentí fuerte, buena energía..." rows="2"></textarea>
-      </mat-form-field>
-
-      <div class="botones-form">
-        <button mat-raised-button color="primary" type="submit" [disabled]="entrenoForm.invalid">Guardar</button>
-        <button mat-button type="button" (click)="mostrarForm = false">Cancelar</button>
+  <!-- ── HERO ──────────────────────────────────────────── -->
+  <div class="entrenamiento-hero">
+    <div class="hero-content">
+      <div class="hero-icon">🏋️</div>
+      <div class="hero-text">
+        <h1 class="hero-titulo">Entrenamiento</h1>
+        <p class="hero-subtitulo">Rutinas personalizadas con IA<br>para alcanzar tus objetivos.</p>
       </div>
-    </form>
-  </mat-card>
-
-  <ui-section-title *ngIf="entrenamientos.length > 0">Entrenamientos de hoy</ui-section-title>
-
- <ui-card 
-  *ngFor="let e of entrenamientos" 
-  [accent]="e.intensidad === 'alta' ? 'red' : e.intensidad === 'media' ? 'orange' : 'green'" 
-  [clickable]="true"> 
-    <div class="entreno-info">
-      <p class="entreno-rutina">{{ e.rutina }}</p>
-      <p class="entreno-detalle">⏱️ {{ e.duracion }} min | {{ e.intensidad === 'alta' ? '🔴' : e.intensidad === 'media' ? '🟡' : '🟢' }} {{ e.intensidad }}</p>
-      <p class="entreno-sensacion" *ngIf="e.sensacion">💬 {{ e.sensacion }}</p>
     </div>
-    <button (click)="eliminarEntreno(e.id)" class="btn-eliminar">🗑️</button>
-  </ui-card>
+    <nav class="entrenamiento-tabs">
+      <a routerLink="/entrenamiento/rutinas" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📋</span> Mis Rutinas
+      </a>
+      <a routerLink="/entrenamiento/bitacora" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📊</span> Bitácora
+      </a>
+    </nav>
+  </div>
 
-  <ui-empty-state *ngIf="entrenamientos.length === 0 && !mostrarForm" icon="🏋️" title="Sin entrenamientos hoy" text="Registrá tu primer entrenamiento del día"></ui-empty-state>
+  <div class="bitacora-wrapper">
 
+    <!-- ── FORMULARIO MODAL ───────────────────────────── -->
+    <div class="form-overlay" *ngIf="mostrarForm" (click)="mostrarForm = false"></div>
+    <div class="form-modal" *ngIf="mostrarForm">
+      <h3 class="form-titulo">Registrar entrenamiento</h3>
+
+      <form [formGroup]="entrenoForm" (ngSubmit)="guardarEntreno()">
+
+        <div class="form-field">
+          <label>Rutina realizada</label>
+          <input formControlName="rutina" placeholder="Ej: Piernas y glúteos">
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Duración (min)</label>
+            <input formControlName="duracion" type="number">
+          </div>
+          <div class="form-field">
+            <label>Intensidad</label>
+            <select formControlName="intensidad">
+              <option value="baja">🟢 Baja</option>
+              <option value="media">🟡 Media</option>
+              <option value="alta">🔴 Alta</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>¿Cómo te sentiste?</label>
+          <div class="sensaciones-row">
+            <button
+              type="button"
+              *ngFor="let s of sensaciones"
+              class="sensacion-btn"
+              [class.sensacion-activa]="sensacionSeleccionada === s.value"
+              (click)="seleccionarSensacion(s.value)">
+              <span class="sensacion-emoji">{{ s.value }}</span>
+              <span class="sensacion-label">{{ s.label }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-botones">
+          <button type="button" class="btn-cancelar" (click)="mostrarForm = false">Cancelar</button>
+          <button type="submit" class="btn-guardar" [disabled]="entrenoForm.invalid">Guardar</button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ── STATS ─────────────────────────────────────── -->
+    <div class="stats-hero">
+      <div class="stat-hero-item">
+        <span class="stat-hero-num" style="color: #8B5CF6;">{{ entrenamientosSemana }}/5</span>
+        <span class="stat-hero-label">Semana 1</span>
+      </div>
+      <div class="stat-hero-item">
+        <span class="stat-hero-num" style="color: #34D399;">{{ diasRacha }}</span>
+        <span class="stat-hero-label">Días de racha</span>
+      </div>
+      <div class="stat-hero-item">
+        <span class="stat-hero-num" style="color: #4A9EFF;">{{ minutosTotales }}</span>
+        <span class="stat-hero-label">Min totales</span>
+      </div>
+    </div>
+
+    <!-- ── HISTORIAL ──────────────────────────────────── -->
+    <div class="seccion-card">
+      <div class="seccion-header">
+        <h2 class="seccion-titulo">Historial</h2>
+        <div class="filtros">
+          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'semana'" (click)="filtroActivo = 'semana'">Semana</button>
+          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'mes'" (click)="filtroActivo = 'mes'">Mes</button>
+          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'todo'" (click)="filtroActivo = 'todo'">Todo</button>
+        </div>
+      </div>
+
+      <div class="entreno-row" *ngFor="let e of entrenamientosFiltrados">
+        <div class="entreno-icono-box" [style.background-color]="getColorIntensidad(e.intensidad) + '22'">
+          <span [style.color]="getColorIntensidad(e.intensidad)">💪</span>
+        </div>
+        <div class="entreno-info">
+          <span class="entreno-nombre">{{ e.rutina }}</span>
+          <span class="entreno-meta">{{ getFechaLabel(e.fecha) }} · {{ e.duracion }} min · {{ e.intensidad }}</span>
+        </div>
+        <span class="entreno-sensacion">{{ e.sensacion }}</span>
+        <button class="btn-accion" (click)="eliminarEntreno(e.id)">🗑️</button>
+      </div>
+
+      <div class="empty-state" *ngIf="entrenamientosFiltrados.length === 0">
+        <span style="font-size: 32px;">🏋️</span>
+        <p>Sin registros aún</p>
+      </div>
+
+    </div>
+
+    <!-- ── BOTÓN REGISTRAR ────────────────────────────── -->
+    <button class="btn-registrar" (click)="mostrarForm = true">
+      + Registrar entrenamiento de hoy
+    </button>
+
+  </div>
 </div>

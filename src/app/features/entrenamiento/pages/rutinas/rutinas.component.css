@@ -379,3 +379,35 @@
 }
 
 .btn-crear:hover { opacity: 0.9; }
+
+.objetivos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.objetivo-check {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.obj-activo {
+  background: rgba(139,92,246,0.15);
+  border-color: #8B5CF6;
+}
+
+.obj-icono { font-size: 20px; }
+
+.obj-label {
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+}
+
+.obj-activo .obj-label { color: #8B5CF6; font-weight: 500; }
