@@ -53,3 +53,18 @@
   color: #4A9EFF;
   font-weight: 600;
 }
+
+.footer-back {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.footer-back .footer-icon {
+  font-size: 20px;
+  color: #4A9EFF;
+}
+
+.footer-back .footer-label {
+  color: #4A9EFF;
+}

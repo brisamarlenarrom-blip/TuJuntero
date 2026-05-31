@@ -87,3 +87,31 @@
 .logout-btn:hover {
   color: #ff8a80;
 }
+
+.navbar-izq {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-volver {
+  background: none;
+  border: none;
+  color: #4A9EFF;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  line-height: 1;
+}
+
+.btn-volver:hover {
+  background: rgba(74,158,255,0.1);
+}
+
+.ruta-titulo {
+  color: #4A9EFF;
+  font-size: 18px;
+  font-weight: 700;
+}

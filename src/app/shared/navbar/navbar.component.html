@@ -1,5 +1,15 @@
 <div class="navbar">
-  <span class="logo">TuJuntero</span>
+
+  <!-- Izquierda: flecha o logo -->
+  <div class="navbar-izq">
+    <button class="btn-volver" *ngIf="mostrarFlecha" (click)="volver()">
+      ←
+    </button>
+    <span class="logo" *ngIf="!mostrarFlecha">TuJuntero</span>
+    <span class="ruta-titulo" *ngIf="mostrarFlecha">{{ tituloRuta }}</span>
+  </div>
+
+  <!-- Derecha: acciones -->
   <div class="navbar-actions">
     <button class="icon-btn" *ngIf="auth.getIsLogged()">🔔</button>
     <div class="avatar" *ngIf="auth.getIsLogged()">
@@ -8,4 +18,5 @@
     <button *ngIf="!auth.getIsLogged()" class="login-btn" routerLink="/auth/login">Ingresar</button>
     <button *ngIf="auth.getIsLogged()" class="logout-btn" (click)="logout()">Salir</button>
   </div>
+
 </div>

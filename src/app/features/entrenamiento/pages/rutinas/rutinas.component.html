@@ -1,95 +1,147 @@
-<button class="btn-volver" (click)="volver()">← Volver</button>
+<div class="page-wrapper">
 
-<div class="rutinas-container">
+  <!-- ── HERO ──────────────────────────────────────────── -->
+  <div class="entrenamiento-hero">
+    <div class="hero-content">
+      <div class="hero-icon">🏋️</div>
+      <div class="hero-text">
+        <h1 class="hero-titulo">Entrenamiento</h1>
+        <p class="hero-subtitulo">Rutinas personalizadas con IA<br>para alcanzar tus objetivos.</p>
+      </div>
+    </div>
+    <nav class="entrenamiento-tabs">
+      <a routerLink="/entrenamiento/rutinas" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📋</span> Mis Rutinas
+      </a>
+      <a routerLink="/entrenamiento/bitacora" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📊</span> Bitácora
+      </a>
+    </nav>
+  </div>
 
-  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="abrirForm()">+ Agregar rutina</button>
+  <div class="rutinas-wrapper">
 
-  <mat-card *ngIf="mostrarForm" class="form-card">
-    <h3>{{ editando ? 'Editar Rutina' : 'Nueva Rutina' }}</h3>
-    <form [formGroup]="rutinaForm" (ngSubmit)="guardarRutina()">
-      
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nombre" placeholder="Ej: Piernas y glúteos">
-      </mat-form-field>
+    <!-- ── FORMULARIO PERFIL FITNESS ─────────────────── -->
+    <div class="form-overlay" *ngIf="mostrarForm" (click)="mostrarForm = false"></div>
+    <div class="form-modal" *ngIf="mostrarForm">
+      <h3 class="form-titulo">⚡ Tu perfil fitness</h3>
+      <p class="form-subtitulo">La IA va a generar tu rutina personalizada</p>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Objetivo</mat-label>
-        <mat-select formControlName="objetivo">
-          <mat-option value="fuerza">Fuerza</mat-option>
-          <mat-option value="cardio">Cardio</mat-option>
-          <mat-option value="flexibilidad">Flexibilidad</mat-option>
-          <mat-option value="mixto">Mixto</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <form [formGroup]="perfilForm">
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Días</mat-label>
-        <input matInput formControlName="diasSemana" placeholder="Ej: Lunes, Miércoles, Viernes">
-      </mat-form-field>
+        <div class="form-field">
+          <label>Objetivo</label>
+          <select formControlName="objetivo">
+            <option value="fuerza">💪 Ganar fuerza</option>
+            <option value="hipertrofia">🏆 Ganar masa muscular</option>
+            <option value="cardio">❤️ Mejorar resistencia</option>
+            <option value="movilidad">🧘 Movilidad y flexibilidad</option>
+            <option value="perdida_peso">🔥 Perder peso</option>
+          </select>
+        </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Duración (min)</mat-label>
-        <input matInput formControlName="duracionEstimada" type="number">
-      </mat-form-field>
+        <div class="form-field">
+          <label>Nivel</label>
+          <select formControlName="nivel">
+            <option value="principiante">🌱 Principiante</option>
+            <option value="intermedio">⚡ Intermedio</option>
+            <option value="avanzado">🔥 Avanzado</option>
+          </select>
+        </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>🔥 Calentamiento</mat-label>
-        <textarea matInput formControlName="calentamiento" placeholder="Ej: 5 min de salto de soga..." rows="2"></textarea>
-      </mat-form-field>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Días por semana</label>
+            <select formControlName="diasSemana">
+              <option [value]="2">2 días</option>
+              <option [value]="3">3 días</option>
+              <option [value]="4">4 días</option>
+              <option [value]="5">5 días</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Duración (min)</label>
+            <select formControlName="duracion">
+              <option [value]="30">30 min</option>
+              <option [value]="45">45 min</option>
+              <option [value]="60">60 min</option>
+              <option [value]="90">90 min</option>
+            </select>
+          </div>
+        </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>💪 Ejercicios</mat-label>
-        <textarea matInput formControlName="ejercicios" placeholder="1. Sentadillas 4x12&#10;2. Zancadas 3x10..." rows="4"></textarea>
-      </mat-form-field>
+        <div class="form-field">
+          <label>Equipamiento</label>
+          <select formControlName="equipamiento">
+            <option value="sin_equipamiento">🏠 Sin equipamiento</option>
+            <option value="mancuernas">🏋️ Mancuernas</option>
+            <option value="bandas">🔗 Bandas elásticas</option>
+            <option value="gym_completo">🏟️ Gimnasio completo</option>
+          </select>
+        </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>🧘 Estiramiento</mat-label>
-        <textarea matInput formControlName="estiramiento" placeholder="Ej: Estiramiento de cuádriceps 30 seg..." rows="2"></textarea>
-      </mat-form-field>
+        <button type="button" class="btn-generar" (click)="generarRutina()" [disabled]="cargandoIA || perfilForm.invalid">
+          <span *ngIf="!cargandoIA">✨ Generar mi rutina con IA</span>
+          <span *ngIf="cargandoIA">⏳ Generando rutina...</span>
+        </button>
 
-      <!-- Solo visible si es mentor -->
-      <div class="mentor-check" *ngIf="esMentor">
-        <mat-checkbox formControlName="esPublica" color="primary">
-          🌟 Publicar como {{ nombreMentor }} (visible para todos)
-        </mat-checkbox>
+      </form>
+
+      <!-- ── RUTINA GENERADA ── -->
+      <div class="rutina-preview" *ngIf="rutinaGenerada">
+        <h4 class="preview-titulo">{{ rutinaGenerada.nombre }}</h4>
+        <p class="preview-desc">{{ rutinaGenerada.descripcion }}</p>
+
+        <div class="dia-card" *ngFor="let dia of rutinaGenerada.dias">
+          <p class="dia-titulo">{{ dia.dia }} — {{ dia.nombre }}</p>
+          <div class="ejercicio-row" *ngFor="let ej of dia.ejercicios">
+            <span class="ej-nombre">{{ ej.nombre }}</span>
+            <span class="ej-detalle">{{ ej.series }}x{{ ej.repeticiones }} · {{ ej.descanso }}</span>
+          </div>
+        </div>
+
+        <div class="consejos-box" *ngIf="rutinaGenerada.consejos">
+          <p class="consejos-titulo">💡 Consejos</p>
+          <p class="consejo" *ngFor="let c of rutinaGenerada.consejos">• {{ c }}</p>
+        </div>
+
+        <button class="btn-guardar" (click)="guardarRutina()">
+          💾 {{ rutinaGuardada ? 'Actualizar rutina' : 'Guardar rutina' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- ── RUTINA GUARDADA ────────────────────────────── -->
+    <div class="seccion-card" *ngIf="rutinaGuardada && !mostrarForm">
+      <div class="seccion-header">
+        <h2 class="seccion-titulo">Mi rutina actual</h2>
+        <button class="btn-regenerar" (click)="mostrarForm = true">⚡ Regenerar</button>
       </div>
 
-      <div class="botones-form">
-        <button mat-raised-button color="primary" type="submit" [disabled]="rutinaForm.invalid">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
-        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+      <p class="rutina-nombre-guardada">{{ rutinaGuardada.nombre }}</p>
+      <p class="rutina-desc-guardada">{{ rutinaGuardada.descripcion }}</p>
+
+      <div class="dia-card" *ngFor="let dia of rutinaGuardada.dias">
+        <p class="dia-titulo">{{ dia.dia }} — {{ dia.nombre }}</p>
+        <div class="ejercicio-row" *ngFor="let ej of dia.ejercicios">
+          <span class="ej-nombre">{{ ej.nombre }}</span>
+          <span class="ej-detalle">{{ ej.series }}x{{ ej.repeticiones }} · {{ ej.descanso }}</span>
+        </div>
       </div>
-    </form>
-  </mat-card>
 
-  <ui-section-title *ngIf="rutinas.length > 0">Mis Rutinas</ui-section-title>
-
-  <ui-card 
-    *ngFor="let rutina of rutinas" 
-    [accent]="rutina.objetivo === 'fuerza' ? 'red' : rutina.objetivo === 'cardio' ? 'blue' : 'green'" 
-    [clickable]="true"> 
-    
-    <div class="rutina-info">
-      <p class="rutina-nombre">{{ rutina.nombre }}</p>
-      
-      <!-- Muestra quién publicó si es una rutina de mentor -->
-      <p class="rutina-detalle" *ngIf="rutina.esPublica && rutina.nombreMentor">
-        🌟 Por {{ rutina.nombreMentor }}
-      </p>
-      
-      <ui-badge [variant]="rutina.objetivo === 'fuerza' ? 'red' : rutina.objetivo === 'cardio' ? 'blue' : 'green'">{{ rutina.objetivo }}</ui-badge>
-      <p class="rutina-detalle" *ngIf="rutina.diasSemana">📅 {{ rutina.diasSemana }}</p>
-      <p class="rutina-detalle">⏱️ {{ rutina.duracionEstimada }} min</p>
-      <p class="rutina-detalle" *ngIf="rutina.calentamiento">🔥 {{ rutina.calentamiento }}</p>
-      <p class="rutina-detalle" *ngIf="rutina.ejercicios">💪 {{ rutina.ejercicios }}</p>
-      <p class="rutina-detalle" *ngIf="rutina.estiramiento">🧘 {{ rutina.estiramiento }}</p>
+      <div class="consejos-box" *ngIf="rutinaGuardada.consejos">
+        <p class="consejos-titulo">💡 Consejos del entrenador</p>
+        <p class="consejo" *ngFor="let c of rutinaGuardada.consejos">• {{ c }}</p>
+      </div>
     </div>
-    <div class="rutina-acciones">
-      <button (click)="editarRutina(rutina)" class="btn-editar">✏️</button>
-      <button (click)="eliminarRutina(rutina.id)" class="btn-eliminar">🗑️</button>
+
+    <!-- ── SIN RUTINA ─────────────────────────────────── -->
+    <div class="empty-rutina" *ngIf="!rutinaGuardada && !mostrarForm">
+      <div class="empty-icono">🏋️</div>
+      <h3 class="empty-titulo">Sin rutina aún</h3>
+      <p class="empty-sub">Completá tu perfil fitness y la IA te crea una rutina personalizada</p>
+      <button class="btn-crear" (click)="mostrarForm = true">✨ Crear mi rutina con IA</button>
     </div>
-  </ui-card>
 
-  <ui-empty-state *ngIf="rutinas.length === 0 && !mostrarForm" icon="📋" title="Sin rutinas" text="Todavía no tenés rutinas. ¡Agregá la primera!"></ui-empty-state>
-
+  </div>
 </div>

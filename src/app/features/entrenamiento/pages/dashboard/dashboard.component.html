@@ -1,32 +1,127 @@
 <div class="entrenamiento-container">
 
-  <div class="hero">
-    <h1 class="hero-titulo">💪 Entrenamiento</h1>
-    <p class="hero-subtitulo">Movete, superate, transformate</p>
+  <!-- ── HERO BANNER + TABS ────────────────────────────────── -->
+  <div class="entrenamiento-hero">
+    <div class="hero-content">
+      <div class="hero-icon">🏋️</div>
+      <div class="hero-text">
+        <h1 class="hero-titulo">Entrenamiento</h1>
+        <p class="hero-subtitulo">Rutinas guiadas por mentores para<br>entrenar tu cuerpo y tu mente.</p>
+      </div>
+    </div>
+    <nav class="entrenamiento-tabs">
+      <a routerLink="rutinas" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📋</span> Mis Rutinas
+      </a>
+      <a routerLink="bitacora" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">📊</span> Bitácora
+      </a>
+    </nav>
   </div>
 
-  <div class="nav">
-    <a routerLink="rutinas" routerLinkActive="nav-activo" class="nav-item">📋 Mis Rutinas</a>
-    <a routerLink="bitacora" routerLinkActive="nav-activo" class="nav-item">📊 Bitácora</a>
-    <a routerLink="destacados" routerLinkActive="nav-activo" class="nav-item">🌟 Destacados</a>
+  <!-- ── BARRA DE BÚSQUEDA ─────────────────────────────────── -->
+  <div class="busqueda-card">
+    <div class="busqueda-input">
+      <span class="busqueda-icono">🔍</span>
+      <input type="text" placeholder="Buscar rutinas, grupos musculares...">
+    </div>
   </div>
 
-
-  <div class="resumen-grid">
-    <a class="resumen-card" routerLink="rutinas">
-      <span class="resumen-icono">📋</span>
-      <p class="resumen-numero">{{ totalRutinas }}</p>
-      <p class="resumen-texto">Rutinas</p>
-    </a>
-    <a class="resumen-card" routerLink="bitacora">
-      <span class="resumen-icono">🏋️</span>
-      <p class="resumen-numero">{{ entrenamientosHoy }}</p>
-      <p class="resumen-texto">Entrenos hoy</p>
-    </a>
+  <!-- ── CATEGORÍAS ────────────────────────────────────────── -->
+  <div class="categorias-grid">
+    <button
+      *ngFor="let cat of categorias"
+      class="categoria-btn"
+      [class.categoria-activa]="categoriaActiva === cat.label"
+      (click)="setCategoria(cat.label)">
+      <span class="cat-icono">{{ cat.icono }}</span>
+      <span class="cat-label">{{ cat.label }}</span>
+    </button>
   </div>
 
-  <div class="frase">
-    <p>🔥 "No te rindas. Cada gota de sudor te acerca a tu mejor versión."</p>
+  <!-- ── STATS ─────────────────────────────────────────────── -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">Tu progreso</h2>
+    <div class="stats-grid">
+
+      <div class="stat-card stat-violeta">
+        <span class="stat-icono">📋</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ totalRutinas }}</span>
+          <span class="stat-label">Rutinas guardadas</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-azul">
+        <span class="stat-icono">🏋️</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ entrenamientosHoy }}</span>
+          <span class="stat-label">Entrenos hoy</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-verde">
+        <span class="stat-icono">✅</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ rutinasActivas }}</span>
+          <span class="stat-label">Rutinas activas</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-naranja">
+        <span class="stat-icono">🔥</span>
+        <div class="stat-info">
+          <span class="stat-numero">{{ rachaEntrenamiento }}</span>
+          <span class="stat-label">Días de racha</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── MIS RUTINAS ───────────────────────────────────────── -->
+  <div class="seccion-card" *ngIf="rutinas.length > 0">
+    <div class="seccion-header">
+      <h2 class="seccion-titulo">Mis rutinas</h2>
+      <a routerLink="rutinas" class="ver-todas">Ver todas</a>
+    </div>
+
+    <div class="rutina-row" *ngFor="let r of rutinas">
+      <div class="rutina-icono-box" [style.background-color]="getColorEstado(r.estado) + '22'">
+        <span [style.color]="getColorEstado(r.estado)">💪</span>
+      </div>
+      <div class="rutina-info">
+        <span class="rutina-nombre">{{ r.nombre }}</span>
+        <span class="rutina-sub" *ngIf="r.nivel">{{ r.nivel }}</span>
+        <div class="barra-fondo" *ngIf="r.progreso">
+          <div class="barra-progreso"
+            [style.width.%]="r.progreso"
+            [style.background-color]="getColorEstado(r.estado)">
+          </div>
+        </div>
+      </div>
+      <span class="rutina-badge"
+        [style.background-color]="getColorEstado(r.estado) + '22'"
+        [style.color]="getColorEstado(r.estado)">
+        {{ getLabelEstado(r.estado) }}
+      </span>
+    </div>
+  </div>
+
+  <!-- ── RECOMENDACIÓN IA (visual) ─────────────────────────── -->
+  <div class="ia-card">
+    <div class="ia-izq">
+      <p class="ia-titulo">⭐ Recomendaciones para vos</p>
+      <p class="ia-sub">Aumentá tu rendimiento. Probá esta rutina HIIT de 20 minutos para mejorar tu resistencia.</p>
+      <button class="ia-btn">Ver rutina →</button>
+    </div>
+    <div class="ia-emoji">🏃</div>
+  </div>
+
+  <!-- ── FRASE ─────────────────────────────────────────────── -->
+  <div class="frase-card">
+    <p class="frase-texto">"No te rindas. Cada gota de sudor te acerca a tu mejor versión."</p>
+    <span class="frase-autor">— 🔥</span>
   </div>
 
   <router-outlet></router-outlet>
