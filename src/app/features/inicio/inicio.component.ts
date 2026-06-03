@@ -55,7 +55,7 @@ export class InicioComponent implements OnInit {
   ngOnInit() {
     this.setSaludo();
     this.cargarNombre();
-    this.cargarFraseDelDia();
+    this.cargarFraseDelDia(); 
     this.cargarTareasPendientes();
   }
 
@@ -69,25 +69,35 @@ export class InicioComponent implements OnInit {
     if (usuario) this.nombre = usuario.nombre;
   }
 
-  cargarFraseDelDia() {
-    const diaSemana = new Date().getDay().toString();
-    this.api.getItemsByTipo('frase').subscribe({
-      next: (data) => {
-        const fraseHoy = data.find((f: any) => f.diaSemana === diaSemana);
-        if (fraseHoy) {
-          this.frase = fraseHoy.contenido;
-          this.referencia = fraseHoy.autor;
-        } else if (data.length > 0) {
-          this.frase = data[0].contenido;
-          this.referencia = data[0].autor;
-        }
-      },
-      error: () => {
-        this.frase = 'Porque yo sé los planes que tengo para vos, dice el Señor...';
-        this.referencia = 'Jeremías 29:11';
-      }
-    });
+  async cargarFraseDelDia() {
+  // Versículos predefinidos rotantes por día de la semana
+  const versiculos = [
+    'JHN.3.16', 'PHP.4.13', 'PSA.23.1', 'ISA.40.31',
+    'JER.29.11', 'ROM.8.28', 'PRO.3.5', 'MAT.11.28'
+  ];
+
+  const hoy = new Date();
+  const indice = hoy.getDate() % versiculos.length;
+  const versiculo = versiculos[indice];
+
+  const bibleId = 'b32b9d1b64b4ef29-01'; // NTV en español
+  const apiKey = 'UHG4bARVhogIr9t2BfYxy';
+
+  try {
+    const response = await fetch(
+      `https://api.scripture.api.bible/v1/bibles/${bibleId}/verses/${versiculo}?content-type=text&include-verse-numbers=false`,
+      { headers: { 'api-key': apiKey } }
+    );
+    const data = await response.json();
+    if (data.data) {
+      this.frase = data.data.content.trim();
+      this.referencia = data.data.reference;
+    }
+  } catch {
+    this.frase = 'Porque yo sé los planes que tengo para vos, dice el Señor...';
+    this.referencia = 'Jeremías 29:11';
   }
+}
 
   cargarTareasPendientes() {
     const usuario = this.auth.getUsuarioActual();
