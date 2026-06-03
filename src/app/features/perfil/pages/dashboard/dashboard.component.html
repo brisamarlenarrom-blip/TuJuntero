@@ -1,0 +1,84 @@
+<div class="perfil-container">
+
+  <!-- ── HERO ──────────────────────────────────────────── -->
+  <div class="perfil-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="avatar-wrapper">
+        <div class="avatar">{{ iniciales }}</div>
+      </div>
+      <div class="hero-info">
+        <h1 class="hero-saludo">Hola, <span class="hero-nombre">{{ nombre }}</span> ✨</h1>
+        <p class="hero-frase">{{ fraseDelDia }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STATS ─────────────────────────────────────────── -->
+  <div class="stats-grid">
+    <div class="stat-card stat-naranja">
+      <span class="stat-icono">🔥</span>
+      <span class="stat-num">{{ diasSeguidos }}</span>
+      <span class="stat-label">Días seguidos</span>
+      <span class="stat-sub">¡Seguí así!</span>
+    </div>
+    <div class="stat-card stat-violeta">
+      <span class="stat-icono">📚</span>
+      <span class="stat-num">{{ tareasCompletadas }}</span>
+      <span class="stat-label">Tareas completadas</span>
+      <span class="stat-sub">Esta semana</span>
+    </div>
+    <div class="stat-card stat-verde">
+      <span class="stat-icono">🏋️</span>
+      <span class="stat-num">{{ minutosEntrenados }}</span>
+      <span class="stat-label">Minutos entrenados</span>
+      <span class="stat-sub">Esta semana</span>
+    </div>
+    <div class="stat-card stat-amarillo">
+      <span class="stat-icono">🥗</span>
+      <span class="stat-num">{{ recetasFavoritas }}</span>
+      <span class="stat-label">Recetas favoritas</span>
+      <span class="stat-sub">Guardadas</span>
+    </div>
+  </div>
+
+  <!-- ── LOGROS ────────────────────────────────────────── -->
+  <div class="seccion-card">
+    <div class="seccion-header">
+      <h2 class="seccion-titulo">Logros</h2>
+    </div>
+    <div class="logros-grid">
+      <div class="logro-item" *ngFor="let l of logros" [class.logro-desbloqueado]="l.desbloqueado">
+        <div class="logro-icono-box" [style.border-color]="l.desbloqueado ? l.color : 'rgba(255,255,255,0.1)'">
+          <span>{{ l.icono }}</span>
+        </div>
+        <span class="logro-titulo">{{ l.titulo }}</span>
+        <span class="logro-sub">{{ l.sub }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MÁS OPCIONES ──────────────────────────────────── -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">Más opciones</h2>
+    <div class="opcion-row" *ngFor="let op of opciones">
+      <div class="opcion-icono">{{ op.icono }}</div>
+      <div class="opcion-info">
+        <span class="opcion-titulo">{{ op.titulo }}</span>
+        <span class="opcion-sub">{{ op.sub }}</span>
+      </div>
+      <span class="opcion-flecha">›</span>
+    </div>
+
+    <!-- Cerrar sesión -->
+    <div class="opcion-row opcion-danger" (click)="logout()">
+      <div class="opcion-icono">🚪</div>
+      <div class="opcion-info">
+        <span class="opcion-titulo">Cerrar sesión</span>
+        <span class="opcion-sub">Hasta luego 👋</span>
+      </div>
+      <span class="opcion-flecha">›</span>
+    </div>
+  </div>
+
+</div>

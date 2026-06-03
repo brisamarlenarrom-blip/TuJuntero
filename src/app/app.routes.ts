@@ -11,7 +11,7 @@ export const routes: Routes = [
       { path: 'aprender', loadChildren: () => import('./features/aprender/aprender.module').then(m => m.AprenderModule) },
       { path: 'alimentarse', loadChildren: () => import('./features/alimentarse/alimentarse.module').then(m => m.AlimentarseModule) },
       { path: 'entrenamiento', loadChildren: () => import('./features/entrenamiento/entrenamiento.module').then(m => m.EntrenamientoModule) },
-      { path: 'comunidad', loadChildren: () => import('./features/comunidad/comunidad.module').then(m => m.ComunidadModule) },
+      { path: 'perfil', loadChildren: () => import('./features/perfil/perfil.module').then(m => m.PerfilModule) },
       { path: '', redirectTo: 'inicio', pathMatch: 'full' }
     ]
   },

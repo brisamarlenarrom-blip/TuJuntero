@@ -21,4 +21,4 @@ const routes: Routes = [
     MentoresComponent
   ]
 })
-export class ComunidadModule { }
+export class PerfilModule { }
