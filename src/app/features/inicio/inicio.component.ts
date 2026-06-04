@@ -28,6 +28,7 @@ export class InicioComponent implements OnInit {
 
   // ── Check-in emocional ───────────────────────────────
   estadoAnimo = 0;
+  animoGuardadoHoyId = ''; // ID del registro de hoy en Firestore
   emojis = [
     { valor: 1, emoji: '😢', label: 'Mal' },
     { valor: 2, emoji: '😐', label: 'Regular' },
@@ -37,8 +38,8 @@ export class InicioComponent implements OnInit {
   ];
 
   // ── Stats ────────────────────────────────────────────
-  diasSeguidos = 5;          // TODO: conectar con check-ins diarios
-  metaDiaria = 3;            // TODO: conectar con Firestore
+  diasSeguidos = 5;
+  metaDiaria = 3;
   metaDiariaTotal = 5;
 
   // ── Accesos rápidos ──────────────────────────────────
@@ -55,8 +56,9 @@ export class InicioComponent implements OnInit {
   ngOnInit() {
     this.setSaludo();
     this.cargarNombre();
-    this.cargarFraseDelDia(); 
+    this.cargarFraseDelDia();
     this.cargarTareasPendientes();
+    this.cargarAnimoHoy();
   }
 
   setSaludo() {
@@ -70,34 +72,31 @@ export class InicioComponent implements OnInit {
   }
 
   async cargarFraseDelDia() {
-  // Versículos predefinidos rotantes por día de la semana
-  const versiculos = [
-    'JHN.3.16', 'PHP.4.13', 'PSA.23.1', 'ISA.40.31',
-    'JER.29.11', 'ROM.8.28', 'PRO.3.5', 'MAT.11.28'
-  ];
+    const versiculos = [
+      'JHN.3.16', 'PHP.4.13', 'PSA.23.1', 'ISA.40.31',
+      'JER.29.11', 'ROM.8.28', 'PRO.3.5', 'MAT.11.28'
+    ];
+    const hoy = new Date();
+    const indice = hoy.getDate() % versiculos.length;
+    const versiculo = versiculos[indice];
+    const bibleId = 'b32b9d1b64b4ef29-01';
+    const apiKey = 'UHG4bARVhogIr9t2BfYxy';
 
-  const hoy = new Date();
-  const indice = hoy.getDate() % versiculos.length;
-  const versiculo = versiculos[indice];
-
-  const bibleId = 'b32b9d1b64b4ef29-01'; // NTV en español
-  const apiKey = 'UHG4bARVhogIr9t2BfYxy';
-
-  try {
-    const response = await fetch(
-      `https://api.scripture.api.bible/v1/bibles/${bibleId}/verses/${versiculo}?content-type=text&include-verse-numbers=false`,
-      { headers: { 'api-key': apiKey } }
-    );
-    const data = await response.json();
-    if (data.data) {
-      this.frase = data.data.content.trim();
-      this.referencia = data.data.reference;
+    try {
+      const response = await fetch(
+        `https://api.scripture.api.bible/v1/bibles/${bibleId}/verses/${versiculo}?content-type=text&include-verse-numbers=false`,
+        { headers: { 'api-key': apiKey } }
+      );
+      const data = await response.json();
+      if (data.data) {
+        this.frase = data.data.content.trim();
+        this.referencia = data.data.reference;
+      }
+    } catch {
+      this.frase = 'Porque yo sé los planes que tengo para vos, dice el Señor...';
+      this.referencia = 'Jeremías 29:11';
     }
-  } catch {
-    this.frase = 'Porque yo sé los planes que tengo para vos, dice el Señor...';
-    this.referencia = 'Jeremías 29:11';
   }
-}
 
   cargarTareasPendientes() {
     const usuario = this.auth.getUsuarioActual();
@@ -108,7 +107,64 @@ export class InicioComponent implements OnInit {
     }
   }
 
+  // ── Ánimo ────────────────────────────────────────────
+ cargarAnimoHoy() {
+  const usuario = this.auth.getUsuarioActual();
+  if (!usuario) return;
+  const hoy = new Date().toISOString().split('T')[0];
+
+  this.fs.getByField('animos', 'usuarioId', usuario.id).subscribe(data => {
+    // Registro de hoy
+    const registroHoy = data.find((a: any) => a.fecha === hoy);
+    if (registroHoy) {
+      this.estadoAnimo = registroHoy.valor;
+      this.animoGuardadoHoyId = registroHoy.id;
+    }
+
+    // Calcular racha
+    const fechas = data.map((a: any) => a.fecha).sort().reverse();
+    let racha = 0;
+    const fecha = new Date();
+
+    for (let i = 0; i < 365; i++) {
+      const f = fecha.toISOString().split('T')[0];
+      if (fechas.includes(f)) {
+        racha++;
+        fecha.setDate(fecha.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+    this.diasSeguidos = racha;
+  });
+}
+
   seleccionarAnimo(valor: number) {
     this.estadoAnimo = valor;
+    this.guardarAnimo(valor);
+  }
+
+  async guardarAnimo(valor: number) {
+    const usuario = this.auth.getUsuarioActual();
+    if (!usuario) return;
+
+    const hoy = new Date().toISOString().split('T')[0];
+    const emoji = this.emojis.find(e => e.valor === valor);
+    const datos = {
+      usuarioId: usuario.id,
+      fecha: hoy,
+      valor,
+      emoji: emoji?.emoji || '',
+      label: emoji?.label || ''
+    };
+
+    if (this.animoGuardadoHoyId) {
+      // Actualiza el registro de hoy
+      await this.fs.update('animos', this.animoGuardadoHoyId, datos);
+    } else {
+      // Crea uno nuevo y guarda el ID
+      const ref = await this.fs.create('animos', datos);
+      this.animoGuardadoHoyId = ref?.id || '';
+    }
   }
 }
