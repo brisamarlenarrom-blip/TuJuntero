@@ -22,6 +22,7 @@ export interface Usuario {
   frecuenciaDeporte?: string;
   rol: string;
   esMentor: boolean;
+  bio?: string;
 }
 
 @Injectable({
@@ -71,17 +72,30 @@ export class AuthService {
 
   // Registro: crea un usuario nuevo en Firestore
   register(usuario: Partial<Usuario>): Observable<any> {
-  const nuevoUsuario = {
-    ...usuario,
-    rol: 'usuario',
-    esMentor: false,
-    avatarUrl: usuario.avatarUrl || 'assets/default-avatar.png',
-    trabaja: usuario.trabaja || false,
-    haceDeporte: usuario.haceDeporte || false
-  };
-  // Usa el email como ID del documento
+    const nuevoUsuario = {
+      ...usuario,
+      rol: 'usuario',
+      esMentor: false,
+      avatarUrl: usuario.avatarUrl || 'assets/default-avatar.png',
+      trabaja: usuario.trabaja || false,
+      haceDeporte: usuario.haceDeporte || false
+    };
     return from(this.fs.createWithId('usuarios', usuario.email || 'sin-email', nuevoUsuario));
-}
+  }
+
+  // Actualiza los datos del usuario logueado
+  actualizarUsuario(datos: Partial<Usuario>): Promise<void> {
+    const usuario = this.usuarioActual();
+    if (!usuario) return Promise.reject('No hay usuario');
+    
+    return this.fs.update('usuarios', usuario.id, datos).then(() => {
+      const actualizado = { ...usuario, ...datos };
+      this.usuarioActual.set(actualizado);
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('usuarioActual', JSON.stringify(actualizado));
+      }
+    });
+  }
 
   logout(): void {
     this.usuarioActual.set(null);

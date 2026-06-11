@@ -8,13 +8,15 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';     
 import { MateriasComponent } from './pages/materias/materias.component';           // CRUD de materias
 import { TareasComponent } from './pages/tareas/tareas.component';                 // CRUD de tareas
 import { BibliotecaComponent } from './pages/biblioteca/biblioteca.component';     // CRUD de libros
-
+import { AsistenteComponent } from './pages/asistente/asistente.component';
+ 
 // Rutas hijas de Aprender
 const routes: Routes = [
   { path: '', component: DashboardComponent },          // Resumen al entrar
   { path: 'materias', component: MateriasComponent },
   { path: 'tareas', component: TareasComponent },
-  { path: 'biblioteca', component: BibliotecaComponent }
+  { path: 'biblioteca', component: BibliotecaComponent },
+  { path: 'asistente', component: AsistenteComponent },
 ];
 
 @NgModule({
@@ -25,7 +27,8 @@ const routes: Routes = [
     DashboardComponent,
     MateriasComponent,
     TareasComponent,
-    BibliotecaComponent
+    BibliotecaComponent,
+    AsistenteComponent,
   ]
 })
 export class AprenderModule { }

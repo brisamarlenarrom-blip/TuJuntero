@@ -1,0 +1,10 @@
+.asistente-container { padding: 16px 12px 40px 12px; max-width: 700px; margin: 0 auto; }
+.btn-volver { background: none; border: none; color: #64B5F6; font-size: 15px; cursor: pointer; padding: 0; margin-bottom: 16px; }
+.asistente-header { text-align: center; margin-bottom: 24px; }
+.asistente-header h2 { color: white; font-size: 24px; margin: 0; }
+.asistente-header p { color: #94A3B8; font-size: 14px; margin-top: 8px; }
+.form-card { background-color: var(--surface-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px; }
+.full-width { width: 100%; margin-bottom: 12px; }
+.respuesta-card { background-color: #0D1B2A; border: 1px solid var(--blue-soft); border-radius: var(--radius-md); padding: 24px; }
+.respuesta-card h3 { color: var(--blue-soft); font-size: 18px; margin: 0 0 16px 0; }
+.respuesta-texto { color: white; font-size: 15px; line-height: 1.7; white-space: pre-line; margin: 0; }

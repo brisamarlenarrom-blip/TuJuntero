@@ -1,27 +1,107 @@
-<!-- ── BIENESTAR DEL MES ──────────────────────────────── -->
-<div class="seccion-card" *ngIf="diasRegistrados > 0">
-  <h2 class="seccion-titulo">Tu bienestar este mes</h2>
+<div class="perfil-container">
 
-  <div class="animo-resumen">
-    <div class="animo-promedio">
-      <span class="animo-emoji-grande">{{ emojiPromedio }}</span>
-      <div class="animo-promedio-info">
-        <span class="animo-promedio-num">{{ promedioAnimo }}</span>
-<span class="animo-promedio-label">{{ getLabelPorValor(promedioAnimo) }} en promedio</span>       
-        <span class="animo-dias">{{ diasRegistrados }} días registrados</span>
+  <!-- ── HERO ──────────────────────────────────────────── -->
+  <div class="perfil-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="avatar-wrapper">
+        <div class="avatar">{{ iniciales }}</div>
+      </div>
+      <div class="hero-info">
+        <h1 class="hero-saludo">Hola, <span class="hero-nombre">{{ nombre }}</span> ✨</h1>
+        <p class="hero-frase">{{ fraseDelDia }}</p>
       </div>
     </div>
   </div>
 
-  <!-- Últimos 7 días -->
-  <div class="animo-barras">
-    <div class="animo-barra-item" *ngFor="let a of animosMes.slice(-7)">
-      <div class="animo-barra-fill"
-        [style.height.%]="(a.valor / 5) * 100"
-        [style.background-color]="getColorAnimo(a.valor)">
-      </div>
-      <span class="animo-barra-emoji">{{ a.emoji }}</span>
-      <span class="animo-barra-fecha">{{ a.fecha | date:'d/M' }}</span>
+  <!-- ── STATS ─────────────────────────────────────────── -->
+  <div class="stats-grid">
+    <div class="stat-card stat-naranja">
+      <span class="stat-icono">🔥</span>
+      <span class="stat-num">{{ diasSeguidos }}</span>
+      <span class="stat-label">Días seguidos</span>
+      <span class="stat-sub">¡Seguí así!</span>
+    </div>
+    <div class="stat-card stat-violeta">
+      <span class="stat-icono">📚</span>
+      <span class="stat-num">{{ tareasCompletadas }}</span>
+      <span class="stat-label">Tareas completadas</span>
+      <span class="stat-sub">Esta semana</span>
+    </div>
+    <div class="stat-card stat-verde">
+      <span class="stat-icono">🏋️</span>
+      <span class="stat-num">{{ minutosEntrenados }}</span>
+      <span class="stat-label">Minutos entrenados</span>
+      <span class="stat-sub">Esta semana</span>
+    </div>
+    <div class="stat-card stat-amarillo">
+      <span class="stat-icono">🥗</span>
+      <span class="stat-num">{{ recetasFavoritas }}</span>
+      <span class="stat-label">Recetas favoritas</span>
+      <span class="stat-sub">Guardadas</span>
     </div>
   </div>
+
+  <!-- ── BIENESTAR DEL MES ──────────────────────────────── -->
+  <div class="seccion-card" *ngIf="diasRegistrados > 0">
+    <h2 class="seccion-titulo">Tu bienestar este mes</h2>
+    <div class="animo-resumen">
+      <div class="animo-promedio">
+        <span class="animo-emoji-grande">{{ emojiPromedio }}</span>
+        <div class="animo-promedio-info">
+          <span class="animo-promedio-num">{{ promedioAnimo }}</span>
+          <span class="animo-promedio-label">{{ getLabelPorValor(promedioAnimo) }} en promedio</span>
+          <span class="animo-dias">{{ diasRegistrados }} días registrados</span>
+        </div>
+      </div>
+    </div>
+    <div class="animo-barras">
+      <div class="animo-barra-item" *ngFor="let a of animosMes.slice(-7)">
+        <div class="animo-barra-fill"
+          [style.height.%]="(a.valor / 5) * 100"
+          [style.background-color]="getColorAnimo(a.valor)">
+        </div>
+        <span class="animo-barra-emoji">{{ a.emoji }}</span>
+        <span class="animo-barra-fecha">{{ a.fecha | date:'d/M' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LOGROS ────────────────────────────────────────── -->
+  <div class="seccion-card">
+    <div class="seccion-header">
+      <h2 class="seccion-titulo">Logros</h2>
+    </div>
+    <div class="logros-grid">
+      <div class="logro-item" *ngFor="let l of logros" [class.logro-desbloqueado]="l.desbloqueado">
+        <div class="logro-icono-box" [style.border-color]="l.desbloqueado ? l.color : 'rgba(255,255,255,0.1)'">
+          <span>{{ l.icono }}</span>
+        </div>
+        <span class="logro-titulo">{{ l.titulo }}</span>
+        <span class="logro-sub">{{ l.sub }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MÁS OPCIONES ──────────────────────────────────── -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">Más opciones</h2>
+    <div class="opcion-row" *ngFor="let op of opciones">
+      <div class="opcion-icono">{{ op.icono }}</div>
+      <div class="opcion-info">
+        <span class="opcion-titulo">{{ op.titulo }}</span>
+        <span class="opcion-sub">{{ op.sub }}</span>
+      </div>
+      <span class="opcion-flecha">›</span>
+    </div>
+    <div class="opcion-row opcion-danger" (click)="logout()">
+      <div class="opcion-icono">🚪</div>
+      <div class="opcion-info">
+        <span class="opcion-titulo">Cerrar sesión</span>
+        <span class="opcion-sub">Hasta luego 👋</span>
+      </div>
+      <span class="opcion-flecha">›</span>
+    </div>
+  </div>
+
 </div>

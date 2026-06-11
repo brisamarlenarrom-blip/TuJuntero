@@ -1,0 +1,118 @@
+<div class="editar-container">
+
+  <!-- HEADER -->
+  <div class="editar-header">
+    <button class="btn-volver" (click)="volver()">←</button>
+    <h1 class="editar-titulo">Editar perfil</h1>
+    <div style="width:40px"></div>
+  </div>
+
+  <!-- AVATAR -->
+  <div class="avatar-section">
+    <div class="avatar-grande">{{ iniciales }}</div>
+    <p class="avatar-hint">Tu avatar usa tus iniciales</p>
+  </div>
+
+  <!-- MENSAJES -->
+  <div class="mensaje-exito" *ngIf="mensajeExito">{{ mensajeExito }}</div>
+  <div class="mensaje-error" *ngIf="mensajeError">{{ mensajeError }}</div>
+
+  <!-- Datos personales -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">👤 Datos personales</h2>
+
+    <div class="campo-group">
+      <label class="campo-label">Nombre *</label>
+      <input class="campo-input" type="text" [(ngModel)]="nombre"
+             (ngModelChange)="actualizarIniciales()" placeholder="Tu nombre" />
+    </div>
+
+    <div class="campo-group">
+      <label class="campo-label">Apellido *</label>
+      <input class="campo-input" type="text" [(ngModel)]="apellido"
+             (ngModelChange)="actualizarIniciales()" placeholder="Tu apellido" />
+    </div>
+
+    <div class="campo-group">
+      <label class="campo-label">Fecha de nacimiento</label>
+      <input class="campo-input" type="date" [(ngModel)]="fechaNacimiento" />
+    </div>
+
+    <div class="campo-group">
+      <label class="campo-label">Bio</label>
+      <textarea class="campo-input campo-textarea" [(ngModel)]="bio"
+                placeholder="Contá algo sobre vos..." rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- Educación -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">📚 Educación</h2>
+
+    <div class="campo-group">
+      <label class="campo-label">Nivel de estudios</label>
+      <select class="campo-input campo-select" [(ngModel)]="nivelEstudios">
+        <option value="">Seleccioná una opción</option>
+        <option *ngFor="let n of nivelesEstudio" [value]="n">{{ n }}</option>
+      </select>
+    </div>
+
+    <div class="campo-group">
+      <label class="campo-label">Carrera o interés</label>
+      <input class="campo-input" type="text" [(ngModel)]="carreraOInteres"
+             placeholder="Ej: Ingeniería, Marketing..." />
+    </div>
+  </div>
+
+  <!-- Trabajo -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">💼 Trabajo</h2>
+
+    <div class="toggle-row">
+      <span class="toggle-label">¿Trabajás actualmente?</span>
+      <div class="toggle-btn" [class.toggle-on]="trabaja" (click)="trabaja = !trabaja">
+        <div class="toggle-circle"></div>
+      </div>
+    </div>
+
+    <div class="campo-group" *ngIf="trabaja">
+      <label class="campo-label">Horas por día</label>
+      <input class="campo-input" type="number" [(ngModel)]="horasTrabajoPorDia"
+             min="1" max="24" placeholder="Ej: 8" />
+    </div>
+  </div>
+
+  <!-- Deporte -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">🏋️ Deporte</h2>
+
+    <div class="toggle-row">
+      <span class="toggle-label">¿Hacés deporte?</span>
+      <div class="toggle-btn" [class.toggle-on]="haceDeporte" (click)="haceDeporte = !haceDeporte">
+        <div class="toggle-circle"></div>
+      </div>
+    </div>
+
+    <div *ngIf="haceDeporte">
+      <div class="campo-group" style="margin-top:14px">
+        <label class="campo-label">¿Qué deporte?</label>
+        <input class="campo-input" type="text" [(ngModel)]="queDeporte"
+               placeholder="Ej: Fútbol, Natación..." />
+      </div>
+      <div class="campo-group" style="margin-top:14px">
+        <label class="campo-label">Frecuencia</label>
+        <select class="campo-input campo-select" [(ngModel)]="frecuenciaDeporte">
+          <option value="">Seleccioná una opción</option>
+          <option *ngFor="let f of frecuenciasDeporte" [value]="f">{{ f }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUARDAR -->
+  <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
+    <span *ngIf="!guardando">Guardar cambios ✓</span>
+    <span *ngIf="guardando">Guardando...</span>
+  </button>
+
+</div>

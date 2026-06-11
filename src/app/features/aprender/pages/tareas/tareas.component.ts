@@ -154,8 +154,12 @@ export class TareasComponent implements OnInit {
   abrirForm() {
     this.mostrarForm = true;
   }
-
+  // Redirige al asistente IA
+  abrirAsistente() {
+  this.router.navigate(['/aprender/asistente']);
+  }
   volver() {
     this.router.navigate(['/aprender']);
   }
+ 
 }
