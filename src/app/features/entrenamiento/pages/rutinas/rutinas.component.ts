@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { RouterModule, Router } from '@angular/router';
 import { FirestoreService } from '../../../../core/firestore.service';
 import { AuthService } from '../../../../core/auth.service';
+import { IaService } from '../../../../core/ia.service';
 
 @Component({
   selector: 'app-rutinas',
@@ -39,7 +40,8 @@ export class RutinasComponent implements OnInit {
     private fs: FirestoreService,
     private auth: AuthService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+  private iaService: IaService
   ) {
     this.perfilForm = this.fb.group({
       objetivo:     [['fuerza'], Validators.required],
@@ -84,70 +86,69 @@ export class RutinasComponent implements OnInit {
   }
 
   // ── Genera rutina con IA ─────────────────────────────
-  async generarRutina() {
-    if (this.perfilForm.invalid) return;
-    this.cargandoIA = true;
-    this.rutinaGenerada = null;
+  // Genera una rutina base según el perfil (sin IA)
+generarRutina() {
+  if (this.perfilForm.invalid) return;
+  const perfil = this.perfilForm.value;
 
-    const perfil = this.perfilForm.value;
-    const objetivosSeleccionados = Array.isArray(perfil.objetivo)
-      ? perfil.objetivo.join(', ')
-      : perfil.objetivo;
+  // Arma una rutina genérica según nivel y días
+  const ejerciciosBase = this.getEjerciciosPorObjetivo(perfil.objetivo);
+  const diasSemana = perfil.diasSemana;
+  const nivel = perfil.nivel;
 
-    const equipLabel: Record<string, string> = {
-      sin_equipamiento: 'sin equipamiento (solo peso corporal)',
-      mancuernas: 'mancuernas',
-      gym_completo: 'gimnasio completo con máquinas y pesas',
-      bandas: 'bandas elásticas'
-    };
-
-    const prompt = `Sos un entrenador personal experto. Generá una rutina de entrenamiento personalizada en español para:
-- Nombre: ${this.nombre}
-- Objetivos: ${objetivosSeleccionados}
-- Nivel: ${perfil.nivel}
-- Días por semana: ${perfil.diasSemana}
-- Duración por sesión: ${perfil.duracion} minutos
-- Equipamiento: ${equipLabel[perfil.equipamiento] || perfil.equipamiento}
-
-Respondé SOLO con un JSON válido, sin texto adicional, sin markdown, sin backticks. El formato debe ser exactamente:
-{
-  "nombre": "nombre de la rutina",
-  "descripcion": "descripción breve",
-  "dias": [
-    {
-      "dia": "Día 1",
-      "nombre": "nombre del día",
-      "ejercicios": [
-        { "nombre": "nombre ejercicio", "series": 3, "repeticiones": "10-12", "descanso": "60 seg", "nota": "consejo técnico" }
-      ]
-    }
-  ],
-  "consejos": ["consejo 1", "consejo 2", "consejo 3"]
-}`;
-
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          messages: [{ role: 'user', content: prompt }]
-        })
-      });
-
-      const data = await response.json();
-      const texto = data.content[0].text;
-      const clean = texto.replace(/```json|```/g, '').trim();
-      this.rutinaGenerada = JSON.parse(clean);
-      this.rutinaGenerada.perfil = perfil;
-
-    } catch (e) {
-      console.error('Error generando rutina:', e);
-    } finally {
-      this.cargandoIA = false;
-    }
+  const dias: any[] = [];
+  for (let i = 1; i <= diasSemana; i++) {
+    dias.push({
+      dia: `Día ${i}`,
+      nombre: i <= 3 ? 'Entrenamiento de fuerza' : 'Cardio y movilidad',
+      ejercicios: ejerciciosBase.map(e => ({
+        nombre: e,
+        series: nivel === 'principiante' ? 3 : nivel === 'intermedio' ? 4 : 5,
+        repeticiones: nivel === 'principiante' ? '8-10' : nivel === 'intermedio' ? '10-12' : '12-15',
+        descanso: nivel === 'principiante' ? '90 seg' : '60 seg',
+        nota: 'Mantené la técnica correcta durante todo el movimiento'
+      }))
+    });
   }
+
+  this.rutinaGenerada = {
+    nombre: `Rutina ${perfil.objetivo?.join(' + ') || 'Full Body'} - ${perfil.nivel}`,
+    descripcion: `${diasSemana} días por semana · ${perfil.duracion} min por sesión · ${perfil.equipamiento === 'sin_equipamiento' ? 'Sin equipamiento' : 'Con ' + perfil.equipamiento}`,
+    dias: dias,
+    consejos: [
+      'Calentá siempre 5-10 minutos antes de empezar',
+      'Estirá al finalizar cada sesión',
+      'Aumentá el peso gradualmente cada semana',
+      'Descansá al menos un día entre sesiones',
+      'Mantenete hidratado durante el entrenamiento'
+    ],
+    perfil: perfil
+  };
+}
+
+// Ejercicios según objetivo
+getEjerciciosPorObjetivo(objetivos: string[]): string[] {
+  if (!objetivos || objetivos.length === 0) return ['Sentadillas', 'Flexiones', 'Plancha', 'Zancadas', 'Puente de glúteos'];
+
+  const ejercicios: Record<string, string[]> = {
+    fuerza: ['Sentadillas con peso', 'Press de hombros', 'Peso muerto', 'Remo', 'Press de banca'],
+    hipertrofia: ['Curl de bíceps', 'Extensiones de tríceps', 'Elevaciones laterales', 'Sentadillas búlgaras', 'Press inclinado'],
+    cardio: ['Jumping Jacks', 'Mountain Climbers', 'Burpees', 'Saltos de tijera', 'High Knees'],
+    movilidad: ['Rotaciones de cadera', 'Estiramiento de espalda', 'Círculos de brazos', 'Flexión de tobillos', 'Gato-vaca'],
+    perdida_peso: ['Sentadillas con salto', 'Plancha dinámica', 'Zancadas alternas', 'Escaladores', 'Abdominales bicicleta']
+  };
+
+  let seleccionados: string[] = [];
+  objetivos.forEach(obj => {
+    if (ejercicios[obj]) {
+      seleccionados = [...seleccionados, ...ejercicios[obj]];
+    }
+  });
+
+  // Si no encontró nada, devuelve unos por defecto
+  return seleccionados.length > 0 ? seleccionados.slice(0, 5) : ['Sentadillas', 'Flexiones', 'Plancha', 'Zancadas', 'Abdominales'];
+}
+
 
   // ── Guarda la rutina en Firestore ────────────────────
   async guardarRutina() {

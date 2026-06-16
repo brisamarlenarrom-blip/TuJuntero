@@ -12,7 +12,8 @@ export const routes: Routes = [
       { path: 'alimentarse', loadChildren: () => import('./features/alimentarse/alimentarse.module').then(m => m.AlimentarseModule) },
       { path: 'entrenamiento', loadChildren: () => import('./features/entrenamiento/entrenamiento.module').then(m => m.EntrenamientoModule) },
       { path: 'perfil', loadChildren: () => import('./features/perfil/perfil.module').then(m => m.PerfilModule) },
-      { path: '', redirectTo: 'inicio', pathMatch: 'full' }
+      { path: '', redirectTo: 'inicio', pathMatch: 'full' },
+      { path: 'admin/mentores', loadComponent: () => import('./features/admin/panel-mentores/panel-mentores.component').then(m => m.PanelMentoresComponent) }
     ]
   },
 
@@ -30,3 +31,4 @@ export const routes: Routes = [
   // ============ REDIRECCIONES ============
   { path: '**', redirectTo: 'inicio' }
 ];
+

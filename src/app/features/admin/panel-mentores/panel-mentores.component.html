@@ -1,0 +1,22 @@
+<div class="panel-container">
+  <h2>🛡️ Panel de Administración</h2>
+  <p>Gestioná los mentores de TuJuntero</p>
+
+  <div class="usuario-card" *ngFor="let user of usuarios">
+    <div class="user-info">
+      <p class="user-nombre">{{ user.nombre }} {{ user.apellido }}</p>
+      <p class="user-email">{{ user.email }}</p>
+      <span class="rol-badge" [class.mentor]="user.esMentor">
+        {{ user.esMentor ? '🌟 Mentor' : '👤 Usuario' }}
+      </span>
+    </div>
+    <div class="user-acciones">
+      <button *ngIf="!user.esMentor" mat-raised-button color="primary" (click)="convertirEnMentor(user)">
+        Convertir en Mentor
+      </button>
+      <button *ngIf="user.esMentor" mat-raised-button color="warn" (click)="quitarMentor(user)">
+        Quitar Mentor
+      </button>
+    </div>
+  </div>
+</div>

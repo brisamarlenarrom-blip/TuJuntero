@@ -6,12 +6,15 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { RutinasComponent } from './pages/rutinas/rutinas.component';
 import { BitacoraComponent } from './pages/bitacora/bitacora.component';
 import { DestacadosComponent } from './pages/destacados/destacados.component';
+import { IaEntrenamientoComponent } from './pages/ia-entrenamiento/ia-entrenamiento.component';
+
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'rutinas', component: RutinasComponent },
   { path: 'bitacora', component: BitacoraComponent },
-  { path: 'destacados', component: DestacadosComponent }
+  { path: 'destacados', component: DestacadosComponent },
+  { path: 'ia-entrenamiento', component: IaEntrenamientoComponent }
 ];
 
 @NgModule({
@@ -21,7 +24,13 @@ const routes: Routes = [
     DashboardComponent,
     RutinasComponent,
     BitacoraComponent,
-    DestacadosComponent
+    DestacadosComponent,
+    IaEntrenamientoComponent
   ]
 })
-export class EntrenamientoModule { }
+export class EntrenamientoModule {
+
+  
+ }
+
+ 

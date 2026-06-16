@@ -1,0 +1,83 @@
+<button class="btn-volver" (click)="volver()">← Volver</button>
+
+<div class="ia-entreno-container">
+
+  <div class="ia-entreno-header">
+    <h2>⚡ Generador de Rutinas IA</h2>
+    <p>La IA va a generar tu rutina personalizada según tus objetivos.</p>
+  </div>
+
+  <!-- FORMULARIO -->
+  <mat-card *ngIf="paso === 'formulario'" class="form-card">
+    <form [formGroup]="formEntreno" (ngSubmit)="generarRutina()">
+      
+      <!-- Objetivos (checkboxes) -->
+      <label class="form-label">Objetivo (podés elegir más de uno)</label>
+      <div class="checkbox-group">
+        <mat-checkbox formControlName="fuerza" color="primary">💪 Fuerza</mat-checkbox>
+        <mat-checkbox formControlName="masa_muscular" color="primary">🏆 Masa muscular</mat-checkbox>
+        <mat-checkbox formControlName="resistencia" color="primary">❤️ Resistencia</mat-checkbox>
+        <mat-checkbox formControlName="movilidad" color="primary">🧘 Movilidad</mat-checkbox>
+        <mat-checkbox formControlName="perder_peso" color="primary">🔥 Perder peso</mat-checkbox>
+      </div>
+
+      <!-- Nivel -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nivel</mat-label>
+        <mat-select formControlName="nivel">
+          <mat-option value="principiante">🌱 Principiante</mat-option>
+          <mat-option value="intermedio">🌿 Intermedio</mat-option>
+          <mat-option value="avanzado">🌳 Avanzado</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Días por semana -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Días por semana</mat-label>
+        <mat-select formControlName="diasPorSemana">
+          <mat-option value="2">2 días</mat-option>
+          <mat-option value="3">3 días</mat-option>
+          <mat-option value="4">4 días</mat-option>
+          <mat-option value="5">5 días</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Duración -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Duración (min)</mat-label>
+        <mat-select formControlName="duracion">
+          <mat-option value="30">30 min</mat-option>
+          <mat-option value="45">45 min</mat-option>
+          <mat-option value="60">60 min</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Equipamiento -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Equipamiento</mat-label>
+        <mat-select formControlName="equipamiento">
+          <mat-option value="sin_equipamiento">🏠 Sin equipamiento</mat-option>
+          <mat-option value="bandas">🟡 Bandas elásticas</mat-option>
+          <mat-option value="mancuernas">🏋️ Mancuernas</mat-option>
+          <mat-option value="gimnasio">🏢 Gimnasio completo</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="cargando" class="full-width">
+        {{ cargando ? '🧠 Generando...' : '✨ Generar mi rutina con IA' }}
+      </button>
+    </form>
+  </mat-card>
+
+  <!-- RESPUESTA DE LA IA -->
+  <div *ngIf="paso === 'respuesta'">
+    <mat-card class="respuesta-card">
+      <h3>🏋️ Tu rutina personalizada</h3>
+      <p class="respuesta-texto">{{ respuesta }}</p>
+    </mat-card>
+    <button mat-button color="primary" (click)="nuevaRutina()" style="margin-top: 16px;">
+      🔄 Generar otra rutina
+    </button>
+  </div>
+
+</div>

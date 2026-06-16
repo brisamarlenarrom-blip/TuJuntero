@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FirestoreService } from '../../../../core/firestore.service';
 import { AuthService } from '../../../../core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-entrenamiento',
@@ -29,7 +30,7 @@ export class DashboardComponent implements OnInit {
     { label: 'HIIT',       icono: '⚡' }
   ];
 
-  constructor(private fs: FirestoreService, private auth: AuthService) {}
+  constructor(private fs: FirestoreService, private auth: AuthService,  private router: Router) {}
 
   ngOnInit() {
     const usuario = this.auth.getUsuarioActual();
@@ -62,6 +63,10 @@ export class DashboardComponent implements OnInit {
       default:          return '#4A9EFF';
     }
   }
+
+  verRutina() {
+  this.router.navigate(['/entrenamiento/rutinas']);
+}
 
   getLabelEstado(estado: string): string {
     switch (estado) {

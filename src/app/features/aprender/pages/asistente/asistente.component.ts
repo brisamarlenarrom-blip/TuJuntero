@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterModule } from '@angular/router';
 import { IaService } from '../../../../core/ia.service';
 import { AuthService } from '../../../../core/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-asistente',
@@ -110,7 +111,9 @@ Máximo 400 palabras.
 `;
 
     try {
-      this.respuesta = await this.iaService.preguntar(prompt);
+     this.respuesta = await firstValueFrom(
+  this.iaService.preguntar(prompt)
+);
       this.paso = 'respuesta';
     } catch (error) {
       this.respuesta = 'Ocurrió un error. Intentá de nuevo.';
