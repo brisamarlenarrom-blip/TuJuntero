@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/auth.guard';
 
 export const routes: Routes = [
   
@@ -8,12 +9,32 @@ export const routes: Routes = [
     loadComponent: () => import('./core/layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
     children: [
       { path: 'inicio', loadComponent: () => import('./features/inicio/inicio.component').then(m => m.InicioComponent) },
-      { path: 'aprender', loadChildren: () => import('./features/aprender/aprender.module').then(m => m.AprenderModule) },
-      { path: 'alimentarse', loadChildren: () => import('./features/alimentarse/alimentarse.module').then(m => m.AlimentarseModule) },
-      { path: 'entrenamiento', loadChildren: () => import('./features/entrenamiento/entrenamiento.module').then(m => m.EntrenamientoModule) },
-      { path: 'perfil', loadChildren: () => import('./features/perfil/perfil.module').then(m => m.PerfilModule) },
+      { 
+        path: 'aprender', 
+        loadChildren: () => import('./features/aprender/aprender.module').then(m => m.AprenderModule),
+        canActivate: [authGuard]
+      },
+      { 
+        path: 'alimentarse', 
+        loadChildren: () => import('./features/alimentarse/alimentarse.module').then(m => m.AlimentarseModule),
+        canActivate: [authGuard]
+      },
+      { 
+        path: 'entrenamiento', 
+        loadChildren: () => import('./features/entrenamiento/entrenamiento.module').then(m => m.EntrenamientoModule),
+        canActivate: [authGuard]
+      },
+      { 
+        path: 'perfil', 
+        loadChildren: () => import('./features/perfil/perfil.module').then(m => m.PerfilModule),
+        canActivate: [authGuard]
+      },
       { path: '', redirectTo: 'inicio', pathMatch: 'full' },
-      { path: 'admin/mentores', loadComponent: () => import('./features/admin/panel-mentores/panel-mentores.component').then(m => m.PanelMentoresComponent) }
+      { 
+        path: 'admin/mentores', 
+        loadComponent: () => import('./features/admin/panel-mentores/panel-mentores.component').then(m => m.PanelMentoresComponent),
+        canActivate: [authGuard]
+      }
     ]
   },
 
@@ -31,4 +52,3 @@ export const routes: Routes = [
   // ============ REDIRECCIONES ============
   { path: '**', redirectTo: 'inicio' }
 ];
-
