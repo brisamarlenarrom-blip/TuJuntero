@@ -29,12 +29,14 @@ export class RegisterComponent {
     });
   }
 
-  onSubmit() {
-    if (this.registerForm.valid) {
-      this.auth.register(this.registerForm.value).subscribe({
-        next: () => this.router.navigate(['/auth/login']),
-        error: () => console.log('Error al registrar')
-      });
+  async onSubmit() {
+  if (this.registerForm.valid) {
+    try {
+      await this.auth.register(this.registerForm.value);
+      this.router.navigate(['/auth/login']);
+    } catch (error) {
+      console.error('Error al registrar:', error);
     }
   }
+}
 }

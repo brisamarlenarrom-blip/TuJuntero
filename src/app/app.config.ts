@@ -6,10 +6,10 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-
+import { provideAuth, getAuth } from '@angular/fire/auth';
 import { routes } from './app.routes';
 
-// Configuración de Firebase (cambia a producción después)
+// Configuración de Firebase 
 const firebaseConfig = {
   apiKey: "AIzaSyDc76NogbTPa9X4wzBskNZV3kYMFfWqgb8",
   authDomain: "tujuntero.firebaseapp.com",
@@ -27,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),  // Inicializa Firebase
-    provideFirestore(() => getFirestore())                    // Base de datos Firestore
+    provideFirestore(() => getFirestore()),                    // Base de datos Firestore
+    provideAuth(() => getAuth())
   ]
 };
