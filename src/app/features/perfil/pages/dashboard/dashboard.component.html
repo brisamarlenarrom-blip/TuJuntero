@@ -86,7 +86,7 @@
   <!-- ── MÁS OPCIONES ──────────────────────────────────── -->
   <div class="seccion-card">
     <h2 class="seccion-titulo">Más opciones</h2>
-    <div class="opcion-row" *ngFor="let op of opciones">
+    <div class="opcion-row" *ngFor="let op of opciones" [routerLink]="op.ruta" style="cursor: pointer;">
       <div class="opcion-icono">{{ op.icono }}</div>
       <div class="opcion-info">
         <span class="opcion-titulo">{{ op.titulo }}</span>
@@ -94,7 +94,7 @@
       </div>
       <span class="opcion-flecha">›</span>
     </div>
-    <div class="opcion-row opcion-danger" (click)="logout()">
+    <div class="opcion-row opcion-danger" (click)="logout()" style="cursor: pointer;">
       <div class="opcion-icono">🚪</div>
       <div class="opcion-info">
         <span class="opcion-titulo">Cerrar sesión</span>

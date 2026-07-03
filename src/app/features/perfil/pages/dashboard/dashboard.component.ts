@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   apellido = '';
   email = '';
   usuarioId = '';
+  esAdmin = false;
 
   // ── Stats ────────────────────────────────────────────
   diasSeguidos = 0;
@@ -49,12 +50,17 @@ export class DashboardComponent implements OnInit {
     { icono: '💧', titulo: 'Hidratado',        sub: '10 días',      color: '#34D399', desbloqueado: false }
   ];
 
-  opciones = [
+  get opciones() {
+  const ops = [
     { icono: '👤', titulo: 'Editar perfil',  sub: 'Actualizá tu información', ruta: '/perfil/editar' },
-    { icono: '⚙️', titulo: 'Configuración',  sub: 'Preferencias de la app',   ruta: '/perfil/config'  },
-    { icono: '🔔', titulo: 'Notificaciones', sub: 'Administrá alertas',       ruta: '/perfil/notif'   },
+    { icono: '⚙️', titulo: 'Configuración',  sub: 'Preferencias de la app',   ruta: '/perfil/configuracion' },
+    { icono: '🔔', titulo: 'Notificaciones', sub: 'Administrá alertas',       ruta: '/perfil/notificaciones' },
   ];
-
+  if (this.esAdmin) {
+    ops.push({ icono: '🛡️', titulo: 'Panel Admin', sub: 'Gestionar mentores', ruta: '/admin/mentores' });
+  }
+  return ops;
+}
   constructor(private fs: FirestoreService, private auth: AuthService) {}
 
   ngOnInit() {
@@ -64,10 +70,14 @@ export class DashboardComponent implements OnInit {
       this.nombre   = usuario.nombre   || '';
       this.apellido = usuario.apellido || '';
       this.email    = usuario.email    || '';
+      this.esAdmin  = usuario.rol === 'admin';
+      console.log('esAdmin:', this.esAdmin, 'rol:', usuario.rol);
+      
     }
     this.fraseDelDia = this.frases[new Date().getDay() % this.frases.length];
     this.cargarStats();
     this.cargarAnimosMes();
+    
   }
 
   cargarStats() {
@@ -143,4 +153,7 @@ export class DashboardComponent implements OnInit {
   get iniciales(): string {
     return (this.nombre.charAt(0) + (this.apellido.charAt(0) || '')).toUpperCase();
   }
+
+
+
 }

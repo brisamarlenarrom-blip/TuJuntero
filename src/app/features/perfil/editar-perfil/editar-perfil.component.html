@@ -1,0 +1,36 @@
+<div class="perfil-container">
+  <h2>Editar Perfil</h2>
+
+  <mat-card class="form-card">
+    <form [formGroup]="perfilForm" (ngSubmit)="guardar()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput formControlName="fechaNacimiento" type="date">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nivel de Estudios</mat-label>
+        <mat-select formControlName="nivelEstudios">
+          <mat-option value="secundario">Secundario</mat-option>
+          <mat-option value="universitario">Universitario</mat-option>
+          <mat-option value="terciario">Terciario</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="botones-form">
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+        <button mat-button type="button" (click)="volver()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

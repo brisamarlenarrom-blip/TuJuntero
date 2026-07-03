@@ -62,59 +62,68 @@ export class AuthService {
   }
 
   // Login con email y contraseña
-  async login(email: string, password: string): Promise<boolean> {
-    try {
-      const credencial = await signInWithEmailAndPassword(this.auth, email, password);
-      this.fs.getById('usuarios', credencial.user.uid).subscribe(usuario => {
-        if (usuario) {
-          this.usuarioActual.set(usuario as Usuario);
-          this.isLogged.set(true);
-          if (typeof window !== 'undefined' && window.localStorage) {
-            localStorage.setItem('usuarioActual', JSON.stringify(usuario));
-          }
+async login(email: string, password: string): Promise<boolean> {
+  try {
+    const credencial = await signInWithEmailAndPassword(this.auth, email, password);
+    
+    // Busca por email en Firestore
+    this.fs.getByField('usuarios', 'email', email).subscribe(usuarios => {
+      if (usuarios.length > 0) {
+        const usuario = usuarios[0];
+        this.usuarioActual.set(usuario as Usuario);
+        this.isLogged.set(true);
+        if (typeof window !== 'undefined' && window.localStorage) {
+           console.log('Usuarios encontrados:', usuarios);
         }
-      });
-      return true;
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-      return false;
-    }
+      }
+    });
+    return true;
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    return false;
   }
+}
 
   // Login con Google
-  async loginWithGoogle(): Promise<boolean> {
-    try {
-      const provider = new GoogleAuthProvider();
-      const credencial = await signInWithPopup(this.auth, provider);
-      
-      const usuarioData: Partial<Usuario> = {
-        nombre: credencial.user.displayName?.split(' ')[0] || '',
-        apellido: credencial.user.displayName?.split(' ').slice(1).join(' ') || '',
-        email: credencial.user.email || '',
-        avatarUrl: credencial.user.photoURL || '',
-        rol: 'usuario',
-        esMentor: false
-      };
+async loginWithGoogle(): Promise<boolean> {
+  try {
+    const provider = new GoogleAuthProvider();
+    const credencial = await signInWithPopup(this.auth, provider);
+    const email = credencial.user.email || '';
 
-      // Verifica si ya existe en Firestore, si no, lo crea
-      this.fs.getById('usuarios', credencial.user.uid).subscribe(usuario => {
-        if (!usuario) {
-          this.fs.createWithId('usuarios', credencial.user.uid, usuarioData);
-        }
+    // Busca si ya existe en Firestore por email
+    this.fs.getCollection('usuarios').subscribe((usuarios: any[]) => {
+      const existente = usuarios.find((u: any) => u.email === email);
+      
+      if (existente) {
+        // Ya existe: mantiene su rol y datos
+        this.usuarioActual.set(existente as Usuario);
+        this.isLogged.set(true);
+        localStorage.setItem('usuarioActual', JSON.stringify(existente));
+      } else {
+        // No existe: lo crea como usuario nuevo
+        const usuarioData: Partial<Usuario> = {
+          nombre: credencial.user.displayName?.split(' ')[0] || '',
+          apellido: credencial.user.displayName?.split(' ').slice(1).join(' ') || '',
+          email: email,
+          avatarUrl: credencial.user.photoURL || '',
+          rol: 'usuario',
+          esMentor: false
+        };
+        this.fs.createWithId('usuarios', credencial.user.uid, usuarioData);
         const datosFinales = { id: credencial.user.uid, ...usuarioData } as Usuario;
         this.usuarioActual.set(datosFinales);
         this.isLogged.set(true);
-        if (typeof window !== 'undefined' && window.localStorage) {
-          localStorage.setItem('usuarioActual', JSON.stringify(datosFinales));
-        }
-      });
+        localStorage.setItem('usuarioActual', JSON.stringify(datosFinales));
+      }
+    });
 
-      return true;
-    } catch (error) {
-      console.error('Error con Google:', error);
-      return false;
-    }
+    return true;
+  } catch (error) {
+    console.error('Error con Google:', error);
+    return false;
   }
+}
 
   // Registro con email y contraseña
   async register(usuario: Partial<Usuario>): Promise<any> {

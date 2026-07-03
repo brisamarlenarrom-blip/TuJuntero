@@ -1,0 +1,61 @@
+.config-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px 20px 40px;
+}
+
+.btn-volver {
+  background: none;
+  border: none;
+  color: var(--blue-soft);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+h2 {
+  color: white;
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
+.config-card {
+  background-color: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+}
+
+.config-texto {
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin: 0 0 16px 0;
+}
+
+.config-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.config-lista li {
+  color: white;
+  font-size: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.config-lista li:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 600px) {
+  .config-container {
+    padding: 20px 12px 40px;
+  }
+  h2 { font-size: 20px; }
+  .config-card { padding: 16px; }
+}

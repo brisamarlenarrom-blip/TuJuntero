@@ -1,0 +1,60 @@
+.perfil-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px 20px 40px;
+}
+
+.btn-volver {
+  background: none;
+  border: none;
+  color: var(--blue-soft);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+h2 {
+  color: white;
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
+.form-card {
+  background-color: var(--surface-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.botones-form {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* ============ CELULAR ============ */
+@media (max-width: 600px) {
+  .perfil-container {
+    padding: 20px 12px 40px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .form-card {
+    padding: 16px;
+  }
+}
