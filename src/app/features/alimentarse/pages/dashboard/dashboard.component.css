@@ -1,4 +1,4 @@
-/* ── CONTENEDOR ── */
+/* CONTENEDOR */
 .alimentarse-container {
   max-width: 480px;
   margin: 0 auto;
@@ -8,7 +8,7 @@
   gap: 12px;
 }
 
-/* ── HERO ── */
+/* HERO */
 .alimentarse-hero {
   border-radius: 20px;
   overflow: hidden;
@@ -46,7 +46,11 @@
   flex-shrink: 0;
 }
 
-.hero-text { display: flex; flex-direction: column; gap: 4px; }
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
 .hero-titulo {
   font-size: 24px;
@@ -62,7 +66,7 @@
   margin: 0;
 }
 
-/* ── TABS ── */
+/* TABS */
 .alimentarse-tabs {
   display: flex;
   border-top: 1px solid rgba(255,255,255,0.08);
@@ -97,9 +101,11 @@
   font-weight: 500;
 }
 
-.tab-icono { font-size: 15px; }
+.tab-icono {
+  font-size: 15px;
+}
 
-/* ── BÚSQUEDA ── */
+/* BUSCADOR */
 .busqueda-card {
   background: #0f1117;
   border: 1px solid #1E1E2E;
@@ -111,10 +117,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 8px;
+  padding: 8px;
 }
 
-.busqueda-icono { font-size: 18px; }
+.busqueda-icono {
+  font-size: 18px;
+}
 
 .busqueda-input input {
   background: none;
@@ -129,7 +137,7 @@
   color: rgba(255,255,255,0.3);
 }
 
-/* ── CATEGORÍAS ── */
+/* CATEGORÍAS */
 .categorias-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -158,7 +166,9 @@
   border-color: #34D399;
 }
 
-.cat-icono { font-size: 22px; }
+.cat-icono {
+  font-size: 22px;
+}
 
 .cat-label {
   color: rgba(255,255,255,0.6);
@@ -166,9 +176,11 @@
   font-weight: 500;
 }
 
-.categoria-activa .cat-label { color: #34D399; }
+.categoria-activa .cat-label {
+  color: #34D399;
+}
 
-/* ── SECCIÓN CARD ── */
+/* SECCIONES */
 .seccion-card {
   background-color: #0f1117;
   border: 1px solid #1E1E2E;
@@ -178,25 +190,19 @@
 
 .seccion-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 14px;
 }
 
 .seccion-titulo {
   color: #ffffff;
   font-size: 15px;
-  font-weight: 500;
-  margin: 0 0 14px 0;
+  font-weight: 600;
+  margin: 0;
 }
 
-.ver-todas {
-  color: #34D399;
-  font-size: 13px;
-  text-decoration: none;
-}
-
-/* ── STATS ── */
+/* STATS */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -209,6 +215,14 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.stat-click {
+  cursor: pointer;
+}
+
+.stat-click:hover {
+  filter: brightness(1.1);
 }
 
 .stat-icono {
@@ -240,16 +254,39 @@
   font-size: 11px;
 }
 
-.stat-verde   { background: linear-gradient(135deg, #0f3d2a, #071f15); }
-.stat-verde .stat-icono { background: rgba(52,211,153,0.2); }
-.stat-azul    { background: linear-gradient(135deg, #1a3a6b, #0f2040); }
-.stat-azul .stat-icono { background: rgba(74,158,255,0.2); }
-.stat-violeta { background: linear-gradient(135deg, #3b1f6b, #20103d); }
-.stat-violeta .stat-icono { background: rgba(167,139,250,0.2); }
-.stat-naranja { background: linear-gradient(135deg, #4a2000, #251000); }
-.stat-naranja .stat-icono { background: rgba(251,146,60,0.2); }
+.stat-verde {
+  background: linear-gradient(135deg, #0f3d2a, #071f15);
+}
 
-/* ── RECETAS RECIENTES ── */
+.stat-verde .stat-icono {
+  background: rgba(52,211,153,0.2);
+}
+
+.stat-azul {
+  background: linear-gradient(135deg, #1a3a6b, #0f2040);
+}
+
+.stat-azul .stat-icono {
+  background: rgba(74,158,255,0.2);
+}
+
+.stat-violeta {
+  background: linear-gradient(135deg, #3b1f6b, #20103d);
+}
+
+.stat-violeta .stat-icono {
+  background: rgba(167,139,250,0.2);
+}
+
+.stat-naranja {
+  background: linear-gradient(135deg, #4a2000, #251000);
+}
+
+.stat-naranja .stat-icono {
+  background: rgba(251,146,60,0.2);
+}
+
+/* RECETAS */
 .receta-row {
   display: flex;
   align-items: center;
@@ -258,7 +295,9 @@
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-.receta-row:last-child { border-bottom: none; }
+.receta-row:last-child {
+  border-bottom: none;
+}
 
 .receta-icono-box {
   width: 40px;
@@ -275,7 +314,7 @@
 .receta-info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   flex: 1;
   min-width: 0;
 }
@@ -283,75 +322,189 @@
 .receta-nombre {
   color: #ffffff;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.receta-sub {
-  color: rgba(255,255,255,0.4);
-  font-size: 11px;
-}
-
-.receta-tiempo {
-  color: rgba(255,255,255,0.4);
-  font-size: 11px;
-  flex-shrink: 0;
-}
-
-/* ── IA CARD ── */
-.ia-card {
-  background: linear-gradient(135deg, #0f2010, #0a1a0a);
-  border: 1px solid rgba(52,211,153,0.2);
-  border-radius: 20px;
-  padding: 20px;
+.receta-meta-row {
   display: flex;
   align-items: center;
-  gap: 16px;
-}
-
-.ia-izq {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 
-.ia-titulo {
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 600;
-  margin: 0;
-}
-
-.ia-sub {
-  color: rgba(255,255,255,0.5);
-  font-size: 12px;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.ia-btn {
-  background: rgba(52,211,153,0.15);
-  border: 1px solid rgba(52,211,153,0.3);
-  border-radius: 10px;
-  padding: 10px 16px;
+.receta-badge {
   color: #34D399;
-  font-size: 13px;
+  background: rgba(52,211,153,0.12);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+
+.receta-tiempo,
+.receta-mentor {
+  color: rgba(255,255,255,0.45);
+  font-size: 11px;
+}
+
+.btn-favorito,
+.btn-accion {
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 17px;
   cursor: pointer;
-  width: fit-content;
-  transition: all 0.2s;
+  padding: 6px;
 }
 
-.ia-btn:hover { background: rgba(52,211,153,0.25); }
-
-.ia-emojis {
-  font-size: 32px;
-  flex-shrink: 0;
+.btn-favorito:hover,
+.btn-accion:hover {
+  background: rgba(255,255,255,0.08);
 }
 
-/* ── FRASE ── */
+.receta-acciones {
+  display: flex;
+  gap: 4px;
+}
+
+/* BOTÓN NUEVA */
+.btn-nueva {
+  width: 100%;
+  padding: 12px;
+  background: rgba(52,211,153,0.08);
+  border: 1px dashed rgba(52,211,153,0.35);
+  border-radius: 12px;
+  color: #34D399;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-nueva:hover {
+  background: rgba(52,211,153,0.14);
+}
+
+/* MODAL */
+.form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+}
+
+.form-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 32px);
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #0f1117;
+  border: 1px solid #1E1E2E;
+  border-radius: 22px;
+  padding: 22px;
+  z-index: 201;
+  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+}
+
+.form-titulo {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.form-field label {
+  color: rgba(255,255,255,0.55);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 11px 14px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: #34D399;
+}
+
+.form-field select option {
+  background: #0f1117;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mentor-check {
+  margin-bottom: 14px;
+}
+
+.check-label {
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+}
+
+.form-botones {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-cancelar {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent;
+  color: rgba(255,255,255,0.65);
+  cursor: pointer;
+}
+
+.btn-guardar {
+  flex: 2;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #34D399;
+  color: #071f15;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-guardar:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* FRASE */
 .frase-card {
   background: #0f1117;
   border: 1px solid #1E1E2E;
@@ -365,10 +518,16 @@
   font-style: italic;
   font-size: 13px;
   line-height: 1.6;
-  margin: 0 0 6px 0;
+  margin: 0 0 6px;
 }
 
 .frase-autor {
   color: #34D399;
   font-size: 12px;
+}
+
+.empty-mini {
+  color: rgba(255,255,255,0.45);
+  font-size: 13px;
+  padding: 12px 0;
 }

@@ -4,8 +4,8 @@
   <div class="hero-section">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-saludo">
-        {{ saludo }}, <span class="hero-nombre">{{ nombre }}</span>! 👋
+      <h1>
+      ¡{{ saludo }}<span *ngIf="nombre">, {{ nombre }}</span>! 👋
       </h1>
       <p class="hero-subtitulo">Hoy es un buen día para crecer 🌱</p>
 

@@ -14,6 +14,7 @@ import { AuthService } from '../../../core/auth.service';
 export class RegisterComponent {
 
   registerForm: FormGroup;
+  errorMensaje = '';
 
   constructor(
     private fb: FormBuilder,
@@ -21,22 +22,32 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      nombre:          ['', Validators.required],
-      apellido:        ['', Validators.required],
-      email:           ['', [Validators.required, Validators.email]],
-      password:        ['', [Validators.required, Validators.minLength(6)]],
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       fechaNacimiento: ['', Validators.required]
     });
   }
 
   async onSubmit() {
-  if (this.registerForm.valid) {
-    try {
-      await this.auth.register(this.registerForm.value);
-      this.router.navigate(['/auth/login']);
-    } catch (error) {
-      console.error('Error al registrar:', error);
+    this.errorMensaje = '';
+
+    if (this.registerForm.valid) {
+      try {
+        await this.auth.register(this.registerForm.value);
+        this.router.navigate(['/inicio']);
+      } catch (error: any) {
+        console.error('Error al registrar:', error);
+
+        if (error.code === 'auth/email-already-in-use') {
+          this.errorMensaje = 'Este email ya está registrado. Iniciá sesión o usá otro correo.';
+        } else {
+          this.errorMensaje = 'No se pudo crear la cuenta. Intentá nuevamente.';
+        }
+      }
+    } else {
+      this.registerForm.markAllAsTouched();
     }
   }
-}
 }

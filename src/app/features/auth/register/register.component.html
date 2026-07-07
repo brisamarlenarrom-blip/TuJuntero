@@ -3,6 +3,9 @@
 
     <div class="auth-header">
       <div class="auth-logo">✨</div>
+       <p class="field-error" *ngIf="errorMensaje">
+       {{ errorMensaje }}
+       </p>
       <h1 class="auth-titulo">Crear cuenta</h1>
       <p class="auth-subtitulo">Completá tus datos para registrarte</p>
     </div>

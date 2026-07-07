@@ -62,9 +62,16 @@ export class InicioComponent implements OnInit {
   }
 
   setSaludo() {
-    const h = new Date().getHours();
-    this.saludo = h < 12 ? '¡Buenos días' : h < 19 ? '¡Buenas tardes' : '¡Buenas noches';
+  const h = new Date().getHours();
+
+  if (h >= 4 && h < 12) {
+    this.saludo = 'Buenos días';
+  } else if (h >= 12 && h < 20) {
+    this.saludo = 'Buenas tardes';
+  } else {
+    this.saludo = 'Buenas noches';
   }
+}
 
   cargarNombre() {
     const usuario = this.auth.getUsuarioActual();

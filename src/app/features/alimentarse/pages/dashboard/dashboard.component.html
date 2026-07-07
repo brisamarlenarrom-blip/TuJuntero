@@ -1,55 +1,137 @@
 <div class="alimentarse-container">
 
-  <!-- ── HERO BANNER + TABS ────────────────────────────────── -->
+  <!-- HERO -->
   <div class="alimentarse-hero">
     <div class="hero-content">
       <div class="hero-icon">🥗</div>
+
       <div class="hero-text">
         <h1 class="hero-titulo">Alimentarse</h1>
-        <p class="hero-subtitulo">Descubrí recetas saludables<br>y mejorá tus hábitos.</p>
+        <p class="hero-subtitulo">
+          Descubrí recetas saludables<br>
+          y mejorá tus hábitos.
+        </p>
       </div>
     </div>
-   <nav class="alimentarse-tabs">
-  <a routerLink="recetas" routerLinkActive="tab-activo" class="tab-item">
-    <span class="tab-icono">📖</span> Mis Recetas
-  </a>
-</nav>
+
+    <nav class="alimentarse-tabs">
+      <a routerLink="recetas" routerLinkActive="tab-activo" class="tab-item">
+        <span class="tab-icono">❤️</span> Favoritos
+      </a>
+    </nav>
   </div>
 
-  <!-- ── BARRA DE BÚSQUEDA ─────────────────────────────────── -->
+  <!-- FORMULARIO MODAL -->
+  <div class="form-overlay" *ngIf="mostrarForm" (click)="cancelar()"></div>
+
+  <div class="form-modal" *ngIf="mostrarForm">
+    <h3 class="form-titulo">
+      {{ editando ? 'Editar receta' : 'Nueva receta' }}
+    </h3>
+
+    <form [formGroup]="recetaForm" (ngSubmit)="guardarReceta()">
+
+      <div class="form-field">
+        <label>Nombre</label>
+        <input formControlName="nombre" placeholder="Ej: Lentejas con verduras">
+      </div>
+
+      <div class="form-field">
+        <label>Categoría</label>
+        <select formControlName="categoria">
+          <option value="desayuno">🥣 Desayuno</option>
+          <option value="almuerzo">🍽️ Almuerzo</option>
+          <option value="merienda">☕ Merienda</option>
+          <option value="cena">🌙 Cena</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>Ingredientes</label>
+        <textarea formControlName="ingredientes" rows="3" placeholder="1 taza lentejas, 2 zanahorias..."></textarea>
+      </div>
+
+      <div class="form-field">
+        <label>Pasos</label>
+        <textarea formControlName="pasos" rows="3" placeholder="1. Lavar lentejas. 2. Picar verduras..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Nivel</label>
+          <select formControlName="nivel">
+            <option value="facil">🟢 Fácil</option>
+            <option value="medio">🟡 Medio</option>
+            <option value="dificil">🔴 Difícil</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Tiempo (min)</label>
+          <input formControlName="tiempoPreparacion" type="number">
+        </div>
+      </div>
+
+      <div class="mentor-check" *ngIf="puedeGestionar">
+        <span class="check-label">
+          🌟 Publicado como {{ nombreMentor || 'Mentor' }}
+        </span>
+      </div>
+
+      <div class="form-botones">
+        <button type="button" class="btn-cancelar" (click)="cancelar()">
+          Cancelar
+        </button>
+
+        <button type="submit" class="btn-guardar" [disabled]="recetaForm.invalid">
+          {{ editando ? 'Actualizar' : 'Agregar' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- BUSCADOR -->
   <div class="busqueda-card">
     <div class="busqueda-input">
       <span class="busqueda-icono">🔍</span>
-      <input type="text" placeholder="Buscar recetas, ingredientes...">
+
+      <input
+        type="text"
+        placeholder="Buscar recetas, ingredientes..."
+        [(ngModel)]="busqueda"
+        (input)="aplicarFiltro()">
     </div>
   </div>
 
-  <!-- ── CATEGORÍAS ────────────────────────────────────────── -->
+  <!-- CATEGORÍAS -->
   <div class="categorias-grid">
     <button
       *ngFor="let cat of categorias"
       class="categoria-btn"
-      [class.categoria-activa]="categoriaActiva === cat.label"
-      (click)="setCategoria(cat.label)">
+      [class.categoria-activa]="categoriaActiva === cat.valor"
+      (click)="setCategoria(cat.valor)">
+
       <span class="cat-icono">{{ cat.icono }}</span>
       <span class="cat-label">{{ cat.label }}</span>
     </button>
   </div>
 
-  <!-- ── RESUMEN ───────────────────────────────────────────── -->
+  <!-- RESUMEN -->
   <div class="seccion-card">
     <h2 class="seccion-titulo">Resumen de hoy</h2>
+
     <div class="stats-grid">
 
       <div class="stat-card stat-verde">
         <span class="stat-icono">🍽️</span>
         <div class="stat-info">
           <span class="stat-numero">{{ totalRecetas }}</span>
-          <span class="stat-label">Recetas guardadas</span>
+          <span class="stat-label">Recetas disponibles</span>
         </div>
       </div>
 
-      <div class="stat-card stat-azul">
+      <div class="stat-card stat-azul stat-click" (click)="irADiario()">
         <span class="stat-icono">📝</span>
         <div class="stat-info">
           <span class="stat-numero">{{ comidasHoy }}</span>
@@ -72,36 +154,69 @@
           <span class="stat-label">Calorías hoy</span>
         </div>
       </div>
-      
 
     </div>
   </div>
 
-  <!-- ── RECETAS RECIENTES ─────────────────────────────────── -->
-  <div class="seccion-card" *ngIf="recetasRecientes.length > 0">
+  <!-- RECETAS -->
+  <div class="seccion-card">
+
     <div class="seccion-header">
-      <h2 class="seccion-titulo">Recetas recientes</h2>
-      <a routerLink="recetas" class="ver-todas">Ver todas</a>
+      <h2 class="seccion-titulo">
+        Recetas de {{ getCategoriaLabel() }}
+      </h2>
+
+      <button
+        class="btn-nueva"
+        *ngIf="puedeGestionar"
+        (click)="abrirForm()">
+        + Nueva receta
+      </button>
     </div>
 
-    <div class="receta-row" *ngFor="let r of recetasRecientes">
+    <div class="receta-row" *ngFor="let r of recetasFiltradas">
+
       <div class="receta-icono-box">🍳</div>
+
       <div class="receta-info">
         <span class="receta-nombre">{{ r.nombre }}</span>
-        <span class="receta-sub" *ngIf="r.calorias">🔥 {{ r.calorias }} kcal</span>
+
+        <div class="receta-meta-row">
+          <span class="receta-badge">{{ getNivelLabel(r.nivel) }}</span>
+
+          <span class="receta-tiempo">
+            ⏱ {{ r.tiempoPreparacion || 30 }} min
+          </span>
+        </div>
+
+        <span class="receta-mentor" *ngIf="r.nombreMentor">
+          🌟 {{ r.nombreMentor }}
+        </span>
       </div>
-      <span class="receta-tiempo" *ngIf="r.tiempo">⏱ {{ r.tiempo }} min</span>
+
+      <button class="btn-favorito" (click)="toggleFavorito(r)">
+        {{ esFavorita(r) ? '❤️' : '🤍' }}
+      </button>
+
+      <div class="receta-acciones" *ngIf="puedeEditarReceta(r)">
+        <button class="btn-accion" (click)="editarReceta(r)">✏️</button>
+        <button class="btn-accion" (click)="eliminarReceta(r.id)">🗑️</button>
+      </div>
+
     </div>
+
+    <div class="empty-mini" *ngIf="recetasFiltradas.length === 0">
+      🍳 Todavía no hay recetas en esta categoría.
+    </div>
+
   </div>
 
-  
-
-  <!-- ── FRASE ─────────────────────────────────────────────── -->
+  <!-- FRASE -->
   <div class="frase-card">
-    <p class="frase-texto">"¿No saben que su cuerpo es templo del Espíritu Santo, que está en ustedes y que han recibido de Dios?"</p>
+    <p class="frase-texto">
+      "¿No saben que su cuerpo es templo del Espíritu Santo, que está en ustedes y que han recibido de Dios?"
+    </p>
     <span class="frase-autor">— 1 Corintios 6:19</span>
   </div>
-
-  <router-outlet></router-outlet>
 
 </div>

@@ -1,117 +1,157 @@
 <div class="page-wrapper">
 
-  <!-- ── HERO BANNER + TABS ────────────────────────────────── -->
+  <!-- HERO -->
   <div class="alimentarse-hero">
     <div class="hero-content">
-      <div class="hero-icon">🥗</div>
+      <div class="hero-icon">❤️</div>
+
       <div class="hero-text">
-        <h1 class="hero-titulo">Alimentarse</h1>
-        <p class="hero-subtitulo">Descubrí recetas saludables<br>y mejorá tus hábitos.</p>
+        <h1 class="hero-titulo">Favoritos</h1>
+        <p class="hero-subtitulo">
+          Tus recetas guardadas.<br>
+          Encontralas rápidamente.
+        </p>
       </div>
     </div>
-    <nav class="alimentarse-tabs">
-  <a routerLink="/alimentarse/recetas" routerLinkActive="tab-activo" class="tab-item">
-    <span class="tab-icono">📖</span> Mis Recetas
-  </a>
-</nav>
   </div>
 
   <div class="recetas-wrapper">
 
-    <!-- ── FORMULARIO MODAL ──────────────────────────────── -->
-    <div class="form-overlay" *ngIf="mostrarForm" (click)="cancelar()"></div>
-    <div class="form-modal" *ngIf="mostrarForm">
-      <h3 class="form-titulo">{{ editando ? 'Editar receta' : 'Nueva receta' }}</h3>
-      <form [formGroup]="recetaForm" (ngSubmit)="guardarReceta()">
+    <!-- BUSCADOR -->
+    <div class="busqueda-card">
+      <div class="busqueda-input">
+        <span class="busqueda-icono">🔍</span>
 
-        <div class="form-field">
-          <label>Nombre</label>
-          <input formControlName="nombre" placeholder="Ej: Lentejas con verduras">
-        </div>
-
-        <div class="form-field">
-          <label>Ingredientes</label>
-          <textarea formControlName="ingredientes" placeholder="1 taza lentejas, 2 zanahorias..." rows="3"></textarea>
-        </div>
-
-        <div class="form-field">
-          <label>Pasos</label>
-          <textarea formControlName="pasos" placeholder="1. Lavar lentejas. 2. Picar verduras..." rows="3"></textarea>
-        </div>
-
-        <div class="form-row">
-          <div class="form-field">
-            <label>Nivel</label>
-            <select formControlName="nivel">
-              <option value="facil">🟢 Fácil</option>
-              <option value="medio">🟡 Medio</option>
-              <option value="dificil">🔴 Difícil</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label>Tiempo (min)</label>
-            <input formControlName="tiempoPreparacion" type="number">
-          </div>
-        </div>
-
-        <div class="mentor-check" *ngIf="esMentor">
-          <label class="check-label">
-            <input type="checkbox" formControlName="esPublica">
-            🌟 Publicar como {{ nombreMentor }}
-          </label>
-        </div>
-
-        <div class="form-botones">
-          <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
-          <button type="submit" class="btn-guardar" [disabled]="recetaForm.invalid">
-            {{ editando ? 'Actualizar' : 'Agregar' }}
-          </button>
-        </div>
-
-      </form>
+        <input
+          type="text"
+          placeholder="Buscar recetas..."
+          [(ngModel)]="busqueda"
+          (input)="aplicarFiltro()">
+      </div>
     </div>
 
-    <!-- ── LISTA DE RECETAS ───────────────────────────────── -->
-    <div class="seccion-card">
-      <div class="seccion-header">
-        <h2 class="seccion-titulo">Mis recetas</h2>
-      </div>
+    <!-- CATEGORÍAS -->
+    <div class="categorias-grid">
+      <button
+        *ngFor="let cat of categorias"
+        class="categoria-btn"
+        [class.categoria-activa]="categoriaActiva === cat.valor"
+        (click)="seleccionarCategoria(cat.valor)">
 
-      <div class="receta-row" *ngFor="let r of recetas">
-        <div class="receta-icono-box" [style.background-color]="getNivelColor(r.nivel) + '22'">
-          <span [style.color]="getNivelColor(r.nivel)">🍳</span>
-        </div>
-
-        <div class="receta-info">
-          <span class="receta-nombre">{{ r.nombre }}</span>
-          <div class="receta-meta-row">
-            <span class="receta-badge"
-              [style.background-color]="getNivelColor(r.nivel) + '22'"
-              [style.color]="getNivelColor(r.nivel)">
-              {{ getNivelLabel(r.nivel) }}
-            </span>
-            <span class="receta-tiempo">⏱ {{ r.tiempoPreparacion }} min</span>
-          </div>
-          <span class="receta-mentor" *ngIf="r.esPublica && r.nombreMentor">🌟 {{ r.nombreMentor }}</span>
-        </div>
-
-        <div class="receta-acciones">
-          <button class="btn-accion" (click)="editarReceta(r)">✏️</button>
-          <button class="btn-accion" (click)="eliminarReceta(r.id)">🗑️</button>
-        </div>
-      </div>
-
-      <ui-empty-state
-        *ngIf="recetas.length === 0 && !mostrarForm"
-        icon="🍳"
-        title="Sin recetas"
-        text="¡Agregá tu primera receta!">
-      </ui-empty-state>
-
-      <button class="btn-nueva" (click)="abrirForm()">
-        + Nueva receta
+        <span class="cat-icono">{{ cat.icono }}</span>
+        <span class="cat-label">{{ cat.label }}</span>
       </button>
     </div>
 
+    <!-- LISTA -->
+    <div class="seccion-card">
+
+      <h2 class="seccion-titulo">Mis Favoritos</h2>
+
+      <div class="receta-row" *ngFor="let r of recetasFiltradas">
+
+        <button
+          class="btn-ver-detalle"
+          type="button"
+          (click)="verDetalle(r)">
+          🔍
+        </button>
+
+        <div
+          class="receta-icono-box"
+          [style.background-color]="getNivelColor(r.nivel)+'22'">
+          🍳
+        </div>
+
+        <div class="receta-info" (click)="verDetalle(r)">
+          <span class="receta-nombre">{{ r.nombre }}</span>
+
+          <div class="receta-meta-row">
+            <span
+              class="receta-badge"
+              [style.background-color]="getNivelColor(r.nivel)+'22'"
+              [style.color]="getNivelColor(r.nivel)">
+              {{ getNivelLabel(r.nivel) }}
+            </span>
+
+            <span class="receta-tiempo">
+              ⏱ {{ r.tiempoPreparacion }} min
+            </span>
+          </div>
+
+          <span class="receta-mentor" *ngIf="r.nombreMentor">
+            🌟 {{ r.nombreMentor }}
+          </span>
+        </div>
+
+        <button
+          class="btn-favorito"
+          type="button"
+          (click)="quitarFavorito(r)">
+          ❤️
+        </button>
+
+      </div>
+
+      <ui-empty-state
+        *ngIf="recetasFiltradas.length===0"
+        icon="❤️"
+        title="Sin favoritos"
+        text="Todavía no guardaste ninguna receta.">
+      </ui-empty-state>
+
+    </div>
+
   </div>
+
+  <!-- MODAL DETALLE -->
+  <div
+    class="form-overlay"
+    *ngIf="recetaDetalle"
+    (click)="cerrarDetalle()">
+  </div>
+
+  <div class="form-modal" *ngIf="recetaDetalle">
+
+    <h3 class="form-titulo">
+      {{ recetaDetalle.nombre }}
+    </h3>
+
+    <div class="detalle-meta">
+      <span
+        class="receta-badge"
+        [style.background-color]="getNivelColor(recetaDetalle.nivel)+'22'"
+        [style.color]="getNivelColor(recetaDetalle.nivel)">
+        {{ getNivelLabel(recetaDetalle.nivel) }}
+      </span>
+
+      <span class="receta-tiempo">
+        ⏱ {{ recetaDetalle.tiempoPreparacion }} min
+      </span>
+    </div>
+
+    <div class="detalle-bloque" *ngIf="recetaDetalle.nombreMentor">
+      <h4>Creada por</h4>
+      <p>🌟 {{ recetaDetalle.nombreMentor }}</p>
+    </div>
+
+    <div class="detalle-bloque">
+      <h4>Ingredientes</h4>
+      <p>{{ recetaDetalle.ingredientes || 'Sin ingredientes cargados.' }}</p>
+    </div>
+
+    <div class="detalle-bloque">
+      <h4>Preparación</h4>
+      <p>{{ recetaDetalle.pasos || 'Sin pasos cargados.' }}</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-guardar"
+      (click)="cerrarDetalle()">
+      Cerrar
+    </button>
+
+  </div>
+
 </div>

@@ -1,3 +1,28 @@
+@import "../dashboard/dashboard.component.css";
+.page-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recetas-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-favorito {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+
 /* ── PAGE WRAPPER ── */
 .page-wrapper {
   max-width: 480px;
@@ -339,3 +364,151 @@
 }
 
 .btn-nueva:hover { background: rgba(52,211,153,0.1); }
+
+/* ==========================================================
+   MODAL DETALLE RECETA
+========================================================== */
+
+.form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+}
+
+.form-modal{
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+
+  width:calc(100% - 32px);
+  max-width:480px;
+
+  background:#0f1117;
+  border:1px solid #1E1E2E;
+  border-radius:22px;
+
+  padding:22px;
+
+  z-index:1001;
+
+  max-height:85vh;
+  overflow-y:auto;
+
+  box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+
+/* ==========================================================
+   DETALLE
+========================================================== */
+
+.detalle-meta{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:14px 0 20px;
+}
+
+.detalle-bloque{
+  margin-bottom:22px;
+}
+
+.detalle-bloque h4{
+  color:#34D399;
+  font-size:14px;
+  margin:0 0 8px;
+  font-weight:600;
+}
+
+.detalle-bloque p{
+  margin:0;
+  color:rgba(255,255,255,.75);
+  line-height:1.65;
+  white-space:pre-line;
+  font-size:14px;
+}
+
+/* ==========================================================
+   BOTÓN VER DETALLE
+========================================================== */
+
+.btn-ver-detalle{
+
+  width:36px;
+  height:36px;
+
+  border:none;
+  outline:none;
+
+  border-radius:10px;
+
+  background:rgba(52,211,153,.08);
+
+  color:#34D399;
+
+  cursor:pointer;
+
+  transition:.25s;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:17px;
+}
+
+.btn-ver-detalle:hover{
+
+  background:#34D399;
+  color:#08110c;
+
+  transform:scale(1.06);
+
+}
+
+/* ==========================================================
+   BOTÓN FAVORITO
+========================================================== */
+
+.btn-favorito{
+
+  width:36px;
+  height:36px;
+
+  border:none;
+
+  border-radius:10px;
+
+  background:transparent;
+
+  cursor:pointer;
+
+  font-size:18px;
+
+  transition:.25s;
+}
+
+.btn-favorito:hover{
+
+  background:rgba(255,255,255,.08);
+
+}
+
+/* ==========================================================
+   SCROLL
+========================================================== */
+
+.form-modal::-webkit-scrollbar{
+  width:6px;
+}
+
+.form-modal::-webkit-scrollbar-thumb{
+  background:#34D399;
+  border-radius:20px;
+}
+
+.form-modal::-webkit-scrollbar-track{
+  background:transparent;
+}

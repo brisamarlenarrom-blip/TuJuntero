@@ -1,76 +1,116 @@
-<button class="btn-volver" (click)="volver()">← Volver</button>
-
 <div class="diario-container">
 
-  
+  <!-- HERO -->
+  <div class="diario-hero">
+    <div class="hero-content">
+      <div class="hero-icon">📝</div>
 
-  <button *ngIf="!mostrarForm" mat-raised-button color="primary" (click)="mostrarForm = true">
-    + Registrar comida
-  </button>
-
-  <mat-card *ngIf="mostrarForm" class="form-card">
-    <h3>Registrar comida</h3>
-    <form [formGroup]="comidaForm" (ngSubmit)="guardarComida()">
-      
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Tipo</mat-label>
-        <mat-select formControlName="tipo">
-          <mat-option value="desayuno">🌅 Desayuno</mat-option>
-          <mat-option value="almuerzo">☀️ Almuerzo</mat-option>
-          <mat-option value="merienda">🍪 Merienda</mat-option>
-          <mat-option value="cena">🌙 Cena</mat-option>
-          <mat-option value="snack">🍎 Snack</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>¿Qué comiste?</mat-label>
-        <textarea matInput formControlName="descripcion" placeholder="Ej: Ensalada con pollo y agua" rows="2"></textarea>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>¿Cómo te sentiste?</mat-label>
-        <mat-select formControlName="satisfaccion">
-          <mat-option [value]="1">😔 Mal</mat-option>
-          <mat-option [value]="2">😐 Regular</mat-option>
-          <mat-option [value]="3">🙂 Bien</mat-option>
-          <mat-option [value]="4">😊 Muy bien</mat-option>
-          <mat-option [value]="5">🤩 Excelente</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <div class="botones-form">
-        <button mat-raised-button color="primary" type="submit" [disabled]="comidaForm.invalid">Guardar</button>
-        <button mat-button type="button" (click)="mostrarForm = false">Cancelar</button>
+      <div class="hero-text">
+        <h1 class="hero-titulo">Diario de comidas</h1>
+        <p class="hero-subtitulo">
+          Registrá lo que comiste hoy<br>
+          y llevá un control simple.
+        </p>
       </div>
-    </form>
-  </mat-card>
-
-  <ui-section-title *ngIf="comidas.length > 0">Comidas de hoy</ui-section-title>
-
-  <ui-card 
-    *ngFor="let comida of comidas" 
-    [accent]="comida.satisfaccion >= 4 ? 'green' : comida.satisfaccion >= 3 ? 'blue' : 'orange'" 
-    [clickable]="true">
-    
-    <div class="comida-info">
-      <p class="comida-tipo">{{ comida.tipo }}</p>
-      <p class="comida-desc">{{ comida.descripcion }}</p>
     </div>
-    
-    <ui-badge [variant]="comida.satisfaccion >= 4 ? 'green' : comida.satisfaccion >= 3 ? 'blue' : 'orange'">
-      {{ getEmoji(comida.satisfaccion) }}
-    </ui-badge>
-    
-    <button (click)="eliminarComida(comida.id)" class="btn-eliminar">🗑️</button>
-    
-  </ui-card>
+  </div>
 
-  <ui-empty-state 
-    *ngIf="comidas.length === 0 && !mostrarForm"
-    icon="🍽️"
-    title="Sin registros hoy"
-    text="Registrá tu primera comida del día">
-  </ui-empty-state>
+  <!-- RESUMEN -->
+  <div class="stats-grid">
+
+    <div class="stat-card stat-azul">
+      <span class="stat-icono">📝</span>
+      <div class="stat-info">
+        <span class="stat-numero">{{ comidasHoy.length }}</span>
+        <span class="stat-label">Registros hoy</span>
+      </div>
+    </div>
+
+    <div class="stat-card stat-naranja">
+      <span class="stat-icono">🔥</span>
+      <div class="stat-info">
+        <span class="stat-numero">{{ totalCalorias }}</span>
+        <span class="stat-label">Calorías hoy</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FORMULARIO -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">Registrar comida</h2>
+
+    <form [formGroup]="comidaForm" (ngSubmit)="guardarComida()">
+
+      <div class="form-field">
+        <label>Tipo de comida</label>
+        <select formControlName="tipo">
+          <option value="desayuno">🥣 Desayuno</option>
+          <option value="almuerzo">🍽️ Almuerzo</option>
+          <option value="merienda">☕ Merienda</option>
+          <option value="cena">🌙 Cena</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>Comida</label>
+        <input formControlName="nombre" placeholder="Ej: Pollo con arroz">
+      </div>
+
+      <div class="form-field">
+        <label>Calorías</label>
+        <input formControlName="calorias" type="number" placeholder="Ej: 450">
+      </div>
+
+      <div class="form-field">
+        <label>Notas</label>
+        <textarea
+          formControlName="notas"
+          rows="3"
+          placeholder="Ej: Sin azúcar, poca sal...">
+        </textarea>
+      </div>
+
+      <button class="btn-guardar" type="submit" [disabled]="comidaForm.invalid">
+        Guardar registro
+      </button>
+
+    </form>
+
+    <p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
+  </div>
+
+  <!-- COMIDAS DE HOY -->
+  <div class="seccion-card">
+    <h2 class="seccion-titulo">Comidas de hoy</h2>
+
+    <div class="comida-row" *ngFor="let c of comidasHoy">
+
+      <div class="comida-icono">
+        {{ getTipoIcono(c.tipo) }}
+      </div>
+
+      <div class="comida-info">
+        <span class="comida-nombre">{{ c.nombre }}</span>
+
+        <span class="comida-meta">
+          {{ getTipoLabel(c.tipo) }} · 🔥 {{ c.calorias || 0 }} kcal
+        </span>
+
+        <span class="comida-notas" *ngIf="c.notas">
+          {{ c.notas }}
+        </span>
+      </div>
+
+      <button class="btn-eliminar" type="button" (click)="eliminarComida(c.id)">
+        🗑️
+      </button>
+
+    </div>
+
+    <div class="empty-mini" *ngIf="comidasHoy.length === 0">
+      🍽️ Todavía no registraste comidas hoy.
+    </div>
+  </div>
 
 </div>
