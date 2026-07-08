@@ -15,16 +15,22 @@ import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-sta
 })
 export class BibliotecaComponent implements OnInit {
 
-  // ── Estado ───────────────────────────────────────────
   libros: any[] = [];
   mostrarForm = false;
   editando = false;
   libroEditId: string | null = null;
   usuarioId = '';
-  filtroActivo = 'todos'; // 'todos' | 'leyendo' | 'leido' | 'quiero_leer'
+  filtroActivo = 'todos';
+  mensaje = '';
 
-  // ── Formulario ───────────────────────────────────────
   libroForm: FormGroup;
+
+  librosBiblia = [
+    ...['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías']
+      .map((titulo, i) => ({ titulo, testamento: 'Antiguo Testamento', orden: i + 1 })),
+    ...['Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis']
+      .map((titulo, i) => ({ titulo, testamento: 'Nuevo Testamento', orden: i + 40 }))
+  ];
 
   constructor(
     private fs: FirestoreService,
@@ -33,11 +39,11 @@ export class BibliotecaComponent implements OnInit {
     private router: Router
   ) {
     this.libroForm = this.fb.group({
-      titulo:        ['', Validators.required],
-      autor:         [''],
+      titulo: ['', Validators.required],
+      autor: [''],
       estadoLectura: ['quiero_leer'],
-      puntuacion:    [0],
-      resenia:       ['']
+      puntuacion: [0],
+      resenia: ['']
     });
   }
 
@@ -47,16 +53,15 @@ export class BibliotecaComponent implements OnInit {
     this.cargarLibros();
   }
 
-  // ── Carga ────────────────────────────────────────────
   cargarLibros() {
     this.fs.getByField('libros', 'usuarioId', this.usuarioId).subscribe(data => {
       this.libros = data;
     });
   }
 
-  // ── Filtro ───────────────────────────────────────────
   get librosFiltrados(): any[] {
     if (this.filtroActivo === 'todos') return this.libros;
+    if (this.filtroActivo === 'favoritos') return this.libros.filter(l => l.favorito === true);
     return this.libros.filter(l => l.estadoLectura === this.filtroActivo);
   }
 
@@ -64,58 +69,74 @@ export class BibliotecaComponent implements OnInit {
     this.filtroActivo = filtro;
   }
 
-  // ── Stats ────────────────────────────────────────────
   get totalLibros(): number { return this.libros.length; }
+  get librosFavoritos(): number { return this.libros.filter(l => l.favorito === true).length; }
   get librosLeyendo(): number { return this.libros.filter(l => l.estadoLectura === 'leyendo').length; }
   get librosLeidos(): number { return this.libros.filter(l => l.estadoLectura === 'leido').length; }
-  get librosFavoritos(): number { return this.libros.filter(l => l.puntuacion === 5).length; }
 
-  // ── Helpers visuales ─────────────────────────────────
-  getColorEstado(estado: string): string {
-    switch (estado) {
-      case 'leyendo':     return '#4A9EFF';
-      case 'leido':       return '#34D399';
-      case 'quiero_leer': return '#FBBF24';
-      default:            return '#4A9EFF';
+  async cargarBibliotecaBiblica() {
+    if (!this.usuarioId) return;
+
+    const yaCargados = this.libros.filter(l => l.categoria === 'Biblia');
+
+    if (yaCargados.length >= 66) {
+      this.mensaje = 'La biblioteca bíblica ya fue cargada.';
+      return;
     }
-  }
 
-  getIconoEstado(estado: string): string {
-    switch (estado) {
-      case 'leyendo':     return '📖';
-      case 'leido':       return '✅';
-      case 'quiero_leer': return '📚';
-      default:            return '📚';
+    for (const libro of this.librosBiblia) {
+      const existe = this.libros.some(l =>
+        l.categoria === 'Biblia' &&
+        l.titulo === libro.titulo
+      );
+
+      if (!existe) {
+        await this.fs.create('libros', {
+          usuarioId: this.usuarioId,
+          titulo: libro.titulo,
+          autor: 'Biblia',
+          categoria: 'Biblia',
+          testamento: libro.testamento,
+          orden: libro.orden,
+          estadoLectura: 'quiero_leer',
+          favorito: false,
+          puntuacion: 0,
+          resenia: '',
+          fechaCreacion: new Date()
+        });
+      }
     }
+
+    this.mensaje = 'Biblioteca bíblica cargada correctamente.';
   }
 
-  getLabelEstado(estado: string): string {
-    switch (estado) {
-      case 'leyendo':     return 'Leyendo';
-      case 'leido':       return 'Leído';
-      case 'quiero_leer': return 'Quiero leer';
-      default:            return estado;
-    }
+  async toggleFavorito(libro: any) {
+    await this.fs.update('libros', libro.id, {
+      favorito: !libro.favorito
+    });
   }
 
-  getEstrellas(puntuacion: number): string {
-    return '⭐'.repeat(puntuacion);
+  async cambiarEstado(libro: any, estado: string) {
+    await this.fs.update('libros', libro.id, {
+      estadoLectura: estado
+    });
   }
 
-  // ── CRUD ─────────────────────────────────────────────
   guardarLibro() {
     if (this.libroForm.invalid) return;
-    const datos = { ...this.libroForm.value, usuarioId: this.usuarioId };
+
+    const datos = {
+      ...this.libroForm.value,
+      usuarioId: this.usuarioId,
+      favorito: false,
+      categoria: 'Personal',
+      fechaCreacion: new Date()
+    };
+
     if (this.editando && this.libroEditId) {
-      this.fs.update('libros', this.libroEditId, datos).then(() => {
-        this.cancelar();
-        this.cargarLibros();
-      });
+      this.fs.update('libros', this.libroEditId, datos).then(() => this.cancelar());
     } else {
-      this.fs.create('libros', datos).then(() => {
-        this.cancelar();
-        this.cargarLibros();
-      });
+      this.fs.create('libros', datos).then(() => this.cancelar());
     }
   }
 
@@ -128,7 +149,7 @@ export class BibliotecaComponent implements OnInit {
 
   eliminarLibro(id: string) {
     if (confirm('¿Eliminar este libro?')) {
-      this.fs.delete('libros', id).then(() => this.cargarLibros());
+      this.fs.delete('libros', id);
     }
   }
 
@@ -136,10 +157,48 @@ export class BibliotecaComponent implements OnInit {
     this.editando = false;
     this.libroEditId = null;
     this.mostrarForm = false;
-    this.libroForm.reset({ estadoLectura: 'quiero_leer', puntuacion: 0 });
+    this.libroForm.reset({
+      estadoLectura: 'quiero_leer',
+      puntuacion: 0
+    });
   }
 
-  abrirForm() { this.mostrarForm = true; }
+  abrirForm() {
+    this.mostrarForm = true;
+  }
 
-  volver() { this.router.navigate(['/aprender']); }
+  getColorEstado(estado: string): string {
+    switch (estado) {
+      case 'leyendo': return '#4A9EFF';
+      case 'leido': return '#34D399';
+      case 'quiero_leer': return '#FBBF24';
+      default: return '#4A9EFF';
+    }
+  }
+
+  getIconoEstado(estado: string): string {
+    switch (estado) {
+      case 'leyendo': return '📖';
+      case 'leido': return '✅';
+      case 'quiero_leer': return '📚';
+      default: return '📚';
+    }
+  }
+
+  getLabelEstado(estado: string): string {
+    switch (estado) {
+      case 'leyendo': return 'Leyendo';
+      case 'leido': return 'Leído';
+      case 'quiero_leer': return 'Quiero leer';
+      default: return estado;
+    }
+  }
+
+  getEstrellas(puntuacion: number): string {
+    return '⭐'.repeat(Number(puntuacion || 0));
+  }
+
+  volver() {
+    this.router.navigate(['/aprender']);
+  }
 }

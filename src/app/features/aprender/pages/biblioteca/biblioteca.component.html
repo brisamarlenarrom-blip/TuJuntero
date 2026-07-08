@@ -1,158 +1,464 @@
 <div class="page-wrapper">
 
-  <!-- ── HERO BANNER + TABS ────────────────────────────────── -->
+  <!-- ───────────────────────────────────────────── -->
+  <!-- HERO + NAVEGACIÓN -->
+  <!-- ───────────────────────────────────────────── -->
   <div class="aprender-hero">
+
     <div class="hero-content">
       <div class="hero-icon">📖</div>
+
       <div class="hero-text">
-        <h1 class="aprender-titulo">Aprender</h1>
-        <p class="hero-subtitulo">Organiza tus materias, tareas y lecturas<br>y sigue creciendo cada día.</p>
+        <h1 class="aprender-titulo">
+          Aprender
+        </h1>
+
+        <p class="hero-subtitulo">
+          Organiza tus materias, tareas y lecturas<br>
+          y sigue creciendo cada día.
+        </p>
       </div>
     </div>
+
+    <!-- Navegación entre módulos -->
     <nav class="aprender-tabs">
-      <a routerLink="/aprender/materias" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">🎓</span> Materias
+
+      <a
+        routerLink="/aprender/materias"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span class="tab-icono">🎓</span>
+        Materias
+
       </a>
-      <a routerLink="/aprender/tareas" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">☑️</span> Tareas
+
+      <a
+        routerLink="/aprender/tareas"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span class="tab-icono">☑️</span>
+        Tareas
+
       </a>
-      <a routerLink="/aprender/biblioteca" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">📖</span> Biblioteca
+
+      <a
+        routerLink="/aprender/biblioteca"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span class="tab-icono">📖</span>
+        Biblioteca
+
       </a>
+
     </nav>
+
   </div>
 
   <div class="biblioteca-wrapper">
 
-    <!-- ── FORMULARIO MODAL ──────────────────────────────── -->
-    <div class="form-overlay" *ngIf="mostrarForm" (click)="cancelar()"></div>
-    <div class="form-modal" *ngIf="mostrarForm">
-      <h3 class="form-titulo">{{ editando ? 'Editar libro' : 'Nuevo libro' }}</h3>
-      <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
+    <!-- ───────────────────────────────────────────── -->
+    <!-- MODAL NUEVO LIBRO -->
+    <!-- ───────────────────────────────────────────── -->
+
+    <div
+      class="form-overlay"
+      *ngIf="mostrarForm"
+      (click)="cancelar()">
+    </div>
+
+    <div
+      class="form-modal"
+      *ngIf="mostrarForm">
+
+      <h3 class="form-titulo">
+
+        {{ editando ? 'Editar libro' : 'Libro personal' }}
+
+      </h3>
+
+      <form
+        [formGroup]="libroForm"
+        (ngSubmit)="guardarLibro()">
+
+        <!-- Título -->
 
         <div class="form-field">
+
           <label>Título</label>
-          <input formControlName="titulo" placeholder="Ej: El hombre en busca de sentido">
+
+          <input
+            formControlName="titulo"
+            placeholder="Ej: El hombre en busca de sentido">
+
         </div>
 
+        <!-- Autor -->
+
         <div class="form-field">
+
           <label>Autor</label>
-          <input formControlName="autor" placeholder="Ej: Viktor Frankl">
+
+          <input
+            formControlName="autor"
+            placeholder="Ej: Viktor Frankl">
+
         </div>
+
+        <!-- Estado -->
 
         <div class="form-field">
+
           <label>Estado</label>
+
           <select formControlName="estadoLectura">
-            <option value="quiero_leer">📚 Quiero leer</option>
-            <option value="leyendo">📖 Leyendo</option>
-            <option value="leido">✅ Leído</option>
+
+            <option value="quiero_leer">
+              📚 Quiero leer
+            </option>
+
+            <option value="leyendo">
+              📖 Leyendo
+            </option>
+
+            <option value="leido">
+              ✅ Leído
+            </option>
+
           </select>
+
         </div>
 
-        <div class="form-field" *ngIf="libroForm.value.estadoLectura === 'leido'">
+        <!-- Puntuación -->
+
+        <div class="form-field">
+
           <label>Puntuación</label>
+
           <select formControlName="puntuacion">
+
+            <option [value]="0">
+              Sin puntuación
+            </option>
+
             <option [value]="1">⭐</option>
             <option [value]="2">⭐⭐</option>
             <option [value]="3">⭐⭐⭐</option>
             <option [value]="4">⭐⭐⭐⭐</option>
             <option [value]="5">⭐⭐⭐⭐⭐</option>
+
           </select>
+
         </div>
+
+        <!-- Reseña -->
 
         <div class="form-field">
+
           <label>Reseña</label>
-          <textarea formControlName="resenia" placeholder="¿Qué te pareció?" rows="2"></textarea>
+
+          <textarea
+            formControlName="resenia"
+            rows="2"
+            placeholder="¿Qué te pareció?">
+
+          </textarea>
+
         </div>
+
+        <!-- Botones -->
 
         <div class="form-botones">
-          <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
-          <button type="submit" class="btn-guardar" [disabled]="libroForm.invalid">
-            {{ editando ? 'Actualizar' : 'Agregar' }}
+
+          <button
+            type="button"
+            class="btn-cancelar"
+            (click)="cancelar()">
+
+            Cancelar
+
           </button>
+
+          <button
+            type="submit"
+            class="btn-guardar"
+            [disabled]="libroForm.invalid">
+
+            {{ editando ? 'Actualizar' : 'Agregar' }}
+
+          </button>
+
         </div>
+
       </form>
+
     </div>
 
-    <!-- ── RESUMEN ───────────────────────────────────────── -->
+    <!-- ───────────────────────────────────────────── -->
+    <!-- RESUMEN -->
+    <!-- ───────────────────────────────────────────── -->
+
     <div class="seccion-card">
+
       <div class="seccion-header">
-        <h2 class="seccion-titulo">Resumen de tu biblioteca</h2>
-        <button class="btn-agregar-libro" (click)="abrirForm()">+ Agregar libro</button>
+
+        <h2 class="seccion-titulo">
+
+          Resumen de tu biblioteca
+
+        </h2>
+
+        <button
+          class="btn-agregar-libro"
+          (click)="abrirForm()">
+
+          + Libro personal
+
+        </button>
+
       </div>
+
+      <!-- Estadísticas -->
+
       <div class="stats-grid">
+
         <div class="stat-item stat-violeta">
           <span class="stat-icono">📄</span>
           <span class="stat-numero">{{ totalLibros }}</span>
           <span class="stat-label">Libros guardados</span>
         </div>
+
         <div class="stat-item stat-azul">
-          <span class="stat-icono">🔖</span>
+          <span class="stat-icono">⭐</span>
           <span class="stat-numero">{{ librosFavoritos }}</span>
           <span class="stat-label">Favoritos</span>
         </div>
+
         <div class="stat-item stat-verde">
-          <span class="stat-icono">👁️</span>
+          <span class="stat-icono">📖</span>
           <span class="stat-numero">{{ librosLeyendo }}</span>
           <span class="stat-label">Leyendo</span>
         </div>
+
         <div class="stat-item stat-naranja">
           <span class="stat-icono">✅</span>
           <span class="stat-numero">{{ librosLeidos }}</span>
           <span class="stat-label">Leídos</span>
         </div>
+
       </div>
+
+      <!-- Cargar automáticamente los 66 libros -->
+
+      <button
+        class="btn-nueva-materia"
+        (click)="cargarBibliotecaBiblica()">
+
+        📖 Cargar biblioteca bíblica
+
+      </button>
+
+      <p
+        class="mensaje-biblioteca"
+        *ngIf="mensaje">
+
+        {{ mensaje }}
+
+      </p>
+
     </div>
 
-    <!-- ── LISTA DE LIBROS ───────────────────────────────── -->
+    <!-- ───────────────────────────────────────────── -->
+    <!-- LISTA DE LIBROS -->
+    <!-- ───────────────────────────────────────────── -->
+
     <div class="seccion-card">
+
       <div class="seccion-header">
-        <h2 class="seccion-titulo">Mis libros</h2>
+
+        <h2 class="seccion-titulo">
+
+          Mis libros
+
+        </h2>
+
+        <!-- Filtros -->
+
         <div class="filtros">
-          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'todos'" (click)="setFiltro('todos')">Todos</button>
-          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'leyendo'" (click)="setFiltro('leyendo')">Leyendo</button>
-          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'leido'" (click)="setFiltro('leido')">Leídos</button>
+
+          <button
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo=='todos'"
+            (click)="setFiltro('todos')">
+
+            Todos
+
+          </button>
+
+          <button
+             class="filtro-btn"
+             [class.filtro-activo]="filtroActivo=='quiero_leer'"
+             (click)="setFiltro('quiero_leer')">
+
+             Quiero leer
+
+          </button>
+
+          <button
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo=='favoritos'"
+            (click)="setFiltro('favoritos')">
+
+            ⭐
+
+          </button>
+
+          <button
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo=='leyendo'"
+            (click)="setFiltro('leyendo')">
+
+            Leyendo
+
+          </button>
+
+          <button
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo=='leido'"
+            (click)="setFiltro('leido')">
+
+            Leídos
+
+          </button>
+
         </div>
+
       </div>
 
-      <div class="libro-row" *ngFor="let l of librosFiltrados">
-        <div class="libro-icono-box" [style.background-color]="getColorEstado(l.estadoLectura) + '22'">
-          <span [style.color]="getColorEstado(l.estadoLectura)">{{ getIconoEstado(l.estadoLectura) }}</span>
+      <!-- Libros -->
+
+      <div
+        class="libro-row"
+        *ngFor="let l of librosFiltrados">
+
+        <div
+          class="libro-icono-box"
+          [style.background-color]="getColorEstado(l.estadoLectura)+'22'">
+
+          <span
+            [style.color]="getColorEstado(l.estadoLectura)">
+
+            {{ getIconoEstado(l.estadoLectura) }}
+
+          </span>
+
         </div>
 
         <div class="libro-info">
-          <span class="libro-titulo">{{ l.titulo }}</span>
-          <span class="libro-autor" *ngIf="l.autor">{{ l.autor }}</span>
-          <span class="libro-estrellas" *ngIf="l.puntuacion > 0">{{ getEstrellas(l.puntuacion) }}</span>
+
+          <span class="libro-titulo">
+
+            {{ l.titulo }}
+
+          </span>
+
+          <span class="libro-autor">
+
+            {{ l.autor || 'Sin autor' }}
+
+            <span *ngIf="l.testamento">
+
+              · {{ l.testamento }}
+
+            </span>
+
+          </span>
+
+          <span
+            class="libro-estrellas"
+            *ngIf="l.puntuacion>0">
+
+            {{ getEstrellas(l.puntuacion) }}
+
+          </span>
+
         </div>
 
         <div class="libro-meta">
-          <span class="libro-badge"
-            [style.background-color]="getColorEstado(l.estadoLectura) + '22'"
+
+          <span
+            class="libro-badge"
+            [style.background-color]="getColorEstado(l.estadoLectura)+'22'"
             [style.color]="getColorEstado(l.estadoLectura)">
+
             {{ getLabelEstado(l.estadoLectura) }}
+
           </span>
+
         </div>
+
+        <!-- Acciones rápidas -->
 
         <div class="libro-acciones">
-          <button class="btn-accion" (click)="editarLibro(l)">✏️</button>
-          <button class="btn-accion" (click)="eliminarLibro(l.id)">🗑️</button>
+
+          <button
+            class="btn-accion"
+            (click)="toggleFavorito(l)">
+
+            {{ l.favorito ? '⭐' : '☆' }}
+
+          </button>
+
+          <button
+            class="btn-accion"
+            (click)="cambiarEstado(l,'leyendo')">
+
+            👁️
+
+          </button>
+
+          <button
+            class="btn-accion"
+            (click)="cambiarEstado(l,'leido')">
+
+            ✅
+
+          </button>
+
+          <button
+            class="btn-accion"
+            (click)="editarLibro(l)">
+
+            ✏️
+
+          </button>
+
+          <button
+            class="btn-accion"
+            (click)="eliminarLibro(l.id)">
+
+            🗑️
+
+          </button>
+
         </div>
+
       </div>
 
+      <!-- Estado vacío -->
+
       <ui-empty-state
-        *ngIf="librosFiltrados.length === 0 && !mostrarForm"
+        *ngIf="librosFiltrados.length==0 && !mostrarForm"
         icon="📚"
         title="Sin libros"
-        text="¡Agregá tu primer libro!">
+        text="Agregá un libro o cargá la biblioteca bíblica.">
+
       </ui-empty-state>
 
-      <button class="btn-nueva-materia" (click)="abrirForm()">
-        + Nuevo libro
-      </button>
     </div>
 
-  
-
   </div>
+
 </div>
