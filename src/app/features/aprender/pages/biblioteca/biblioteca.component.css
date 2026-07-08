@@ -517,3 +517,47 @@
   font-size: 13px;
   padding: 12px 0;
 }
+.btn-agregar-libro,
+.btn-nueva-materia,
+.filtro-btn,
+.btn-accion {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.seccion-header {
+  align-items: flex-start;
+}
+
+.btn-agregar-libro {
+  width: 100%;
+}
+
+.btn-nueva-materia {
+  display: block;
+}
+
+.libro-acciones {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (max-width: 420px) {
+  .libro-row {
+    align-items: flex-start;
+  }
+
+  .libro-meta {
+    display: none;
+  }
+
+  .libro-acciones {
+    max-width: 90px;
+  }
+}
