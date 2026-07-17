@@ -1,148 +1,522 @@
 <div class="page-wrapper">
 
-  <!-- ── HERO ──────────────────────────────────────────── -->
+  <!-- ───────────────────────────────────────────── -->
+  <!-- HERO + NAVEGACIÓN -->
+  <!-- ───────────────────────────────────────────── -->
+
   <div class="entrenamiento-hero">
+
     <div class="hero-content">
-      <div class="hero-icon">🏋️</div>
-      <div class="hero-text">
-        <h1 class="hero-titulo">Entrenamiento</h1>
-        <p class="hero-subtitulo">Rutinas personalizadas con IA<br>para alcanzar tus objetivos.</p>
+
+      <div class="hero-icon">
+        🏋️
       </div>
+
+      <div class="hero-text">
+
+        <h1 class="hero-titulo">
+          Entrenamiento
+        </h1>
+
+        <p class="hero-subtitulo">
+          Generá una rutina adaptada a tus objetivos<br>
+          y registrá tu progreso.
+        </p>
+
+      </div>
+
     </div>
+
+    <!-- Navegación del módulo -->
     <nav class="entrenamiento-tabs">
-      <a routerLink="/entrenamiento/rutinas" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">📋</span> Mis Rutinas
+
+      <a
+        routerLink="/entrenamiento/rutinas"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span class="tab-icono">📋</span>
+        Mis Rutinas
+
       </a>
-      <a routerLink="/entrenamiento/bitacora" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">📊</span> Bitácora
+
+      <a
+        routerLink="/entrenamiento/bitacora"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span class="tab-icono">📊</span>
+        Bitácora
+
       </a>
+
     </nav>
+
   </div>
 
   <div class="rutinas-wrapper">
 
-    <!-- ── FORMULARIO PERFIL FITNESS ─────────────────── -->
-    <div class="form-overlay" *ngIf="mostrarForm" (click)="mostrarForm = false"></div>
-    <div class="form-modal" *ngIf="mostrarForm">
-      <h3 class="form-titulo">⚡ Tu perfil fitness</h3>
-      <p class="form-subtitulo">La IA va a generar tu rutina personalizada</p>
+    <!-- ───────────────────────────────────────────── -->
+    <!-- MENSAJE DE CONFIRMACIÓN O ERROR -->
+    <!-- ───────────────────────────────────────────── -->
+
+    <p
+      class="mensaje-rutina"
+      *ngIf="mensaje">
+
+      {{ mensaje }}
+
+    </p>
+
+    <!-- ───────────────────────────────────────────── -->
+    <!-- MODAL DEL GENERADOR DE RUTINA -->
+    <!-- ───────────────────────────────────────────── -->
+
+    <div
+      class="form-overlay"
+      *ngIf="mostrarForm"
+      (click)="cerrarGenerador()">
+    </div>
+
+    <div
+      class="form-modal"
+      *ngIf="mostrarForm">
+
+      <h3 class="form-titulo">
+        ⚡ Crear rutina personalizada
+      </h3>
+
+      <p class="form-subtitulo">
+        Completá tus preferencias y la aplicación generará una rutina mediante reglas predefinidas.
+      </p>
 
       <form [formGroup]="perfilForm">
 
-      <div class="form-field">
-        <label>Objetivo (podés elegir más de uno)</label>
-        <div class="objetivos-grid">
-         <label class="objetivo-check" *ngFor="let obj of objetivos"
-             [class.obj-activo]="perfilForm.value.objetivo?.includes(obj.value)"
-             (click)="toggleObjetivo(obj.value)">
-             <span class="obj-icono">{{ obj.icono }}</span>
-             <span class="obj-label">{{ obj.label }}</span>
-         </label>
-        </div>
-      </div>
+        <!-- Objetivos -->
 
         <div class="form-field">
-          <label>Nivel</label>
-          <select formControlName="nivel">
-            <option value="principiante">🌱 Principiante</option>
-            <option value="intermedio">⚡ Intermedio</option>
-            <option value="avanzado">🔥 Avanzado</option>
-          </select>
+
+          <label>
+            Objetivo
+          </label>
+
+          <p class="campo-ayuda">
+            Podés elegir más de uno.
+          </p>
+
+          <div class="objetivos-grid">
+
+            <button
+              type="button"
+              class="objetivo-check"
+              *ngFor="let obj of objetivos"
+              [class.obj-activo]="perfilForm.value.objetivo?.includes(obj.value)"
+              (click)="toggleObjetivo(obj.value)">
+
+              <span class="obj-icono">
+                {{ obj.icono }}
+              </span>
+
+              <span class="obj-label">
+                {{ obj.label }}
+              </span>
+
+            </button>
+
+          </div>
+
         </div>
+
+        <!-- Nivel -->
+
+        <div class="form-field">
+
+          <label>
+            Nivel
+          </label>
+
+          <select formControlName="nivel">
+
+            <option value="principiante">
+              🌱 Principiante
+            </option>
+
+            <option value="intermedio">
+              ⚡ Intermedio
+            </option>
+
+            <option value="avanzado">
+              🔥 Avanzado
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- Días y duración -->
 
         <div class="form-row">
+
           <div class="form-field">
-            <label>Días por semana</label>
+
+            <label>
+              Días por semana
+            </label>
+
             <select formControlName="diasSemana">
-              <option [value]="2">2 días</option>
-              <option [value]="3">3 días</option>
-              <option [value]="4">4 días</option>
-              <option [value]="5">5 días</option>
+
+              <option [value]="2">
+                2 días
+              </option>
+
+              <option [value]="3">
+                3 días
+              </option>
+
+              <option [value]="4">
+                4 días
+              </option>
+
+              <option [value]="5">
+                5 días
+              </option>
+
             </select>
+
           </div>
+
           <div class="form-field">
-            <label>Duración (min)</label>
+
+            <label>
+              Duración
+            </label>
+
             <select formControlName="duracion">
-              <option [value]="30">30 min</option>
-              <option [value]="45">45 min</option>
-              <option [value]="60">60 min</option>
-              <option [value]="90">90 min</option>
+
+              <option [value]="30">
+                30 minutos
+              </option>
+
+              <option [value]="45">
+                45 minutos
+              </option>
+
+              <option [value]="60">
+                60 minutos
+              </option>
+
+              <option [value]="90">
+                90 minutos
+              </option>
+
             </select>
+
           </div>
+
         </div>
+
+        <!-- Equipamiento -->
 
         <div class="form-field">
-          <label>Equipamiento</label>
+
+          <label>
+            Equipamiento
+          </label>
+
           <select formControlName="equipamiento">
-            <option value="sin_equipamiento">🏠 Sin equipamiento</option>
-            <option value="mancuernas">🏋️ Mancuernas</option>
-            <option value="bandas">🔗 Bandas elásticas</option>
-            <option value="gym_completo">🏟️ Gimnasio completo</option>
+
+            <option value="sin_equipamiento">
+              🏠 Sin equipamiento
+            </option>
+
+            <option value="mancuernas">
+              🏋️ Mancuernas
+            </option>
+
+            <option value="bandas">
+              🔗 Bandas elásticas
+            </option>
+
+            <option value="gym_completo">
+              🏟️ Gimnasio completo
+            </option>
+
           </select>
+
         </div>
 
-        <button type="button" class="btn-generar" (click)="generarRutina()" [disabled]="cargandoIA || perfilForm.invalid">
-          <span *ngIf="!cargandoIA">✨ Generar mi rutina con IA</span>
-          <span *ngIf="cargandoIA">⏳ Generando rutina...</span>
+        <!-- Botón para generar -->
+
+        <button
+          type="button"
+          class="btn-generar"
+          [disabled]="generandoRutina || perfilForm.invalid"
+          (click)="generarRutina()">
+
+          <span *ngIf="!generandoRutina">
+            ✨ Generar mi rutina
+          </span>
+
+          <span *ngIf="generandoRutina">
+            ⏳ Generando rutina...
+          </span>
+
         </button>
 
       </form>
 
-      <!-- ── RUTINA GENERADA ── -->
-      <div class="rutina-preview" *ngIf="rutinaGenerada">
-        <h4 class="preview-titulo">{{ rutinaGenerada.nombre }}</h4>
-        <p class="preview-desc">{{ rutinaGenerada.descripcion }}</p>
+      <!-- ───────────────────────────────────────────── -->
+      <!-- VISTA PREVIA DE LA RUTINA GENERADA -->
+      <!-- ───────────────────────────────────────────── -->
 
-        <div class="dia-card" *ngFor="let dia of rutinaGenerada.dias">
-          <p class="dia-titulo">{{ dia.dia }} — {{ dia.nombre }}</p>
-          <div class="ejercicio-row" *ngFor="let ej of dia.ejercicios">
-            <span class="ej-nombre">{{ ej.nombre }}</span>
-            <span class="ej-detalle">{{ ej.series }}x{{ ej.repeticiones }} · {{ ej.descanso }}</span>
+      <div
+        class="rutina-preview"
+        *ngIf="rutinaGenerada">
+
+        <h4 class="preview-titulo">
+          {{ rutinaGenerada.nombre }}
+        </h4>
+
+        <p class="preview-desc">
+          {{ rutinaGenerada.descripcion }}
+        </p>
+
+        <!-- Días generados -->
+
+        <div
+          class="dia-card"
+          *ngFor="let dia of rutinaGenerada.dias">
+
+          <div class="dia-header">
+
+            <p class="dia-titulo">
+              {{ dia.dia }} — {{ dia.nombre }}
+            </p>
+
+            <span class="dia-duracion">
+              ⏱ {{ dia.duracion }} min
+            </span>
+
           </div>
+
+          <!-- Ejercicios del día -->
+
+          <div
+            class="ejercicio-row"
+            *ngFor="let ejercicio of dia.ejercicios">
+
+            <div class="ejercicio-info">
+
+              <span class="ej-nombre">
+                {{ ejercicio.nombre }}
+              </span>
+
+              <span class="ej-nota">
+                {{ ejercicio.nota }}
+              </span>
+
+            </div>
+
+            <span class="ej-detalle">
+              {{ ejercicio.series }} series ·
+              {{ ejercicio.repeticiones }} ·
+              {{ ejercicio.descanso }}
+            </span>
+
+          </div>
+
         </div>
 
-        <div class="consejos-box" *ngIf="rutinaGenerada.consejos">
-          <p class="consejos-titulo">💡 Consejos</p>
-          <p class="consejo" *ngFor="let c of rutinaGenerada.consejos">• {{ c }}</p>
+        <!-- Consejos -->
+
+        <div
+          class="consejos-box"
+          *ngIf="rutinaGenerada.consejos?.length">
+
+          <p class="consejos-titulo">
+            💡 Recomendaciones
+          </p>
+
+          <p
+            class="consejo"
+            *ngFor="let consejo of rutinaGenerada.consejos">
+
+            • {{ consejo }}
+
+          </p>
+
         </div>
 
-        <button class="btn-guardar" (click)="guardarRutina()">
-          💾 {{ rutinaGuardada ? 'Actualizar rutina' : 'Guardar rutina' }}
-        </button>
+        <!-- Botones de la vista previa -->
+
+        <div class="preview-botones">
+
+          <button
+            type="button"
+            class="btn-cancelar"
+            (click)="cerrarGenerador()">
+
+            Cancelar
+
+          </button>
+
+          <button
+            type="button"
+            class="btn-guardar"
+            (click)="guardarRutina()">
+
+            💾 {{ rutinaGuardada ? 'Actualizar rutina' : 'Guardar rutina' }}
+
+          </button>
+
+        </div>
+
       </div>
+
     </div>
 
-    <!-- ── RUTINA GUARDADA ────────────────────────────── -->
-    <div class="seccion-card" *ngIf="rutinaGuardada && !mostrarForm">
+    <!-- ───────────────────────────────────────────── -->
+    <!-- RUTINA PERSONAL GUARDADA -->
+    <!-- ───────────────────────────────────────────── -->
+
+    <div
+      class="seccion-card"
+      *ngIf="rutinaGuardada && !mostrarForm">
+
       <div class="seccion-header">
-        <h2 class="seccion-titulo">Mi rutina actual</h2>
-        <button class="btn-regenerar" (click)="mostrarForm = true">⚡ Regenerar</button>
-      </div>
 
-      <p class="rutina-nombre-guardada">{{ rutinaGuardada.nombre }}</p>
-      <p class="rutina-desc-guardada">{{ rutinaGuardada.descripcion }}</p>
+        <div>
 
-      <div class="dia-card" *ngFor="let dia of rutinaGuardada.dias">
-        <p class="dia-titulo">{{ dia.dia }} — {{ dia.nombre }}</p>
-        <div class="ejercicio-row" *ngFor="let ej of dia.ejercicios">
-          <span class="ej-nombre">{{ ej.nombre }}</span>
-          <span class="ej-detalle">{{ ej.series }}x{{ ej.repeticiones }} · {{ ej.descanso }}</span>
+          <h2 class="seccion-titulo">
+            Mi rutina actual
+          </h2>
+
+          <p class="seccion-subtitulo">
+            Rutina personalizada según tus preferencias.
+          </p>
+
         </div>
+
+        <button
+          type="button"
+          class="btn-regenerar"
+          (click)="abrirGenerador()">
+
+          ⚡ Modificar rutina
+
+        </button>
+
       </div>
 
-      <div class="consejos-box" *ngIf="rutinaGuardada.consejos">
-        <p class="consejos-titulo">💡 Consejos del entrenador</p>
-        <p class="consejo" *ngFor="let c of rutinaGuardada.consejos">• {{ c }}</p>
+      <p class="rutina-nombre-guardada">
+        {{ rutinaGuardada.nombre }}
+      </p>
+
+      <p class="rutina-desc-guardada">
+        {{ rutinaGuardada.descripcion }}
+      </p>
+
+      <!-- Días de la rutina guardada -->
+
+      <div
+        class="dia-card"
+        *ngFor="let dia of rutinaGuardada.dias">
+
+        <div class="dia-header">
+
+          <p class="dia-titulo">
+            {{ dia.dia }} — {{ dia.nombre }}
+          </p>
+
+          <span class="dia-duracion">
+            ⏱ {{ dia.duracion || rutinaGuardada.duracion }} min
+          </span>
+
+        </div>
+
+        <div
+          class="ejercicio-row"
+          *ngFor="let ejercicio of dia.ejercicios">
+
+          <div class="ejercicio-info">
+
+            <span class="ej-nombre">
+              {{ ejercicio.nombre }}
+            </span>
+
+            <span
+              class="ej-nota"
+              *ngIf="ejercicio.nota">
+
+              {{ ejercicio.nota }}
+
+            </span>
+
+          </div>
+
+          <span class="ej-detalle">
+            {{ ejercicio.series }} series ·
+            {{ ejercicio.repeticiones }} ·
+            {{ ejercicio.descanso }}
+          </span>
+
+        </div>
+
       </div>
+
+      <!-- Consejos guardados -->
+
+      <div
+        class="consejos-box"
+        *ngIf="rutinaGuardada.consejos?.length">
+
+        <p class="consejos-titulo">
+          💡 Recomendaciones
+        </p>
+
+        <p
+          class="consejo"
+          *ngFor="let consejo of rutinaGuardada.consejos">
+
+          • {{ consejo }}
+
+        </p>
+
+      </div>
+
     </div>
 
-    <!-- ── SIN RUTINA ─────────────────────────────────── -->
-    <div class="empty-rutina" *ngIf="!rutinaGuardada && !mostrarForm">
-      <div class="empty-icono">🏋️</div>
-      <h3 class="empty-titulo">Sin rutina aún</h3>
-      <p class="empty-sub">Completá tu perfil fitness y la IA te crea una rutina personalizada</p>
-      <button class="btn-crear" (click)="mostrarForm = true">✨ Crear mi rutina con IA</button>
+    <!-- ───────────────────────────────────────────── -->
+    <!-- ESTADO VACÍO -->
+    <!-- ───────────────────────────────────────────── -->
+
+    <div
+      class="empty-rutina"
+      *ngIf="!rutinaGuardada && !mostrarForm">
+
+      <div class="empty-icono">
+        🏋️
+      </div>
+
+      <h3 class="empty-titulo">
+        Todavía no tenés una rutina
+      </h3>
+
+      <p class="empty-sub">
+        Completá tus preferencias y generá una rutina adaptada a tus objetivos, nivel y equipamiento.
+      </p>
+
+      <button
+        type="button"
+        class="btn-crear"
+        (click)="abrirGenerador()">
+
+        ✨ Crear mi rutina
+
+      </button>
+
     </div>
 
   </div>
+
 </div>

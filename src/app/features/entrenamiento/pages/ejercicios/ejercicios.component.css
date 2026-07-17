@@ -1,0 +1,638 @@
+/* ==========================================================
+   GESTIÓN DE EJERCICIOS
+   Pantalla responsive para mentor y administrador
+========================================================== */
+
+/* ─────────────────────────────────────────────
+   CONTENEDOR GENERAL
+───────────────────────────────────────────── */
+
+.ejercicios-container {
+  width: calc(100% - 32px);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 0 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ─────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────── */
+
+.ejercicios-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      135deg,
+      #20112f 0%,
+      #38205a 45%,
+      #25143f 72%,
+      #160c2a 100%
+    );
+}
+
+.ejercicios-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 75% 55%,
+      rgba(167, 139, 250, 0.28) 0%,
+      rgba(124, 58, 237, 0.12) 42%,
+      transparent 72%
+    );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 20px;
+}
+
+.hero-icon {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 32px;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-titulo {
+  margin: 0;
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.hero-subtitulo {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* ─────────────────────────────────────────────
+   TARJETAS GENERALES
+───────────────────────────────────────────── */
+
+.seccion-card {
+  padding: 20px;
+  border: 1px solid #1e1e2e;
+  border-radius: 20px;
+  background: #0f1117;
+}
+
+.seccion-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.seccion-titulo {
+  margin: 0;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.seccion-subtitulo {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────────
+   BOTÓN NUEVO EJERCICIO
+───────────────────────────────────────────── */
+
+.btn-nuevo {
+  flex-shrink: 0;
+  padding: 10px 15px;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  border-radius: 11px;
+  background: rgba(167, 139, 250, 0.15);
+  color: #a78bfa;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-nuevo:hover {
+  background: rgba(167, 139, 250, 0.24);
+  transform: translateY(-1px);
+}
+
+/* ─────────────────────────────────────────────
+   BUSCADOR Y FILTROS
+───────────────────────────────────────────── */
+
+.herramientas {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.busqueda-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #1e1e2e;
+  border-radius: 13px;
+  background: #0f1117;
+}
+
+.busqueda-icono {
+  flex-shrink: 0;
+  font-size: 17px;
+}
+
+.busqueda-card input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.busqueda-card input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.filtro-btn {
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 11px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.filtro-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.filtro-activo {
+  border-color: #a78bfa;
+  background: rgba(167, 139, 250, 0.15);
+  color: #a78bfa;
+  font-weight: 700;
+}
+
+/* ─────────────────────────────────────────────
+   LISTA DE EJERCICIOS
+───────────────────────────────────────────── */
+
+.ejercicios-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ejercicio-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+  transition: 0.2s;
+}
+
+.ejercicio-card:hover {
+  border-color: rgba(167, 139, 250, 0.28);
+  background: rgba(167, 139, 250, 0.045);
+  transform: translateY(-1px);
+}
+
+.ejercicio-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+
+.ejercicio-icono {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: rgba(167, 139, 250, 0.13);
+  font-size: 20px;
+}
+
+.ejercicio-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ejercicio-nombre {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ejercicio-descripcion {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.ejercicio-badge {
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 99px;
+  background: rgba(167, 139, 250, 0.14);
+  color: #a78bfa;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+/* ─────────────────────────────────────────────
+   DATOS DEL EJERCICIO
+───────────────────────────────────────────── */
+
+.ejercicio-datos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.dato-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.dato-label {
+  color: rgba(255, 255, 255, 0.33);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.dato-valor {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────
+   ACCIONES
+───────────────────────────────────────────── */
+
+.ejercicio-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.btn-accion {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-accion:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-eliminar:hover {
+  background: rgba(239, 68, 68, 0.14);
+}
+
+/* ─────────────────────────────────────────────
+   MODAL
+───────────────────────────────────────────── */
+
+.form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(4px);
+}
+
+.form-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 301;
+  width: calc(100% - 32px);
+  max-width: 560px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 24px 22px;
+  border: 1px solid #26263a;
+  border-radius: 21px;
+  background: #0f1117;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+  transform: translate(-50%, -50%);
+}
+
+.form-titulo {
+  margin: 0 0 5px;
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.form-subtitulo {
+  margin: 0 0 20px;
+  color: rgba(255, 255, 255, 0.43);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────────
+   FORMULARIO
+───────────────────────────────────────────── */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 12px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.form-field-completo {
+  grid-column: 1 / -1;
+}
+
+.form-field label {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.55px;
+  text-transform: uppercase;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 11px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.form-field textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: #a78bfa;
+}
+
+.form-field select option {
+  background: #0f1117;
+  color: #ffffff;
+}
+
+.form-error {
+  color: #f87171;
+  font-size: 10px;
+}
+
+/* ─────────────────────────────────────────────
+   BOTONES DEL FORMULARIO
+───────────────────────────────────────────── */
+
+.form-botones {
+  display: flex;
+  gap: 10px;
+  margin-top: 7px;
+}
+
+.btn-cancelar,
+.btn-guardar {
+  padding: 12px;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.btn-guardar {
+  flex: 2;
+  border: none;
+  background: #a78bfa;
+  color: #160c2a;
+}
+
+.btn-guardar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ─────────────────────────────────────────────
+   MENSAJES Y ESTADO VACÍO
+───────────────────────────────────────────── */
+
+.mensaje {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: 12px;
+  background: rgba(52, 211, 153, 0.08);
+  color: #34d399;
+  font-size: 12px;
+}
+
+.empty-state {
+  padding: 34px 18px;
+  text-align: center;
+}
+
+.empty-icono {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 36px;
+}
+
+.empty-titulo {
+  margin: 0 0 5px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.empty-texto {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 11px;
+}
+
+/* ─────────────────────────────────────────────
+   SCROLL
+───────────────────────────────────────────── */
+
+.form-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.form-modal::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: rgba(167, 139, 250, 0.52);
+}
+
+/* ─────────────────────────────────────────────
+   TABLET
+───────────────────────────────────────────── */
+
+@media (max-width: 760px) {
+  .ejercicios-container {
+    max-width: 600px;
+  }
+
+  .herramientas {
+    grid-template-columns: 1fr;
+  }
+
+  .ejercicios-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   CELULAR
+───────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .ejercicios-container {
+    width: calc(100% - 24px);
+    padding-top: 12px;
+  }
+
+  .hero-content {
+    padding: 21px 17px;
+  }
+
+  .hero-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 27px;
+  }
+
+  .hero-titulo {
+    font-size: 20px;
+  }
+
+  .seccion-card {
+    padding: 16px 14px;
+  }
+
+  .seccion-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-nuevo {
+    width: 100%;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field-completo {
+    grid-column: auto;
+  }
+
+  .form-modal {
+    padding: 21px 16px;
+  }
+
+  .form-botones {
+    flex-direction: column;
+  }
+
+  .btn-cancelar,
+  .btn-guardar {
+    width: 100%;
+  }
+}

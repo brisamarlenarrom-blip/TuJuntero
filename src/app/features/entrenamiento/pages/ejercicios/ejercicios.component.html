@@ -1,0 +1,559 @@
+<div class="ejercicios-container">
+
+  <!-- ───────────────────────────────────────────── -->
+  <!-- HERO -->
+  <!-- ───────────────────────────────────────────── -->
+
+  <div class="ejercicios-hero">
+
+    <div class="hero-content">
+
+      <div class="hero-icon">
+        🏋️
+      </div>
+
+      <div class="hero-text">
+
+        <h1 class="hero-titulo">
+          Gestión de ejercicios
+        </h1>
+
+        <p class="hero-subtitulo">
+          Creá ejercicios de Fuerza, Cardio,<br>
+          Movilidad o HIIT para los usuarios.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ───────────────────────────────────────────── -->
+  <!-- MENSAJE -->
+  <!-- ───────────────────────────────────────────── -->
+
+  <p
+    class="mensaje"
+    *ngIf="mensaje">
+
+    {{ mensaje }}
+
+  </p>
+
+  <!-- ───────────────────────────────────────────── -->
+  <!-- BUSCADOR Y FILTROS -->
+  <!-- ───────────────────────────────────────────── -->
+
+  <div class="herramientas">
+
+    <!-- Buscador -->
+
+    <div class="busqueda-card">
+
+      <span class="busqueda-icono">
+        🔍
+      </span>
+
+      <input
+        type="text"
+        placeholder="Buscar ejercicios..."
+        [(ngModel)]="busqueda"
+        (input)="aplicarFiltro()">
+
+    </div>
+
+    <!-- Filtros -->
+
+    <div class="filtros">
+
+      <button
+        type="button"
+        class="filtro-btn"
+        *ngFor="let categoria of categorias"
+        [class.filtro-activo]="categoriaActiva === categoria.valor"
+        (click)="setCategoria(categoria.valor)">
+
+        {{ categoria.icono }}
+        {{ categoria.label }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- ───────────────────────────────────────────── -->
+  <!-- LISTADO -->
+  <!-- ───────────────────────────────────────────── -->
+
+  <div class="seccion-card">
+
+    <div class="seccion-header">
+
+      <div>
+
+        <h2 class="seccion-titulo">
+          Ejercicios publicados
+        </h2>
+
+        <p class="seccion-subtitulo">
+          Administrá los ejercicios que estarán disponibles en Entrenamiento.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn-nuevo"
+        (click)="abrirNuevo()">
+
+        + Nuevo ejercicio
+
+      </button>
+
+    </div>
+
+    <!-- Grilla de ejercicios -->
+
+    <div
+      class="ejercicios-grid"
+      *ngIf="ejerciciosFiltrados.length > 0">
+
+      <article
+        class="ejercicio-card"
+        *ngFor="let ejercicio of ejerciciosFiltrados">
+
+        <!-- Encabezado de la tarjeta -->
+
+        <div class="ejercicio-header">
+
+          <div class="ejercicio-icono">
+
+            {{ getIconoCategoria(ejercicio.categoria) }}
+
+          </div>
+
+          <div class="ejercicio-info">
+
+            <span class="ejercicio-nombre">
+
+              {{ ejercicio.nombre }}
+
+            </span>
+
+            <span class="ejercicio-badge">
+
+              {{ getLabelCategoria(ejercicio.categoria) }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- Descripción -->
+
+        <p
+          class="ejercicio-descripcion"
+          *ngIf="ejercicio.descripcion">
+
+          {{ ejercicio.descripcion }}
+
+        </p>
+
+        <!-- Datos del ejercicio -->
+
+        <div class="ejercicio-datos">
+
+          <div class="dato-item">
+
+            <span class="dato-label">
+              Grupo muscular
+            </span>
+
+            <span class="dato-valor">
+              {{ ejercicio.grupoMuscular }}
+            </span>
+
+          </div>
+
+          <div class="dato-item">
+
+            <span class="dato-label">
+              Nivel
+            </span>
+
+            <span class="dato-valor">
+              {{ getLabelNivel(ejercicio.nivel) }}
+            </span>
+
+          </div>
+
+          <div class="dato-item">
+
+            <span class="dato-label">
+              Equipamiento
+            </span>
+
+            <span class="dato-valor">
+              {{ getLabelEquipamiento(ejercicio.equipamiento) }}
+            </span>
+
+          </div>
+
+          <div class="dato-item">
+
+            <span class="dato-label">
+              Series
+            </span>
+
+            <span class="dato-valor">
+              {{ ejercicio.series }}
+            </span>
+
+          </div>
+
+          <div class="dato-item">
+
+            <span class="dato-label">
+              Repeticiones
+            </span>
+
+            <span class="dato-valor">
+              {{ ejercicio.repeticiones }}
+            </span>
+
+          </div>
+
+          <div class="dato-item">
+
+            <span class="dato-label">
+              Descanso
+            </span>
+
+            <span class="dato-valor">
+              {{ ejercicio.descanso }}
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- Acciones -->
+
+        <div class="ejercicio-acciones">
+
+          <button
+            type="button"
+            class="btn-accion"
+            title="Editar ejercicio"
+            (click)="editarEjercicio(ejercicio)">
+
+            ✏️
+
+          </button>
+
+          <button
+            type="button"
+            class="btn-accion btn-eliminar"
+            title="Eliminar ejercicio"
+            (click)="eliminarEjercicio(ejercicio)">
+
+            🗑️
+
+          </button>
+
+        </div>
+
+      </article>
+
+    </div>
+
+    <!-- Estado vacío -->
+
+    <div
+      class="empty-state"
+      *ngIf="ejerciciosFiltrados.length === 0">
+
+      <span class="empty-icono">
+        🏋️
+      </span>
+
+      <h3 class="empty-titulo">
+        No hay ejercicios
+      </h3>
+
+      <p class="empty-texto">
+        Creá el primer ejercicio para esta categoría.
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- ───────────────────────────────────────────── -->
+  <!-- MODAL -->
+  <!-- ───────────────────────────────────────────── -->
+
+  <div
+    class="form-overlay"
+    *ngIf="mostrarForm"
+    (click)="cerrarForm()">
+  </div>
+
+  <div
+    class="form-modal"
+    *ngIf="mostrarForm">
+
+    <h3 class="form-titulo">
+
+      {{ editando ? 'Editar ejercicio' : 'Nuevo ejercicio' }}
+
+    </h3>
+
+    <p class="form-subtitulo">
+      Completá los datos que utilizará el generador de rutinas.
+    </p>
+
+    <form
+      [formGroup]="ejercicioForm"
+      (ngSubmit)="guardarEjercicio()">
+
+      <div class="form-grid">
+
+        <!-- Nombre -->
+
+        <div class="form-field form-field-completo">
+
+          <label>
+            Nombre
+          </label>
+
+          <input
+            type="text"
+            formControlName="nombre"
+            placeholder="Ej: Sentadilla con mancuernas">
+
+          <span
+            class="form-error"
+            *ngIf="
+              ejercicioForm.get('nombre')?.touched &&
+              ejercicioForm.get('nombre')?.invalid
+            ">
+
+            El nombre es obligatorio.
+
+          </span>
+
+        </div>
+
+        <!-- Categoría -->
+
+        <div class="form-field">
+
+          <label>
+            Categoría
+          </label>
+
+          <select formControlName="categoria">
+
+            <option value="fuerza">
+              🏋️ Fuerza
+            </option>
+
+            <option value="cardio">
+              ❤️ Cardio
+            </option>
+
+            <option value="movilidad">
+              🧘 Movilidad
+            </option>
+
+            <option value="hiit">
+              ⚡ HIIT
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- Grupo muscular -->
+
+        <div class="form-field">
+
+          <label>
+            Grupo muscular
+          </label>
+
+          <input
+            type="text"
+            formControlName="grupoMuscular"
+            placeholder="Ej: Piernas">
+
+          <span
+            class="form-error"
+            *ngIf="
+              ejercicioForm.get('grupoMuscular')?.touched &&
+              ejercicioForm.get('grupoMuscular')?.invalid
+            ">
+
+            El grupo muscular es obligatorio.
+
+          </span>
+
+        </div>
+
+        <!-- Nivel -->
+
+        <div class="form-field">
+
+          <label>
+            Nivel
+          </label>
+
+          <select formControlName="nivel">
+
+            <option value="principiante">
+              🌱 Principiante
+            </option>
+
+            <option value="intermedio">
+              ⚡ Intermedio
+            </option>
+
+            <option value="avanzado">
+              🔥 Avanzado
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- Equipamiento -->
+
+        <div class="form-field">
+
+          <label>
+            Equipamiento
+          </label>
+
+          <select formControlName="equipamiento">
+
+            <option value="sin_equipamiento">
+              🏠 Sin equipamiento
+            </option>
+
+            <option value="mancuernas">
+              🏋️ Mancuernas
+            </option>
+
+            <option value="bandas">
+              🔗 Bandas elásticas
+            </option>
+
+            <option value="gym_completo">
+              🏟️ Gimnasio completo
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- Series -->
+
+        <div class="form-field">
+
+          <label>
+            Series
+          </label>
+
+          <input
+            type="number"
+            min="1"
+            formControlName="series">
+
+        </div>
+
+        <!-- Repeticiones -->
+
+        <div class="form-field">
+
+          <label>
+            Repeticiones o tiempo
+          </label>
+
+          <input
+            type="text"
+            formControlName="repeticiones"
+            placeholder="Ej: 10-12 o 30 segundos">
+
+        </div>
+
+        <!-- Descanso -->
+
+        <div class="form-field">
+
+          <label>
+            Descanso
+          </label>
+
+          <input
+            type="text"
+            formControlName="descanso"
+            placeholder="Ej: 60 segundos">
+
+        </div>
+
+        <!-- Descripción -->
+
+        <div class="form-field form-field-completo">
+
+          <label>
+            Descripción
+          </label>
+
+          <textarea
+            formControlName="descripcion"
+            placeholder="Indicaciones para realizar el ejercicio correctamente">
+          </textarea>
+
+        </div>
+
+      </div>
+
+      <!-- Botones -->
+
+      <div class="form-botones">
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          (click)="cerrarForm()">
+
+          Cancelar
+
+        </button>
+
+        <button
+          type="submit"
+          class="btn-guardar"
+          [disabled]="ejercicioForm.invalid || guardando">
+
+          {{
+            guardando
+              ? 'Guardando...'
+              : editando
+                ? 'Actualizar'
+                : 'Guardar ejercicio'
+          }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
