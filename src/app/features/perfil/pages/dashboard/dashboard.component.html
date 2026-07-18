@@ -1,107 +1,761 @@
-<div class="perfil-container">
+<!-- ========================================================
+     DASHBOARD DE PERFIL
+     Resumen personal, estadísticas, bienestar y accesos.
+========================================================= -->
 
-  <!-- ── HERO ──────────────────────────────────────────── -->
-  <div class="perfil-hero">
-    <div class="hero-overlay"></div>
+<main class="perfil-container">
+
+  <!-- ======================================================
+       MENSAJE DE ERROR GENERAL
+  ======================================================= -->
+
+  <div
+    *ngIf="mensajeError"
+    class="mensaje-error"
+    role="alert"
+  >
+    <span aria-hidden="true">⚠️</span>
+
+    <p>{{ mensajeError }}</p>
+  </div>
+
+
+  <!-- ======================================================
+       HERO DEL PERFIL
+  ======================================================= -->
+
+  <section
+    class="perfil-hero"
+    aria-labelledby="titulo-perfil"
+  >
+    <div
+      class="hero-overlay"
+      aria-hidden="true"
+    ></div>
+
     <div class="hero-content">
-      <div class="avatar-wrapper">
-        <div class="avatar">{{ iniciales }}</div>
+
+      <!-- Avatar generado con las iniciales -->
+
+      <div
+        class="avatar-wrapper"
+        aria-hidden="true"
+      >
+        <div class="avatar">
+          {{ iniciales }}
+        </div>
       </div>
+
+
+      <!-- Información principal del usuario -->
+
       <div class="hero-info">
-        <h1 class="hero-saludo">Hola, <span class="hero-nombre">{{ nombre }}</span> ✨</h1>
-        <p class="hero-frase">{{ fraseDelDia }}</p>
+
+        <p class="hero-etiqueta">
+          MI PERFIL
+        </p>
+
+        <h1
+          id="titulo-perfil"
+          class="hero-saludo"
+        >
+          Hola,
+          <span class="hero-nombre">
+            {{ nombre || 'Usuario' }}
+          </span>
+          <span aria-hidden="true">✨</span>
+        </h1>
+
+        <p
+          *ngIf="email"
+          class="hero-email"
+        >
+          {{ email }}
+        </p>
+
+        <blockquote class="hero-frase">
+          {{ fraseDelDia }}
+        </blockquote>
+
       </div>
-    </div>
-  </div>
 
-  <!-- ── STATS ─────────────────────────────────────────── -->
-  <div class="stats-grid">
-    <div class="stat-card stat-naranja">
-      <span class="stat-icono">🔥</span>
-      <span class="stat-num">{{ diasSeguidos }}</span>
-      <span class="stat-label">Días seguidos</span>
-      <span class="stat-sub">¡Seguí así!</span>
     </div>
-    <div class="stat-card stat-violeta">
-      <span class="stat-icono">📚</span>
-      <span class="stat-num">{{ tareasCompletadas }}</span>
-      <span class="stat-label">Tareas completadas</span>
-      <span class="stat-sub">Esta semana</span>
-    </div>
-    <div class="stat-card stat-verde">
-      <span class="stat-icono">🏋️</span>
-      <span class="stat-num">{{ minutosEntrenados }}</span>
-      <span class="stat-label">Minutos entrenados</span>
-      <span class="stat-sub">Esta semana</span>
-    </div>
-    <div class="stat-card stat-amarillo">
-      <span class="stat-icono">🥗</span>
-      <span class="stat-num">{{ recetasFavoritas }}</span>
-      <span class="stat-label">Recetas favoritas</span>
-      <span class="stat-sub">Guardadas</span>
-    </div>
-  </div>
+  </section>
 
-  <!-- ── BIENESTAR DEL MES ──────────────────────────────── -->
-  <div class="seccion-card" *ngIf="diasRegistrados > 0">
-    <h2 class="seccion-titulo">Tu bienestar este mes</h2>
-    <div class="animo-resumen">
-      <div class="animo-promedio">
-        <span class="animo-emoji-grande">{{ emojiPromedio }}</span>
-        <div class="animo-promedio-info">
-          <span class="animo-promedio-num">{{ promedioAnimo }}</span>
-          <span class="animo-promedio-label">{{ getLabelPorValor(promedioAnimo) }} en promedio</span>
-          <span class="animo-dias">{{ diasRegistrados }} días registrados</span>
+
+  <!-- ======================================================
+       ESTADÍSTICAS GENERALES
+  ======================================================= -->
+
+  <section
+    class="estadisticas-seccion"
+    aria-labelledby="titulo-estadisticas"
+  >
+    <div class="seccion-encabezado-sr">
+      <h2 id="titulo-estadisticas">
+        Resumen de actividad
+      </h2>
+    </div>
+
+
+    <!-- Estado de carga -->
+
+    <div
+      *ngIf="cargandoStats"
+      class="estado-cargando"
+      role="status"
+      aria-live="polite"
+    >
+      <span
+        class="cargando-icono"
+        aria-hidden="true"
+      >
+        ⏳
+      </span>
+
+      <p>Cargando tu actividad...</p>
+    </div>
+
+
+    <!-- Tarjetas de estadísticas -->
+
+    <div
+      *ngIf="!cargandoStats"
+      class="stats-grid"
+    >
+
+      <article class="stat-card stat-naranja">
+
+        <div class="stat-header">
+          <span
+            class="stat-icono"
+            aria-hidden="true"
+          >
+            🔥
+          </span>
+
+          <span class="stat-periodo">
+            Racha
+          </span>
         </div>
-      </div>
-    </div>
-    <div class="animo-barras">
-      <div class="animo-barra-item" *ngFor="let a of animosMes.slice(-7)">
-        <div class="animo-barra-fill"
-          [style.height.%]="(a.valor / 5) * 100"
-          [style.background-color]="getColorAnimo(a.valor)">
+
+        <strong class="stat-num">
+          {{ diasSeguidos }}
+        </strong>
+
+        <span class="stat-label">
+          Días seguidos
+        </span>
+
+        <span class="stat-sub">
+          {{
+            diasSeguidos > 0
+              ? '¡Seguí así!'
+              : 'Registrá tu actividad'
+          }}
+        </span>
+
+      </article>
+
+
+      <article class="stat-card stat-violeta">
+
+        <div class="stat-header">
+          <span
+            class="stat-icono"
+            aria-hidden="true"
+          >
+            📚
+          </span>
+
+          <span class="stat-periodo">
+            Aprender
+          </span>
         </div>
-        <span class="animo-barra-emoji">{{ a.emoji }}</span>
-        <span class="animo-barra-fecha">{{ a.fecha | date:'d/M' }}</span>
-      </div>
+
+        <strong class="stat-num">
+          {{ tareasCompletadas }}
+        </strong>
+
+        <span class="stat-label">
+          Tareas completadas
+        </span>
+
+        <span class="stat-sub">
+          Total registrado
+        </span>
+
+      </article>
+
+
+      <article class="stat-card stat-verde">
+
+        <div class="stat-header">
+          <span
+            class="stat-icono"
+            aria-hidden="true"
+          >
+            🏋️
+          </span>
+
+          <span class="stat-periodo">
+            Últimos 7 días
+          </span>
+        </div>
+
+        <strong class="stat-num">
+          {{ minutosEntrenados }}
+        </strong>
+
+        <span class="stat-label">
+          Minutos entrenados
+        </span>
+
+        <span class="stat-sub">
+          Esta semana
+        </span>
+
+      </article>
+
+
+      <article class="stat-card stat-amarillo">
+
+        <div class="stat-header">
+          <span
+            class="stat-icono"
+            aria-hidden="true"
+          >
+            🥗
+          </span>
+
+          <span class="stat-periodo">
+            Alimentarse
+          </span>
+        </div>
+
+        <strong class="stat-num">
+          {{ recetasFavoritas }}
+        </strong>
+
+        <span class="stat-label">
+          Recetas favoritas
+        </span>
+
+        <span class="stat-sub">
+          Guardadas
+        </span>
+
+      </article>
+
     </div>
+  </section>
+
+
+  <!-- ======================================================
+       CONTENIDO CENTRAL
+  ======================================================= -->
+
+  <div class="perfil-contenido-grid">
+
+    <!-- ====================================================
+         BIENESTAR DEL MES
+    ===================================================== -->
+
+    <section
+      class="seccion-card bienestar-card"
+      aria-labelledby="titulo-bienestar"
+    >
+
+      <div class="seccion-header">
+
+        <div>
+          <p class="seccion-etiqueta">
+            SEGUIMIENTO PERSONAL
+          </p>
+
+          <h2
+            id="titulo-bienestar"
+            class="seccion-titulo"
+          >
+            Tu bienestar este mes
+          </h2>
+
+          <p class="seccion-subtitulo">
+            Un resumen de los estados de ánimo que registraste.
+          </p>
+        </div>
+
+        <span
+          class="seccion-icono"
+          aria-hidden="true"
+        >
+          💙
+        </span>
+
+      </div>
+
+
+      <!-- Cargando bienestar -->
+
+      <div
+        *ngIf="cargandoAnimos"
+        class="estado-cargando estado-cargando-card"
+        role="status"
+        aria-live="polite"
+      >
+        <span
+          class="cargando-icono"
+          aria-hidden="true"
+        >
+          🌱
+        </span>
+
+        <p>Cargando tus registros de bienestar...</p>
+      </div>
+
+
+      <!-- Bienestar con registros -->
+
+      <ng-container
+        *ngIf="!cargandoAnimos && diasRegistrados > 0"
+      >
+
+        <div class="animo-resumen">
+
+          <div class="animo-promedio">
+
+            <span
+              class="animo-emoji-grande"
+              aria-hidden="true"
+            >
+              {{ emojiPromedio }}
+            </span>
+
+            <div class="animo-promedio-info">
+
+              <div class="animo-valor-linea">
+
+                <strong class="animo-promedio-num">
+                  {{ promedioAnimo }}
+                </strong>
+
+                <span class="animo-escala">
+                  / 5
+                </span>
+
+              </div>
+
+              <span class="animo-promedio-label">
+                {{ getLabelPorValor(promedioAnimo) }}
+                en promedio
+              </span>
+
+              <span class="animo-dias">
+                {{ diasRegistrados }}
+                {{
+                  diasRegistrados === 1
+                    ? 'día registrado'
+                    : 'días registrados'
+                }}
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Últimos siete registros -->
+
+        <div class="animo-grafico-header">
+
+          <div>
+            <h3>Últimos registros</h3>
+
+            <p>
+              Evolución de tus últimos siete estados de ánimo.
+            </p>
+          </div>
+
+          <span class="animo-grafico-leyenda">
+            Escala del 1 al 5
+          </span>
+
+        </div>
+
+
+        <div
+          class="animo-barras"
+          role="img"
+          aria-label="Gráfico de los últimos estados de ánimo registrados"
+        >
+
+          <div
+            *ngFor="let animo of animosMes.slice(-7)"
+            class="animo-barra-item"
+            [attr.aria-label]="
+              getLabelPorValor(animo.valor)
+              + ', valor '
+              + animo.valor
+              + ' de 5, fecha '
+              + animo.fecha
+            "
+          >
+
+            <div class="animo-barra-area">
+
+              <div
+                class="animo-barra-fill"
+                [style.height.%]="(animo.valor / 5) * 100"
+                [style.background-color]="
+                  getColorAnimo(animo.valor)
+                "
+              ></div>
+
+            </div>
+
+            <span
+              class="animo-barra-emoji"
+              aria-hidden="true"
+            >
+              {{ getEmojiPorValor(animo.valor) }}
+            </span>
+
+            <span class="animo-barra-fecha">
+              {{ animo.fecha | date:'d/M':'UTC' }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </ng-container>
+
+
+      <!-- Bienestar sin registros -->
+
+      <div
+        *ngIf="!cargandoAnimos && diasRegistrados === 0"
+        class="estado-vacio"
+      >
+
+        <span
+          class="estado-vacio-icono"
+          aria-hidden="true"
+        >
+          🌤️
+        </span>
+
+        <h3>Todavía no hay registros este mes</h3>
+
+        <p>
+          Registrá cómo te sentís desde Inicio para comenzar
+          a visualizar tu evolución.
+        </p>
+
+        <a
+          routerLink="/inicio"
+          class="btn-ir-inicio"
+        >
+          Ir al inicio
+          <span aria-hidden="true">→</span>
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         DATOS RÁPIDOS DEL USUARIO
+    ===================================================== -->
+
+    <aside
+      class="seccion-card datos-card"
+      aria-labelledby="titulo-datos-perfil"
+    >
+
+      <div class="seccion-header">
+
+        <div>
+          <p class="seccion-etiqueta">
+            INFORMACIÓN PERSONAL
+          </p>
+
+          <h2
+            id="titulo-datos-perfil"
+            class="seccion-titulo"
+          >
+            Datos de tu cuenta
+          </h2>
+        </div>
+
+        <span
+          class="seccion-icono"
+          aria-hidden="true"
+        >
+          👤
+        </span>
+
+      </div>
+
+
+      <dl class="datos-lista">
+
+        <div class="dato-item">
+          <dt>Nombre</dt>
+          <dd>{{ nombreCompleto }}</dd>
+        </div>
+
+        <div class="dato-item">
+          <dt>Correo electrónico</dt>
+          <dd>{{ email || 'Sin correo registrado' }}</dd>
+        </div>
+
+        <div class="dato-item">
+          <dt>Tipo de cuenta</dt>
+
+          <dd>
+            <span
+              class="rol-badge"
+              [class.rol-admin]="esAdmin"
+            >
+              {{ esAdmin ? 'Administrador' : 'Usuario' }}
+            </span>
+          </dd>
+        </div>
+
+      </dl>
+
+
+      <a
+        routerLink="/perfil/editar"
+        class="btn-editar-perfil"
+      >
+        <span aria-hidden="true">✏️</span>
+        Editar información
+      </a>
+
+    </aside>
+
   </div>
 
-  <!-- ── LOGROS ────────────────────────────────────────── -->
-  <div class="seccion-card">
+
+  <!-- ======================================================
+       LOGROS
+  ======================================================= -->
+
+  <section
+    class="seccion-card logros-card"
+    aria-labelledby="titulo-logros"
+  >
+
     <div class="seccion-header">
-      <h2 class="seccion-titulo">Logros</h2>
+
+      <div>
+        <p class="seccion-etiqueta">
+          TU PROGRESO
+        </p>
+
+        <h2
+          id="titulo-logros"
+          class="seccion-titulo"
+        >
+          Logros
+        </h2>
+
+        <p class="seccion-subtitulo">
+          Completá actividades para desbloquear nuevos reconocimientos.
+        </p>
+      </div>
+
+      <span
+        class="seccion-icono"
+        aria-hidden="true"
+      >
+        🏆
+      </span>
+
     </div>
+
+
     <div class="logros-grid">
-      <div class="logro-item" *ngFor="let l of logros" [class.logro-desbloqueado]="l.desbloqueado">
-        <div class="logro-icono-box" [style.border-color]="l.desbloqueado ? l.color : 'rgba(255,255,255,0.1)'">
-          <span>{{ l.icono }}</span>
+
+      <article
+        *ngFor="let logro of logros"
+        class="logro-item"
+        [class.logro-desbloqueado]="logro.desbloqueado"
+        [class.logro-bloqueado]="!logro.desbloqueado"
+      >
+
+        <div
+          class="logro-icono-box"
+          [style.border-color]="
+            logro.desbloqueado
+              ? logro.color
+              : 'rgba(255,255,255,0.1)'
+          "
+          [style.box-shadow]="
+            logro.desbloqueado
+              ? '0 8px 24px ' + logro.color + '25'
+              : 'none'
+          "
+        >
+
+          <span aria-hidden="true">
+            {{ logro.desbloqueado ? logro.icono : '🔒' }}
+          </span>
+
         </div>
-        <span class="logro-titulo">{{ l.titulo }}</span>
-        <span class="logro-sub">{{ l.sub }}</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- ── MÁS OPCIONES ──────────────────────────────────── -->
-  <div class="seccion-card">
-    <h2 class="seccion-titulo">Más opciones</h2>
-    <div class="opcion-row" *ngFor="let op of opciones" [routerLink]="op.ruta" style="cursor: pointer;">
-      <div class="opcion-icono">{{ op.icono }}</div>
-      <div class="opcion-info">
-        <span class="opcion-titulo">{{ op.titulo }}</span>
-        <span class="opcion-sub">{{ op.sub }}</span>
-      </div>
-      <span class="opcion-flecha">›</span>
-    </div>
-    <div class="opcion-row opcion-danger" (click)="logout()" style="cursor: pointer;">
-      <div class="opcion-icono">🚪</div>
-      <div class="opcion-info">
-        <span class="opcion-titulo">Cerrar sesión</span>
-        <span class="opcion-sub">Hasta luego 👋</span>
-      </div>
-      <span class="opcion-flecha">›</span>
-    </div>
-  </div>
+        <div class="logro-info">
 
-</div>
+          <h3 class="logro-titulo">
+            {{ logro.titulo }}
+          </h3>
+
+          <p class="logro-sub">
+            {{
+              logro.desbloqueado
+                ? logro.sub
+                : 'Logro bloqueado'
+            }}
+          </p>
+
+        </div>
+
+        <span
+          *ngIf="logro.desbloqueado"
+          class="logro-estado"
+        >
+          Desbloqueado
+        </span>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       OPCIONES DEL PERFIL
+  ======================================================= -->
+
+  <section
+    class="seccion-card opciones-card"
+    aria-labelledby="titulo-opciones"
+  >
+
+    <div class="seccion-header">
+
+      <div>
+        <p class="seccion-etiqueta">
+          CONFIGURACIÓN
+        </p>
+
+        <h2
+          id="titulo-opciones"
+          class="seccion-titulo"
+        >
+          Más opciones
+        </h2>
+
+        <p class="seccion-subtitulo">
+          Administrá tu cuenta y las preferencias de TuJuntero.
+        </p>
+      </div>
+
+      <span
+        class="seccion-icono"
+        aria-hidden="true"
+      >
+        ⚙️
+      </span>
+
+    </div>
+
+
+    <nav
+      class="opciones-lista"
+      aria-label="Opciones del perfil"
+    >
+
+      <a
+        *ngFor="let opcion of opciones"
+        class="opcion-row"
+        [routerLink]="opcion.ruta"
+      >
+
+        <div
+          class="opcion-icono"
+          aria-hidden="true"
+        >
+          {{ opcion.icono }}
+        </div>
+
+        <div class="opcion-info">
+
+          <span class="opcion-titulo">
+            {{ opcion.titulo }}
+          </span>
+
+          <span class="opcion-sub">
+            {{ opcion.sub }}
+          </span>
+
+        </div>
+
+        <span
+          class="opcion-flecha"
+          aria-hidden="true"
+        >
+          ›
+        </span>
+
+      </a>
+
+
+      <!-- Cerrar sesión es una acción, por eso se utiliza button -->
+
+      <button
+        type="button"
+        class="opcion-row opcion-danger"
+        aria-label="Cerrar sesión"
+        (click)="logout()"
+      >
+
+        <div
+          class="opcion-icono"
+          aria-hidden="true"
+        >
+          🚪
+        </div>
+
+        <div class="opcion-info">
+
+          <span class="opcion-titulo">
+            Cerrar sesión
+          </span>
+
+          <span class="opcion-sub">
+            Hasta luego 👋
+          </span>
+
+        </div>
+
+        <span
+          class="opcion-flecha"
+          aria-hidden="true"
+        >
+          ›
+        </span>
+
+      </button>
+
+    </nav>
+
+  </section>
+
+</main>

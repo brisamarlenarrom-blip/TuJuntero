@@ -1,107 +1,544 @@
 <div class="page-wrapper">
 
-  <!-- ── HERO BANNER + TABS ────────────────────────────────── -->
-  <div class="aprender-hero">
+  <!-- HERO -->
+
+  <section class="aprender-hero">
+
     <div class="hero-content">
-      <div class="hero-icon">📖</div>
+
+      <div class="hero-icon" aria-hidden="true">
+        📖
+      </div>
+
       <div class="hero-text">
-        <h1 class="aprender-titulo">Aprender</h1>
-        <p class="hero-subtitulo">Organiza tus materias, tareas y lecturas<br>y sigue creciendo cada día.</p>
+
+        <h1 class="aprender-titulo">
+          Aprender
+        </h1>
+
+        <p class="hero-subtitulo">
+          Organizá tus materias, tareas y lecturas
+          <br>
+          y seguí creciendo cada día.
+        </p>
+
       </div>
+
     </div>
-    <nav class="aprender-tabs">
-      <a routerLink="/aprender/materias" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">🎓</span> Materias
+
+    <nav
+      class="aprender-tabs"
+      aria-label="Secciones del módulo Aprender">
+
+      <a
+        routerLink="/aprender/materias"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span class="tab-icono">🎓</span>
+        <span>Materias</span>
+
       </a>
-      <a routerLink="/aprender/tareas" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">☑️</span> Tareas
+
+      <a
+        routerLink="/aprender/tareas"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span class="tab-icono">☑️</span>
+        <span>Tareas</span>
+
       </a>
-      <a routerLink="/aprender/biblioteca" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">📖</span> Biblioteca
+
+      <a
+        routerLink="/aprender/biblioteca"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span class="tab-icono">📖</span>
+        <span>Biblioteca</span>
+
       </a>
+
     </nav>
-  </div>
 
-  <div class="materias-wrapper">
+  </section>
 
-    <!-- ── FORMULARIO MODAL ──────────────────────────────── -->
-    <div class="form-overlay" *ngIf="mostrarForm" (click)="cancelar()"></div>
-    <div class="form-modal" *ngIf="mostrarForm">
-      <h3 class="form-titulo">{{ editando ? 'Editar materia' : 'Nueva materia' }}</h3>
-      <form [formGroup]="materiaForm" (ngSubmit)="guardarMateria()">
-        <div class="form-field">
-          <label>Nombre</label>
-          <input formControlName="nombre" placeholder="Ej: Álgebra Lineal">
-        </div>
-        <div class="form-field">
-          <label>Estado</label>
-          <select formControlName="estado">
-            <option value="cursando">Cursando</option>
-            <option value="regular">Regular (debo final)</option>
-            <option value="a_rendir">A rendir</option>
-          </select>
-        </div>
-        <div class="form-field" *ngIf="materiaForm.value.estado === 'cursando'">
-          <label>Día y horario</label>
-          <input formControlName="diaHorario" placeholder="Ej: Lunes y Miércoles 14:00">
-        </div>
-        <div class="form-field" *ngIf="materiaForm.value.estado === 'regular'">
-          <label>Próximo llamado</label>
-          <input formControlName="fechaLlamado" type="date">
-        </div>
-        <div class="form-field" *ngIf="materiaForm.value.estado === 'a_rendir'">
-          <label>Fecha de examen</label>
-          <input formControlName="fechaExamen" type="date">
-        </div>
-        <div class="form-botones">
-          <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
-          <button type="submit" class="btn-guardar" [disabled]="materiaForm.invalid">
-            {{ editando ? 'Actualizar' : 'Agregar' }}
-          </button>
-        </div>
-      </form>
-    </div>
 
-    <!-- ── LISTA DE MATERIAS ─────────────────────────────── -->
-    <div class="seccion-card">
-      <div class="seccion-header">
-        <h2 class="seccion-titulo">Mis materias</h2>
+  <!-- CONTENIDO -->
+
+  <main class="materias-wrapper">
+
+    <section class="materias-encabezado">
+
+      <div class="encabezado-texto">
+
+        <span class="encabezado-etiqueta">
+          Organización académica
+        </span>
+
+        <h2 class="encabezado-titulo">
+          Mis materias
+        </h2>
+
+        <p class="encabezado-descripcion">
+          Administrá las materias que estás cursando,
+          regularizaste o tenés que rendir.
+        </p>
+
       </div>
 
-      <div class="materia-row" *ngFor="let m of materias">
-        <div class="materia-icono-box" [style.background-color]="getColorEstado(m.estado) + '22'">
-          <span [style.color]="getColorEstado(m.estado)">{{ getIconoEstado(m.estado) }}</span>
-        </div>
-        <div class="materia-info">
-          <span class="materia-nombre">{{ m.nombre }}</span>
-          <span class="materia-estado-badge"
-            [style.background-color]="getColorEstado(m.estado) + '22'"
-            [style.color]="getColorEstado(m.estado)">
-            {{ getLabelEstado(m.estado) }}
+      <div class="encabezado-acciones">
+
+        <div class="contador-materias">
+
+          <span class="contador-icono">
+            🎓
           </span>
+
+          <div class="contador-info">
+
+            <strong>
+              {{ materias.length }}
+            </strong>
+
+            <span>
+              {{ materias.length === 1 ? 'Materia' : 'Materias' }}
+            </span>
+
+          </div>
+
         </div>
-        <div class="materia-meta" *ngIf="getProximaFecha(m) as prox">
-          <span class="prox-label">{{ prox.label }}</span>
-          <span class="prox-fecha">📅 {{ prox.fecha }}</span>
-        </div>
-        <div class="materia-acciones">
-          <button class="btn-accion" (click)="editarMateria(m)">✏️</button>
-          <button class="btn-accion" (click)="eliminarMateria(m.id)">🗑️</button>
-        </div>
+
+        <button
+          class="btn-nueva-principal"
+          type="button"
+          (click)="abrirForm()">
+
+          <span>＋</span>
+          Nueva materia
+
+        </button>
+
       </div>
 
-      <ui-empty-state
-        *ngIf="materias.length === 0 && !mostrarForm"
-        icon="📖"
-        title="Sin materias"
-        text="¡Agregá tu primera materia!">
-      </ui-empty-state>
+    </section>
 
-      <button class="btn-nueva-materia" (click)="abrirForm()">
-        + Nueva materia
+
+    <!-- CARGANDO -->
+
+    <section
+      class="estado-cargando"
+      *ngIf="cargando">
+
+      <span class="spinner"></span>
+
+      <div>
+
+        <strong>Cargando materias</strong>
+
+        <p>
+          Estamos buscando tu información académica.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- LISTADO -->
+
+    <section
+      class="materias-seccion"
+      *ngIf="!cargando && materias.length > 0">
+
+      <header class="seccion-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Tu recorrido
+          </span>
+
+          <h2 class="seccion-titulo">
+            Materias registradas
+          </h2>
+
+        </div>
+
+        <span class="seccion-total">
+          {{ materias.length }} en total
+        </span>
+
+      </header>
+
+      <div class="materias-grid">
+
+        <article
+          class="materia-card"
+          *ngFor="
+            let m of materias;
+            trackBy: trackByMateriaId
+          ">
+
+          <header class="materia-card-header">
+
+            <div
+              class="materia-icono-box"
+              [style.background-color]="
+                getColorEstado(m.estado) + '22'
+              ">
+
+              <span
+                [style.color]="getColorEstado(m.estado)">
+
+                {{ getIconoEstado(m.estado) }}
+
+              </span>
+
+            </div>
+
+            <div class="materia-info">
+
+              <h3 class="materia-nombre">
+                {{ m.nombre }}
+              </h3>
+
+              <span
+                class="materia-estado-badge"
+                [style.background-color]="
+                  getColorEstado(m.estado) + '22'
+                "
+                [style.color]="getColorEstado(m.estado)">
+
+                {{ getLabelEstado(m.estado) }}
+
+              </span>
+
+            </div>
+
+          </header>
+
+
+          <div class="materia-card-contenido">
+
+            <div
+              class="materia-meta"
+              *ngIf="getProximaFecha(m) as prox">
+
+              <div class="meta-icono">
+                📅
+              </div>
+
+              <div class="meta-contenido">
+
+                <span class="prox-label">
+                  {{ prox.label }}
+                </span>
+
+                <strong class="prox-fecha">
+                  {{ prox.fecha }}
+                </strong>
+
+              </div>
+
+            </div>
+
+            <div
+              class="materia-meta materia-meta-vacio"
+              *ngIf="!getProximaFecha(m)">
+
+              <div class="meta-icono">
+                🗓️
+              </div>
+
+              <div class="meta-contenido">
+
+                <span class="prox-label">
+                  Próxima actividad
+                </span>
+
+                <strong class="prox-fecha">
+                  Sin fecha registrada
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <footer class="materia-card-footer">
+
+            <button
+              class="btn-editar"
+              type="button"
+              (click)="editarMateria(m)">
+
+              <span>✏️</span>
+              Editar
+
+            </button>
+
+            <button
+              class="btn-eliminar"
+              type="button"
+              (click)="eliminarMateria(m.id)">
+
+              <span>🗑️</span>
+              Eliminar
+
+            </button>
+
+          </footer>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ESTADO VACÍO -->
+
+    <section
+      class="estado-vacio"
+      *ngIf="
+        !cargando &&
+        materias.length === 0 &&
+        !mostrarForm
+      ">
+
+      <div class="estado-vacio-icono">
+        🎓
+      </div>
+
+      <span class="estado-vacio-etiqueta">
+        Empezá a organizarte
+      </span>
+
+      <h2>
+        Todavía no tenés materias
+      </h2>
+
+      <p>
+        Registrá la primera materia para guardar su estado,
+        horario o próxima fecha de examen.
+      </p>
+
+      <button
+        class="estado-vacio-boton"
+        type="button"
+        (click)="abrirForm()">
+
+        <span>＋</span>
+        Agregar primera materia
+
       </button>
-    </div>
 
+    </section>
+
+  </main>
+
+
+  <!-- FONDO DEL MODAL -->
+
+  <div
+    class="form-overlay"
+    *ngIf="mostrarForm"
+    (click)="cancelar()">
   </div>
+
+
+  <!-- MODAL -->
+
+  <section
+    class="form-modal"
+    *ngIf="mostrarForm"
+    role="dialog"
+    aria-modal="true">
+
+    <header class="form-header">
+
+      <div>
+
+        <span class="form-etiqueta">
+          {{ editando ? 'Modificar información' : 'Nueva inscripción' }}
+        </span>
+
+        <h3 class="form-titulo">
+          {{ editando ? 'Editar materia' : 'Nueva materia' }}
+        </h3>
+
+      </div>
+
+      <button
+        class="btn-cerrar-modal"
+        type="button"
+        (click)="cancelar()">
+
+        ×
+
+      </button>
+
+    </header>
+
+
+    <form
+      [formGroup]="materiaForm"
+      (ngSubmit)="guardarMateria()"
+      novalidate>
+
+      <div class="form-field">
+
+        <label for="nombre">
+          Nombre de la materia
+        </label>
+
+        <input
+          id="nombre"
+          type="text"
+          autocomplete="off"
+          placeholder="Ejemplo: Algoritmos III"
+          formControlName="nombre">
+
+        <small
+          class="campo-error"
+          *ngIf="
+            materiaForm.controls.nombre.invalid &&
+            materiaForm.controls.nombre.touched
+          ">
+
+          El nombre de la materia es obligatorio.
+
+        </small>
+
+      </div>
+
+
+      <div class="form-field">
+
+        <label for="estado">
+          Estado académico
+        </label>
+
+        <select
+          id="estado"
+          formControlName="estado">
+
+          <option value="cursando">
+            Cursando
+          </option>
+
+          <option value="regular">
+            Regular — debo final
+          </option>
+
+          <option value="a_rendir">
+            A rendir
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        class="form-field"
+        *ngIf="
+          materiaForm.controls.estado.value === 'cursando'
+        ">
+
+        <label for="diaHorario">
+          Día y horario
+        </label>
+
+        <input
+          id="diaHorario"
+          type="text"
+          autocomplete="off"
+          formControlName="diaHorario"
+          placeholder="Ejemplo: Lunes y miércoles, 19:00">
+
+      </div>
+
+
+      <div
+        class="form-field"
+        *ngIf="
+          materiaForm.controls.estado.value === 'regular'
+        ">
+
+        <label for="fechaLlamado">
+          Próximo llamado
+        </label>
+
+        <input
+          id="fechaLlamado"
+          type="date"
+          formControlName="fechaLlamado">
+
+      </div>
+
+
+      <div
+        class="form-field"
+        *ngIf="
+          materiaForm.controls.estado.value === 'a_rendir'
+        ">
+
+        <label for="fechaExamen">
+          Fecha de examen
+        </label>
+
+        <input
+          id="fechaExamen"
+          type="date"
+          formControlName="fechaExamen">
+
+      </div>
+
+
+      <p
+        class="mensaje-error"
+        *ngIf="mensajeError">
+
+        ⚠️ {{ mensajeError }}
+
+      </p>
+
+
+      <div class="form-botones">
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          (click)="cancelar()">
+
+          Cancelar
+
+        </button>
+
+        <button
+          type="submit"
+          class="btn-guardar"
+          [disabled]="materiaForm.invalid || guardando">
+
+          {{
+            guardando
+              ? 'Guardando...'
+              : editando
+                ? 'Guardar cambios'
+                : 'Agregar materia'
+          }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
 
 </div>

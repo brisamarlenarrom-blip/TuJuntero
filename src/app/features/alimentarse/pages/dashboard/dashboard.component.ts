@@ -1,178 +1,804 @@
-// Dashboard de Alimentarse
-// Muestra recetas públicas por categoría, buscador, favoritos
-// y permite crear/editar/eliminar recetas según el rol del usuario.
+// ==========================================================
+// DASHBOARD DEL MÓDULO ALIMENTARSE
+// ==========================================================
+//
+// Responsabilidades principales:
+//
+// - Mostrar recetas públicas.
+// - Filtrar recetas por categoría y búsqueda.
+// - Permitir marcar recetas como favoritas.
+// - Permitir crear, editar y eliminar recetas según el rol.
+// - Mostrar estadísticas básicas del usuario.
+// - Navegar hacia el diario de comidas.
+//
+// ==========================================================
 
-import { Component, OnInit } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import {
-  FormsModule,
-  ReactiveFormsModule,
-  FormBuilder,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject
+} from '@angular/core';
+
+import {
+  CommonModule
+} from '@angular/common';
+
+import {
+  Router,
+  RouterModule
+} from '@angular/router';
+
+import {
+  FormControl,
   FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
   Validators
 } from '@angular/forms';
 
-import { FirestoreService } from '../../../../core/firestore.service';
-import { AuthService } from '../../../../core/auth.service';
+import {
+  Subject,
+  takeUntil
+} from 'rxjs';
+
+
+// ==========================================================
+// SERVICIOS PROPIOS
+// ==========================================================
+
+import {
+  FirestoreService
+} from '../../../../core/firestore.service';
+
+import {
+  AuthService
+} from '../../../../core/auth.service';
+
+
+// ==========================================================
+// TIPOS DEL COMPONENTE
+// ==========================================================
+
+/**
+ * Categorías válidas para las recetas.
+ */
+type CategoriaReceta =
+  | 'desayuno'
+  | 'almuerzo'
+  | 'merienda'
+  | 'cena';
+
+
+/**
+ * Niveles válidos para una receta.
+ */
+type NivelReceta =
+  | 'facil'
+  | 'medio'
+  | 'dificil';
+
+
+/**
+ * Estructura de cada categoría mostrada en pantalla.
+ */
+interface CategoriaAlimentarse {
+  valor: CategoriaReceta;
+  label: string;
+  icono: string;
+}
+
+
+/**
+ * Estructura principal de una receta.
+ */
+interface Receta {
+  id: string;
+  nombre: string;
+  categoria: CategoriaReceta;
+  ingredientes: string;
+  pasos: string;
+  nivel: NivelReceta;
+  tiempoPreparacion: number;
+
+  usuarioId?: string;
+  creadoPor?: string;
+  nombreMentor?: string;
+
+  esPublica?: boolean;
+  favoritos?: string[];
+  fechaCreacion?: Date | string | unknown;
+}
+
+
+/**
+ * Estructura de una comida registrada.
+ */
+interface ComidaRegistrada {
+  id?: string;
+  usuarioId: string;
+  fecha: string;
+  calorias?: number | string;
+}
+
+
+/**
+ * Estructura tipada del formulario.
+ */
+interface FormularioReceta {
+  nombre: FormControl<string>;
+  categoria: FormControl<CategoriaReceta>;
+  ingredientes: FormControl<string>;
+  pasos: FormControl<string>;
+  nivel: FormControl<NivelReceta>;
+  tiempoPreparacion: FormControl<number>;
+}
+
+
+/**
+ * Datos utilizados al crear o actualizar una receta.
+ */
+interface DatosReceta {
+  nombre: string;
+  categoria: CategoriaReceta;
+  ingredientes: string;
+  pasos: string;
+  nivel: NivelReceta;
+  tiempoPreparacion: number;
+
+  usuarioId: string;
+  creadoPor: string;
+  nombreMentor: string;
+  esPublica: boolean;
+
+  favoritos?: string[];
+  fechaCreacion?: Date;
+}
+
+
+// ==========================================================
+// COMPONENTE
+// ==========================================================
 
 @Component({
   selector: 'app-dashboard-alimentarse',
+
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
+
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule
+  ],
+
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent
+  implements OnInit, OnDestroy {
 
-  // Usuario
+  // ========================================================
+  // INYECCIÓN DE DEPENDENCIAS
+  // ========================================================
+
+  private readonly firestoreService =
+    inject(FirestoreService);
+
+  private readonly authService =
+    inject(AuthService);
+
+  private readonly fb =
+    inject(NonNullableFormBuilder);
+
+  private readonly router =
+    inject(Router);
+
+
+  // ========================================================
+  // CONTROL DE SUSCRIPCIONES
+  // ========================================================
+
+  /**
+   * Permite cerrar automáticamente las suscripciones
+   * cuando el componente se destruye.
+   */
+  private readonly destroy$ =
+    new Subject<void>();
+
+
+  // ========================================================
+  // USUARIO Y PERMISOS
+  // ========================================================
+
   usuarioId = '';
+
   nombreMentor = '';
+
   esMentor = false;
+
   esAdmin = false;
+
   puedeGestionar = false;
 
-  // Buscador
+
+  // ========================================================
+  // ESTADO DE CARGA Y MENSAJES
+  // ========================================================
+
+  cargandoRecetas = true;
+
+  cargandoComidas = true;
+
+  guardandoReceta = false;
+
+  mensajeError = '';
+
+
+  // ========================================================
+  // BUSCADOR Y FILTROS
+  // ========================================================
+
   busqueda = '';
 
-  // Recetas
-  recetas: any[] = [];
-  recetasFiltradas: any[] = [];
+  categoriaActiva: CategoriaReceta =
+    'desayuno';
 
-  // Formulario
-  mostrarForm = false;
-  editando = false;
-  recetaEditId: string | null = null;
-  recetaForm: FormGroup;
 
-  // Estadísticas
-  totalRecetas = 0;
-  recetasFavoritas = 0;
-  comidasHoy = 0;
-  caloriasHoy = 0;
-
-  // Categorías
-  categoriaActiva = 'desayuno';
-
-  categorias = [
-    { valor: 'desayuno', label: 'Desayunos', icono: '🥣' },
-    { valor: 'almuerzo', label: 'Almuerzos', icono: '🍽️' },
-    { valor: 'merienda', label: 'Meriendas', icono: '☕' },
-    { valor: 'cena', label: 'Cenas', icono: '🌙' }
+  readonly categorias: CategoriaAlimentarse[] = [
+    {
+      valor: 'desayuno',
+      label: 'Desayunos',
+      icono: '🥣'
+    },
+    {
+      valor: 'almuerzo',
+      label: 'Almuerzos',
+      icono: '🍽️'
+    },
+    {
+      valor: 'merienda',
+      label: 'Meriendas',
+      icono: '☕'
+    },
+    {
+      valor: 'cena',
+      label: 'Cenas',
+      icono: '🌙'
+    }
   ];
 
-  constructor(
-    private fs: FirestoreService,
-    private auth: AuthService,
-    private fb: FormBuilder,
-    private router: Router
-  ) {
-    this.recetaForm = this.fb.group({
-      nombre: ['', Validators.required],
-      categoria: ['desayuno', Validators.required],
-      ingredientes: [''],
-      pasos: [''],
-      nivel: ['facil'],
-      tiempoPreparacion: [30]
+
+  // ========================================================
+  // RECETAS
+  // ========================================================
+
+  recetas: Receta[] = [];
+
+  recetasFiltradas: Receta[] = [];
+
+
+  // ========================================================
+  // FORMULARIO
+  // ========================================================
+
+  mostrarForm = false;
+
+  editando = false;
+
+  recetaEditId: string | null = null;
+
+
+  readonly recetaForm: FormGroup<FormularioReceta> =
+    this.fb.group({
+
+      nombre: this.fb.control('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(100)
+        ]
+      }),
+
+      categoria:
+        this.fb.control<CategoriaReceta>(
+          'desayuno'
+        ),
+
+      ingredientes: this.fb.control('', {
+        validators: [
+          Validators.maxLength(1500)
+        ]
+      }),
+
+      pasos: this.fb.control('', {
+        validators: [
+          Validators.maxLength(3000)
+        ]
+      }),
+
+      nivel:
+        this.fb.control<NivelReceta>(
+          'facil'
+        ),
+
+      tiempoPreparacion: this.fb.control(30, {
+        validators: [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(600)
+        ]
+      })
     });
-  }
 
-  async ngOnInit() {
-    await this.auth.authReadyPromise;
 
-    const usuario = await this.auth.refrescarUsuarioActual();
+  // ========================================================
+  // ESTADÍSTICAS
+  // ========================================================
 
-    if (usuario) {
-      this.usuarioId = usuario.id;
-      this.nombreMentor = usuario.nombre || '';
-      this.esMentor = usuario.esMentor || usuario.rol === 'mentor';
-      this.esAdmin = usuario.rol === 'admin';
-      this.puedeGestionar = this.esMentor || this.esAdmin;
-    }
+  totalRecetas = 0;
+
+  recetasFavoritas = 0;
+
+  comidasHoy = 0;
+
+  caloriasHoy = 0;
+
+
+  // ========================================================
+  // CICLO DE VIDA
+  // ========================================================
+
+  async ngOnInit(): Promise<void> {
+    await this.inicializarUsuario();
 
     this.cargarRecetas();
-    this.cargarComidasHoy();
+
+    if (this.usuarioId) {
+      this.cargarComidasHoy();
+    } else {
+      this.cargandoComidas = false;
+    }
   }
 
-  cargarRecetas() {
-    this.fs.getCollection('recetas').subscribe((data: any[]) => {
-      this.recetas = data.filter(r => r.esPublica !== false);
 
-      this.totalRecetas = this.recetas.length;
-
-      this.recetasFavoritas = this.recetas.filter(r =>
-        Array.isArray(r.favoritos) && r.favoritos.includes(this.usuarioId)
-      ).length;
-
-      this.aplicarFiltro();
-    });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  cargarComidasHoy() {
-    const hoy = new Date().toISOString().split('T')[0];
 
-    this.fs.getByField('comidas', 'usuarioId', this.usuarioId).subscribe(data => {
-      const comidasDeHoy = data.filter((c: any) => c.fecha === hoy);
+  // ========================================================
+  // INICIALIZACIÓN DEL USUARIO
+  // ========================================================
 
-      this.comidasHoy = comidasDeHoy.length;
+  /**
+   * Espera a que Firebase finalice la autenticación
+   * y recupera los permisos actualizados del usuario.
+   */
+  private async inicializarUsuario(): Promise<void> {
+    try {
+      await this.authService.authReadyPromise;
 
-      this.caloriasHoy = comidasDeHoy.reduce(
-        (acc: number, c: any) => acc + Number(c.calorias || 0),
-        0
+      const usuario =
+        await this.authService.refrescarUsuarioActual();
+
+      if (!usuario) {
+        return;
+      }
+
+      this.usuarioId =
+        usuario.id ?? '';
+
+      this.nombreMentor =
+        usuario.nombre ?? '';
+
+      this.esMentor =
+        Boolean(
+          usuario.esMentor ||
+          usuario.rol === 'mentor'
+        );
+
+      this.esAdmin =
+        usuario.rol === 'admin';
+
+      this.puedeGestionar =
+        this.esMentor ||
+        this.esAdmin;
+
+    } catch (error: unknown) {
+      console.error(
+        'Error al inicializar el usuario:',
+        error
       );
-    });
+
+      this.mensajeError =
+        'No fue posible recuperar los datos del usuario.';
+    }
   }
 
-  setCategoria(categoria: string) {
-    this.categoriaActiva = categoria;
+
+  // ========================================================
+  // CARGA DE RECETAS
+  // ========================================================
+
+  /**
+   * Escucha en tiempo real la colección de recetas.
+   */
+  cargarRecetas(): void {
+    this.cargandoRecetas = true;
+
+    this.firestoreService
+      .getCollection('recetas')
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (data: unknown[]) => {
+          this.recetas =
+            data
+              .map((item) =>
+                this.normalizarReceta(item)
+              )
+              .filter((receta) =>
+                receta.esPublica !== false
+              );
+
+          this.actualizarEstadisticasRecetas();
+
+          this.aplicarFiltro();
+
+          this.cargandoRecetas = false;
+        },
+
+        error: (error: unknown) => {
+          console.error(
+            'Error al cargar recetas:',
+            error
+          );
+
+          this.recetas = [];
+          this.recetasFiltradas = [];
+          this.totalRecetas = 0;
+          this.recetasFavoritas = 0;
+          this.cargandoRecetas = false;
+
+          this.mensajeError =
+            'No fue posible cargar las recetas.';
+        }
+      });
+  }
+
+
+  /**
+   * Convierte los datos recibidos desde Firestore
+   * en una receta con valores seguros.
+   */
+  private normalizarReceta(
+    item: unknown
+  ): Receta {
+
+    const receta =
+      item as Partial<Receta>;
+
+    return {
+      id:
+        String(receta.id ?? ''),
+
+      nombre:
+        String(receta.nombre ?? 'Receta sin nombre'),
+
+      categoria:
+        this.esCategoriaValida(receta.categoria)
+          ? receta.categoria
+          : 'desayuno',
+
+      ingredientes:
+        String(receta.ingredientes ?? ''),
+
+      pasos:
+        String(receta.pasos ?? ''),
+
+      nivel:
+        this.esNivelValido(receta.nivel)
+          ? receta.nivel
+          : 'facil',
+
+      tiempoPreparacion:
+        Number(receta.tiempoPreparacion ?? 30),
+
+      usuarioId:
+        receta.usuarioId,
+
+      creadoPor:
+        receta.creadoPor,
+
+      nombreMentor:
+        receta.nombreMentor,
+
+      esPublica:
+        receta.esPublica !== false,
+
+      favoritos:
+        Array.isArray(receta.favoritos)
+          ? receta.favoritos
+          : [],
+
+      fechaCreacion:
+        receta.fechaCreacion
+    };
+  }
+
+
+  // ========================================================
+  // ESTADÍSTICAS DE RECETAS
+  // ========================================================
+
+  private actualizarEstadisticasRecetas(): void {
+    this.totalRecetas =
+      this.recetas.length;
+
+    this.recetasFavoritas =
+      this.recetas.filter((receta) =>
+        this.esFavorita(receta)
+      ).length;
+  }
+
+
+  // ========================================================
+  // CARGA DEL DIARIO
+  // ========================================================
+
+  /**
+   * Recupera las comidas registradas por el usuario
+   * y calcula las estadísticas del día actual.
+   */
+  cargarComidasHoy(): void {
+    this.cargandoComidas = true;
+
+    const hoy =
+      this.obtenerFechaLocalActual();
+
+    this.firestoreService
+      .getByField(
+        'comidas',
+        'usuarioId',
+        this.usuarioId
+      )
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (data: unknown[]) => {
+          const comidas =
+            data as ComidaRegistrada[];
+
+          const comidasDeHoy =
+            comidas.filter((comida) =>
+              comida.fecha === hoy
+            );
+
+          this.comidasHoy =
+            comidasDeHoy.length;
+
+          this.caloriasHoy =
+            comidasDeHoy.reduce(
+              (
+                acumulador: number,
+                comida: ComidaRegistrada
+              ) =>
+                acumulador +
+                Number(comida.calorias ?? 0),
+              0
+            );
+
+          this.cargandoComidas = false;
+        },
+
+        error: (error: unknown) => {
+          console.error(
+            'Error al cargar las comidas del día:',
+            error
+          );
+
+          this.comidasHoy = 0;
+          this.caloriasHoy = 0;
+          this.cargandoComidas = false;
+        }
+      });
+  }
+
+
+  /**
+   * Obtiene la fecha local en formato YYYY-MM-DD.
+   *
+   * Se evita utilizar directamente toISOString(),
+   * porque utiliza horario UTC y podría cambiar de día
+   * según la zona horaria del usuario.
+   */
+  private obtenerFechaLocalActual(): string {
+    const fecha = new Date();
+
+    const anio =
+      fecha.getFullYear();
+
+    const mes =
+      String(fecha.getMonth() + 1)
+        .padStart(2, '0');
+
+    const dia =
+      String(fecha.getDate())
+        .padStart(2, '0');
+
+    return `${anio}-${mes}-${dia}`;
+  }
+
+
+  // ========================================================
+  // FILTROS
+  // ========================================================
+
+  setCategoria(
+    categoria: CategoriaReceta
+  ): void {
+    this.categoriaActiva =
+      categoria;
+
     this.aplicarFiltro();
   }
 
-  aplicarFiltro() {
-    const texto = this.busqueda.toLowerCase().trim();
 
-    this.recetasFiltradas = this.recetas.filter(r => {
-      const coincideCategoria = r.categoria === this.categoriaActiva;
+  /**
+   * Filtra por categoría, nombre, ingredientes
+   * y nombre del mentor.
+   */
+  aplicarFiltro(): void {
+    const texto =
+      this.normalizarTexto(this.busqueda);
 
-      const coincideBusqueda =
-        !texto ||
-        r.nombre?.toLowerCase().includes(texto) ||
-        r.ingredientes?.toLowerCase().includes(texto) ||
-        r.nombreMentor?.toLowerCase().includes(texto);
+    this.recetasFiltradas =
+      this.recetas.filter((receta) => {
 
-      return coincideCategoria && coincideBusqueda;
-    });
+        const coincideCategoria =
+          receta.categoria ===
+          this.categoriaActiva;
+
+        const coincideBusqueda =
+          !texto ||
+          this.normalizarTexto(
+            receta.nombre
+          ).includes(texto) ||
+          this.normalizarTexto(
+            receta.ingredientes
+          ).includes(texto) ||
+          this.normalizarTexto(
+            receta.nombreMentor ?? ''
+          ).includes(texto);
+
+        return (
+          coincideCategoria &&
+          coincideBusqueda
+        );
+      });
   }
 
-  esFavorita(receta: any): boolean {
-    return Array.isArray(receta.favoritos) &&
-      receta.favoritos.includes(this.usuarioId);
+
+  /**
+   * Convierte un texto a minúsculas y elimina tildes.
+   *
+   * Permite que una búsqueda como "facil" encuentre
+   * también valores escritos como "fácil".
+   */
+  private normalizarTexto(
+    valor: string
+  ): string {
+    return valor
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(
+        /[\u0300-\u036f]/g,
+        ''
+      )
+      .trim();
   }
 
-  async toggleFavorito(receta: any) {
-    if (!this.usuarioId) return;
 
-    if (this.esFavorita(receta)) {
-      await this.fs.removeFromArray('recetas', receta.id, 'favoritos', this.usuarioId);
-    } else {
-      await this.fs.addToArray('recetas', receta.id, 'favoritos', this.usuarioId);
+  // ========================================================
+  // FAVORITOS
+  // ========================================================
+
+  esFavorita(
+    receta: Receta
+  ): boolean {
+    return Boolean(
+      this.usuarioId &&
+      Array.isArray(receta.favoritos) &&
+      receta.favoritos.includes(
+        this.usuarioId
+      )
+    );
+  }
+
+
+  async toggleFavorito(
+    receta: Receta
+  ): Promise<void> {
+    if (
+      !this.usuarioId ||
+      !receta.id
+    ) {
+      return;
+    }
+
+    try {
+      if (this.esFavorita(receta)) {
+        await this.firestoreService
+          .removeFromArray(
+            'recetas',
+            receta.id,
+            'favoritos',
+            this.usuarioId
+          );
+      } else {
+        await this.firestoreService
+          .addToArray(
+            'recetas',
+            receta.id,
+            'favoritos',
+            this.usuarioId
+          );
+      }
+
+    } catch (error: unknown) {
+      console.error(
+        'Error al actualizar favorito:',
+        error
+      );
+
+      this.mensajeError =
+        'No fue posible actualizar la receta favorita.';
     }
   }
 
-  puedeEditarReceta(receta: any): boolean {
-    return this.esAdmin || receta.creadoPor === this.usuarioId;
+
+  // ========================================================
+  // PERMISOS
+  // ========================================================
+
+  puedeEditarReceta(
+    receta: Receta
+  ): boolean {
+    return (
+      this.esAdmin ||
+      receta.creadoPor === this.usuarioId
+    );
   }
 
-  abrirForm() {
-    if (!this.puedeGestionar) return;
+
+  puedeEliminarReceta(
+    receta: Receta
+  ): boolean {
+    return this.puedeEditarReceta(receta);
+  }
+
+
+  // ========================================================
+  // APERTURA Y CIERRE DEL FORMULARIO
+  // ========================================================
+
+  abrirForm(): void {
+    if (!this.puedeGestionar) {
+      return;
+    }
 
     this.editando = false;
+
     this.recetaEditId = null;
+
     this.mostrarForm = true;
 
     this.recetaForm.reset({
       nombre: '',
-      categoria: this.categoriaActiva || 'desayuno',
+      categoria: this.categoriaActiva,
       ingredientes: '',
       pasos: '',
       nivel: 'facil',
@@ -180,57 +806,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  guardarReceta() {
-    if (this.recetaForm.invalid || !this.puedeGestionar) return;
 
-    const datos = {
-      ...this.recetaForm.value,
-      usuarioId: this.usuarioId,
-      creadoPor: this.usuarioId,
-      nombreMentor: this.nombreMentor,
-      esPublica: true,
-      favoritos: this.editando ? undefined : [],
-      fechaCreacion: this.editando ? undefined : new Date()
-    };
-
-    Object.keys(datos).forEach(key => {
-      if (datos[key] === undefined) delete datos[key];
-    });
-
-    if (this.editando && this.recetaEditId) {
-      this.fs.update('recetas', this.recetaEditId, datos).then(() => this.cancelar());
-    } else {
-      this.fs.create('recetas', datos).then(() => this.cancelar());
-    }
-  }
-
-  editarReceta(receta: any) {
-    if (!this.puedeEditarReceta(receta)) return;
-
-    this.editando = true;
-    this.recetaEditId = receta.id;
-    this.mostrarForm = true;
-
-    this.recetaForm.patchValue({
-      nombre: receta.nombre || '',
-      categoria: receta.categoria || 'desayuno',
-      ingredientes: receta.ingredientes || '',
-      pasos: receta.pasos || '',
-      nivel: receta.nivel || 'facil',
-      tiempoPreparacion: receta.tiempoPreparacion || 30
-    });
-  }
-
-  eliminarReceta(id: string) {
-    if (confirm('¿Eliminar esta receta?')) {
-      this.fs.delete('recetas', id);
-    }
-  }
-
-  cancelar() {
+  cancelar(): void {
     this.editando = false;
+
     this.recetaEditId = null;
+
     this.mostrarForm = false;
+
+    this.mensajeError = '';
 
     this.recetaForm.reset({
       nombre: '',
@@ -242,21 +826,269 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  irADiario() {
-    this.router.navigate(['/alimentarse/diario']);
-  }
 
-  getNivelLabel(nivel: string): string {
-    switch (nivel) {
-      case 'facil': return 'Fácil';
-      case 'medio': return 'Medio';
-      case 'dificil': return 'Difícil';
-      default: return 'Fácil';
+  // ========================================================
+  // CREACIÓN Y ACTUALIZACIÓN
+  // ========================================================
+
+  async guardarReceta(): Promise<void> {
+    if (
+      this.recetaForm.invalid ||
+      !this.puedeGestionar ||
+      this.guardandoReceta
+    ) {
+      this.recetaForm.markAllAsTouched();
+      return;
+    }
+
+    this.guardandoReceta = true;
+
+    this.mensajeError = '';
+
+    const valores =
+      this.recetaForm.getRawValue();
+
+    const datosBase: DatosReceta = {
+      nombre:
+        valores.nombre.trim(),
+
+      categoria:
+        valores.categoria,
+
+      ingredientes:
+        valores.ingredientes.trim(),
+
+      pasos:
+        valores.pasos.trim(),
+
+      nivel:
+        valores.nivel,
+
+      tiempoPreparacion:
+        Number(valores.tiempoPreparacion),
+
+      usuarioId:
+        this.usuarioId,
+
+      creadoPor:
+        this.usuarioId,
+
+      nombreMentor:
+        this.nombreMentor,
+
+      esPublica:
+        true
+    };
+
+    try {
+      if (
+        this.editando &&
+        this.recetaEditId
+      ) {
+        await this.firestoreService.update(
+          'recetas',
+          this.recetaEditId,
+          datosBase
+        );
+
+      } else {
+        const nuevaReceta: DatosReceta = {
+          ...datosBase,
+          favoritos: [],
+          fechaCreacion: new Date()
+        };
+
+        await this.firestoreService.create(
+          'recetas',
+          nuevaReceta
+        );
+      }
+
+      this.cancelar();
+
+    } catch (error: unknown) {
+      console.error(
+        'Error al guardar la receta:',
+        error
+      );
+
+      this.mensajeError =
+        this.editando
+          ? 'No fue posible actualizar la receta.'
+          : 'No fue posible crear la receta.';
+
+    } finally {
+      this.guardandoReceta = false;
     }
   }
 
+
+  // ========================================================
+  // EDICIÓN
+  // ========================================================
+
+  editarReceta(
+    receta: Receta
+  ): void {
+    if (!this.puedeEditarReceta(receta)) {
+      return;
+    }
+
+    this.editando = true;
+
+    this.recetaEditId =
+      receta.id;
+
+    this.mostrarForm = true;
+
+    this.mensajeError = '';
+
+    this.recetaForm.patchValue({
+      nombre:
+        receta.nombre,
+
+      categoria:
+        receta.categoria,
+
+      ingredientes:
+        receta.ingredientes,
+
+      pasos:
+        receta.pasos,
+
+      nivel:
+        receta.nivel,
+
+      tiempoPreparacion:
+        receta.tiempoPreparacion
+    });
+  }
+
+
+  // ========================================================
+  // ELIMINACIÓN
+  // ========================================================
+
+  async eliminarReceta(
+    receta: Receta
+  ): Promise<void> {
+    if (
+      !receta.id ||
+      !this.puedeEliminarReceta(receta)
+    ) {
+      return;
+    }
+
+    const confirmarEliminacion =
+      window.confirm(
+        `¿Querés eliminar la receta "${receta.nombre}"?`
+      );
+
+    if (!confirmarEliminacion) {
+      return;
+    }
+
+    try {
+      await this.firestoreService.delete(
+        'recetas',
+        receta.id
+      );
+
+    } catch (error: unknown) {
+      console.error(
+        'Error al eliminar la receta:',
+        error
+      );
+
+      this.mensajeError =
+        'No fue posible eliminar la receta.';
+    }
+  }
+
+
+  // ========================================================
+  // NAVEGACIÓN
+  // ========================================================
+
+  irADiario(): void {
+    void this.router.navigate([
+      '/alimentarse/diario'
+    ]);
+  }
+
+
+  // ========================================================
+  // HELPERS PARA EL HTML
+  // ========================================================
+
+  getNivelLabel(
+    nivel: NivelReceta | string
+  ): string {
+    const niveles: Record<NivelReceta, string> = {
+      facil: 'Fácil',
+      medio: 'Medio',
+      dificil: 'Difícil'
+    };
+
+    return this.esNivelValido(nivel)
+      ? niveles[nivel]
+      : 'Fácil';
+  }
+
+
   getCategoriaLabel(): string {
-    const categoria = this.categorias.find(c => c.valor === this.categoriaActiva);
-    return categoria ? categoria.label : 'recetas';
+    const categoria =
+      this.categorias.find(
+        (item) =>
+          item.valor ===
+          this.categoriaActiva
+      );
+
+    return categoria?.label ??
+      'Recetas';
+  }
+
+
+  /**
+   * Se puede utilizar desde el HTML para mostrar
+   * errores de validación.
+   */
+  campoInvalido(
+    nombreCampo: keyof FormularioReceta
+  ): boolean {
+    const control =
+      this.recetaForm.controls[nombreCampo];
+
+    return (
+      control.invalid &&
+      control.touched
+    );
+  }
+
+
+  // ========================================================
+  // VALIDACIONES INTERNAS
+  // ========================================================
+
+  private esCategoriaValida(
+    categoria: unknown
+  ): categoria is CategoriaReceta {
+    return (
+      categoria === 'desayuno' ||
+      categoria === 'almuerzo' ||
+      categoria === 'merienda' ||
+      categoria === 'cena'
+    );
+  }
+
+
+  private esNivelValido(
+    nivel: unknown
+  ): nivel is NivelReceta {
+    return (
+      nivel === 'facil' ||
+      nivel === 'medio' ||
+      nivel === 'dificil'
+    );
   }
 }

@@ -4,9 +4,13 @@
 
     <mat-card-content>
 
+      <!-- ==================================================
+           ENCABEZADO
+           ================================================== -->
+
       <div class="auth-header">
 
-        <div class="auth-logo">
+        <div class="auth-logo" aria-hidden="true">
           📖
         </div>
 
@@ -20,85 +24,154 @@
 
       </div>
 
-      <!-- Botón Google -->
-      <button mat-raised-button class="google-btn full-width" (click)="loginWithGoogle()">
-        <span class="google-icon">G</span>
-        Ingresar con Google
+      <!-- ==================================================
+           INICIO DE SESIÓN CON GOOGLE
+           ================================================== -->
+
+      <button
+        mat-raised-button
+        type="button"
+        class="google-btn full-width"
+        [disabled]="cargando"
+        (click)="loginWithGoogle()">
+
+        <span class="google-icon" aria-hidden="true">
+          G
+        </span>
+
+        <span>
+          {{ cargando ? 'Procesando...' : 'Ingresar con Google' }}
+        </span>
+
       </button>
+
+      <!-- ==================================================
+           SEPARADOR
+           ================================================== -->
 
       <div class="separador">
         <span>o con email</span>
       </div>
 
-      <!-- Formulario -->
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- ==================================================
+           FORMULARIO DE LOGIN
+           ================================================== -->
 
-        <mat-form-field appearance="outline" class="full-width">
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        novalidate>
+
+        <!-- Email -->
+
+        <mat-form-field
+          appearance="outline"
+          class="full-width">
+
           <mat-label>Email</mat-label>
+
           <input
             matInput
-            formControlName="email"
             type="email"
-            placeholder="tu@email.com">
+            formControlName="email"
+            placeholder="tu@email.com"
+            autocomplete="email">
 
-          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-            Email requerido
+          <mat-error
+            *ngIf="loginForm.get('email')?.hasError('required')">
+
+            El email es obligatorio.
+
           </mat-error>
 
-          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-            Email inválido
+          <mat-error
+            *ngIf="loginForm.get('email')?.hasError('email')">
+
+            Ingresá un email válido.
+
           </mat-error>
 
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
+        <!-- Contraseña -->
+
+        <mat-form-field
+          appearance="outline"
+          class="full-width">
 
           <mat-label>Contraseña</mat-label>
 
           <input
             matInput
-            formControlName="password"
             type="password"
-            placeholder="Mínimo 6 caracteres">
+            formControlName="password"
+            placeholder="Mínimo 6 caracteres"
+            autocomplete="current-password">
 
-          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-            Contraseña requerida
+          <mat-error
+            *ngIf="loginForm.get('password')?.hasError('required')">
+
+            La contraseña es obligatoria.
+
           </mat-error>
 
-          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-            Mínimo 6 caracteres
+          <mat-error
+            *ngIf="loginForm.get('password')?.hasError('minlength')">
+
+            La contraseña debe tener al menos 6 caracteres.
+
           </mat-error>
 
         </mat-form-field>
 
-        <p class="error-msg" *ngIf="error">
+        <!-- Mensaje general de error -->
+
+        <p
+          class="error-msg"
+          *ngIf="error"
+          role="alert">
+
           {{ error }}
+
         </p>
 
-        <p class="register-link">
+        <!-- Recuperar contraseña -->
+
+        <p class="register-link forgot-link">
+
           <a routerLink="/auth/forgot-password">
             ¿Olvidaste tu contraseña?
           </a>
+
         </p>
+
+        <!-- Botón principal -->
 
         <button
           mat-raised-button
           color="primary"
           type="submit"
           class="btn-primary full-width"
-          [disabled]="!loginForm.valid">
+          [disabled]="loginForm.invalid || cargando">
 
-          Ingresar
+          {{ cargando ? 'Ingresando...' : 'Ingresar' }}
 
         </button>
 
       </form>
 
+      <!-- ==================================================
+           REGISTRO
+           ================================================== -->
+
       <p class="register-link">
+
         ¿No tenés cuenta?
+
         <a routerLink="/auth/register">
           Registrate
         </a>
+
       </p>
 
     </mat-card-content>

@@ -1,87 +1,308 @@
 <div class="inicio-wrapper">
 
-  <!-- ── HERO con imagen de fondo ─────────────────────── -->
-  <div class="hero-section">
-    <div class="hero-overlay"></div>
+  <!-- ==================================================
+       HERO PRINCIPAL
+       Presenta el saludo, el nombre del usuario
+       y un resumen general de su progreso.
+       ================================================== -->
+
+  <section
+    class="hero-section"
+    aria-labelledby="titulo-bienvenida">
+
+    <!-- Capa visual utilizada por el CSS -->
+    <div
+      class="hero-overlay"
+      aria-hidden="true">
+    </div>
+
     <div class="hero-content">
-      <h1>
-      ¡{{ saludo }}<span *ngIf="nombre">, {{ nombre }}</span>! 👋
+
+      <h1 id="titulo-bienvenida">
+        ¡{{ saludo }}
+        <span *ngIf="nombre">, {{ nombre }}</span>!
+        <span aria-hidden="true">👋</span>
       </h1>
-      <p class="hero-subtitulo">Hoy es un buen día para crecer 🌱</p>
 
-      <!-- Badges de racha y meta -->
-      <div class="hero-badges">
+      <p class="hero-subtitulo">
+        Hoy es un buen día para crecer
+        <span aria-hidden="true">🌱</span>
+      </p>
+
+      <!-- Resumen de progreso -->
+
+      <div
+        class="hero-badges"
+        aria-label="Resumen del día">
+
         <div class="hero-badge">
-          🔥 {{ diasSeguidos }} días seguidos
+          <span aria-hidden="true">🔥</span>
+
+          <span>
+            {{ diasSeguidos }}
+            {{ diasSeguidos === 1 ? 'día seguido' : 'días seguidos' }}
+          </span>
         </div>
+
         <div class="hero-badge">
-          🎯 Meta diaria <span class="badge-highlight">{{ metaDiaria }}/{{ metaDiariaTotal }}</span>
+          <span aria-hidden="true">🎯</span>
+
+          <span>Meta diaria</span>
+
+          <span class="badge-highlight">
+            {{ metaDiaria }}/{{ metaDiariaTotal }}
+          </span>
         </div>
+
       </div>
+
     </div>
-  </div>
 
-  <div class="inicio-container">
+  </section>
 
-     <!-- ── VERSÍCULO DEL DÍA ─────────────────────────── -->
-    <div class="seccion-card versiculo-card">
+  <!-- ==================================================
+       CONTENIDO PRINCIPAL
+       ================================================== -->
+
+  <main class="inicio-container">
+
+    <!-- ===============================================
+         VERSÍCULO DEL DÍA
+         =============================================== -->
+
+    <section
+      class="seccion-card versiculo-card"
+      aria-labelledby="titulo-versiculo">
+
       <div class="versiculo-header">
-        <p class="versiculo-label">Versículo del día</p>
-        <span class="versiculo-bookmark">🔖</span>
+
+        <h2
+          id="titulo-versiculo"
+          class="versiculo-label">
+
+          Versículo del día
+
+        </h2>
+
+        <span
+          class="versiculo-bookmark"
+          aria-hidden="true">
+
+          🔖
+
+        </span>
+
       </div>
-      <p class="versiculo-texto">"{{ frase }}"</p>
-      <p class="versiculo-ref">{{ referencia }}</p>
-    </div>
 
+      <!--
+        aria-live permite que lectores de pantalla
+        anuncien el contenido cuando termina de cargar.
+      -->
 
-    <!-- ── CHECK-IN EMOCIONAL ────────────────────────── -->
-    <div class="seccion-card">
-      <p class="checkin-titulo">¿Cómo te sentís hoy?</p>
-      <div class="emojis-row">
+      <blockquote
+        class="versiculo-texto"
+        aria-live="polite">
+
+        {{ frase }}
+
+      </blockquote>
+
+      <p
+        *ngIf="referencia"
+        class="versiculo-ref">
+
+        {{ referencia }}
+
+      </p>
+
+    </section>
+
+    <!-- ===============================================
+         CHECK-IN EMOCIONAL
+         =============================================== -->
+
+    <section
+      class="seccion-card"
+      aria-labelledby="titulo-checkin">
+
+      <h2
+        id="titulo-checkin"
+        class="checkin-titulo">
+
+        ¿Cómo te sentís hoy?
+
+      </h2>
+
+      <div
+        class="emojis-row"
+        role="group"
+        aria-label="Seleccionar estado de ánimo">
+
         <button
           *ngFor="let e of emojis"
+          type="button"
           class="emoji-btn"
           [class.seleccionado]="estadoAnimo === e.valor"
+          [attr.aria-pressed]="estadoAnimo === e.valor"
+          [attr.aria-label]="'Seleccionar estado de ánimo: ' + e.label"
           (click)="seleccionarAnimo(e.valor)">
-          <span class="emoji-icon">{{ e.emoji }}</span>
-          <span class="emoji-label">{{ e.label }}</span>
-        </button>
-      </div>
-    </div>
 
-    <!-- ── ACCESOS RÁPIDOS ───────────────────────────── -->
-    <div class="seccion-card">
-      <h2 class="seccion-titulo">Accesos rápidos</h2>
+          <span
+            class="emoji-icon"
+            aria-hidden="true">
+
+            {{ e.emoji }}
+
+          </span>
+
+          <span class="emoji-label">
+            {{ e.label }}
+          </span>
+
+        </button>
+
+      </div>
+
+      <!-- Confirmación visual accesible -->
+
+      <p
+        *ngIf="estadoAnimo > 0"
+        class="estado-seleccionado"
+        aria-live="polite">
+
+        Estado registrado:
+        {{ emojis[estadoAnimo - 1].label }}
+
+      </p>
+
+    </section>
+
+    <!-- ===============================================
+         ACCESOS RÁPIDOS
+         =============================================== -->
+
+    <section
+      class="seccion-card"
+      aria-labelledby="titulo-accesos">
+
+      <h2
+        id="titulo-accesos"
+        class="seccion-titulo">
+
+        Accesos rápidos
+
+      </h2>
+
       <div class="accesos-grid">
 
-        <a class="acceso-item" routerLink="/aprender">
-          <div class="acceso-icono-box acceso-azul">📖</div>
-          <p class="acceso-titulo">Aprender</p>
-          <p class="acceso-sub">Materias, tareas<br>y libros</p>
+        <!-- Aprender -->
+
+        <a
+          class="acceso-item"
+          routerLink="/aprender"
+          aria-label="Ir al módulo Aprender">
+
+          <div
+            class="acceso-icono-box acceso-azul"
+            aria-hidden="true">
+
+            📖
+
+          </div>
+
+          <h3 class="acceso-titulo">
+            Aprender
+          </h3>
+
+          <p class="acceso-sub">
+            Materias, tareas<br>
+            y biblioteca
+          </p>
+
         </a>
 
-        <a class="acceso-item" routerLink="/alimentarse">
-          <div class="acceso-icono-box acceso-verde">🥗</div>
-          <p class="acceso-titulo">Alimentarse</p>
-          <p class="acceso-sub">Recetas y<br>hábitos</p>
+        <!-- Alimentarse -->
+
+        <a
+          class="acceso-item"
+          routerLink="/alimentarse"
+          aria-label="Ir al módulo Alimentarse">
+
+          <div
+            class="acceso-icono-box acceso-verde"
+            aria-hidden="true">
+
+            🥗
+
+          </div>
+
+          <h3 class="acceso-titulo">
+            Alimentarse
+          </h3>
+
+          <p class="acceso-sub">
+            Recetas y<br>
+            registro diario
+          </p>
+
         </a>
 
-        <a class="acceso-item" routerLink="/entrenamiento">
-          <div class="acceso-icono-box acceso-violeta">🏋️</div>
-          <p class="acceso-titulo">Entrenamiento</p>
-          <p class="acceso-sub">Rutinas y<br>bitácora</p>
+        <!-- Entrenamiento -->
+
+        <a
+          class="acceso-item"
+          routerLink="/entrenamiento"
+          aria-label="Ir al módulo Entrenamiento">
+
+          <div
+            class="acceso-icono-box acceso-violeta"
+            aria-hidden="true">
+
+            🏋️
+
+          </div>
+
+          <h3 class="acceso-titulo">
+            Entrenamiento
+          </h3>
+
+          <p class="acceso-sub">
+            Rutinas y<br>
+            bitácora
+          </p>
+
         </a>
 
-        <a class="acceso-item" routerLink="/perfil">
-          <div class="acceso-icono-box acceso-rosa">👥</div>
-          <p class="acceso-titulo">Perfil</p>
-          <p class="acceso-sub">Conectá con<br>tu juntero</p>
+        <!-- Perfil -->
+
+        <a
+          class="acceso-item"
+          routerLink="/perfil"
+          aria-label="Ir al perfil del usuario">
+
+          <div
+            class="acceso-icono-box acceso-rosa"
+            aria-hidden="true">
+
+            👤
+
+          </div>
+
+          <h3 class="acceso-titulo">
+            Perfil
+          </h3>
+
+          <p class="acceso-sub">
+            Datos personales<br>
+            y configuración
+          </p>
+
         </a>
 
       </div>
-    </div>
 
-   
+    </section>
 
-  </div>
+  </main>
+
 </div>

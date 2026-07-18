@@ -1,70 +1,201 @@
+/* =====================================================
+   FOOTER PRINCIPAL
+   ===================================================== */
+
 .footer {
-  background-color: #0a0a12;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  height: 64px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+
   position: fixed;
-  bottom: 0;
+
   left: 0;
   right: 0;
+  bottom: 0;
+
   z-index: 100;
+
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
   padding: 0 8px;
+
+  background-color: #0a0a12;
+
+  border-top: 1px solid rgba(255,255,255,0.06);
+
   backdrop-filter: blur(12px);
+
 }
 
+/* =====================================================
+   OPCIONES DEL MENÚ
+   ===================================================== */
+
 .footer-item {
+
+  flex: 1;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: 3px;
-  text-decoration: none;
-  flex: 1;
+
   padding: 8px 4px;
+
   border-radius: 12px;
-  transition: all 0.2s;
+
+  text-decoration: none;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+
 }
 
 .footer-item:hover {
-  background: rgba(255,255,255,0.04);
+
+  background: rgba(255,255,255,.04);
+
+  transform: translateY(-1px);
+
 }
+
+.footer-item:focus-visible {
+
+  outline: 2px solid #4A9EFF;
+
+  outline-offset: 2px;
+
+}
+
+/* =====================================================
+   ICONO
+   ===================================================== */
 
 .footer-icon {
+
   font-size: 22px;
+
   line-height: 1;
-  filter: grayscale(0.3);
-  transition: all 0.2s;
+
+  filter: grayscale(.30);
+
+  transition:
+    filter .2s ease,
+    transform .2s ease;
+
 }
+
+/* =====================================================
+   TEXTO
+   ===================================================== */
 
 .footer-label {
-  color: rgba(255,255,255,0.35);
+
+  color: rgba(255,255,255,.35);
+
   font-size: 10px;
+
   font-weight: 400;
-  transition: color 0.2s;
+
+  transition: color .2s ease;
+
 }
 
-/* Ítem activo */
+/* =====================================================
+   ELEMENTO ACTIVO
+   ===================================================== */
+
 .footer-activo .footer-icon {
+
   filter: none;
+
+  transform: scale(1.08);
+
 }
 
 .footer-activo .footer-label {
+
   color: #4A9EFF;
+
   font-weight: 600;
+
 }
 
+/* =====================================================
+   BOTÓN VOLVER
+   ===================================================== */
+
 .footer-back {
+
   background: none;
+
   border: none;
+
   cursor: pointer;
+
 }
 
 .footer-back .footer-icon {
-  font-size: 20px;
+
   color: #4A9EFF;
+
+  font-size: 20px;
+
 }
 
 .footer-back .footer-label {
+
   color: #4A9EFF;
+
+}
+
+/* =====================================================
+   TABLETS
+   ===================================================== */
+
+@media (max-width:768px){
+
+  .footer{
+
+    height:60px;
+
+  }
+
+  .footer-icon{
+
+    font-size:20px;
+
+  }
+
+}
+
+/* =====================================================
+   CELULARES
+   ===================================================== */
+
+@media (max-width:480px){
+
+  .footer{
+
+    height:58px;
+
+    padding:0 4px;
+
+  }
+
+  .footer-label{
+
+    font-size:9px;
+
+  }
+
+  .footer-icon{
+
+    font-size:18px;
+
+  }
+
 }

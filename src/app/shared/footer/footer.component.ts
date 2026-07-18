@@ -1,43 +1,140 @@
-import { Component } from '@angular/core';
-import { RouterModule, Router, NavigationEnd } from '@angular/router';
+/* =====================================================
+   FOOTER PRINCIPAL
+   ===================================================== */
+
+import { Component, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import {
+  NavigationEnd,
+  Router,
+  RouterModule
+} from '@angular/router';
+
 import { filter } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-footer',
+
   standalone: true,
-  imports: [RouterModule, CommonModule],
+
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
+
   templateUrl: './footer.component.html',
+
   styleUrl: './footer.component.css'
 })
 export class FooterComponent {
 
+  /* ===================================================
+     DEPENDENCIAS
+     =================================================== */
+
+  private readonly destroyRef = inject(DestroyRef);
+
+  /* ===================================================
+     ESTADO
+     =================================================== */
+
   rutaActual = '';
 
-  // Muestra la flecha si estamos en una subruta (más de un segmento)
-  get mostrarFlecha(): boolean {
-    const segmentos = this.rutaActual.split('/').filter(s => s);
-    return segmentos.length > 1;
-  }
-  
-constructor(private router: Router) {
-  // Captura la ruta inicial al cargar
-  this.rutaActual = this.router.url;
-  
-  this.router.events
-    .pipe(filter(e => e instanceof NavigationEnd))
-    .subscribe((e: any) => {
-      this.rutaActual = e.urlAfterRedirects;
-    });
-}
+  constructor(
+    private router: Router
+  ) {
 
-  volver() {
-    const segmentos = this.rutaActual.split('/').filter(s => s);
-    if (segmentos.length <= 1) {
-      this.router.navigate(['/inicio']);
-    } else {
-      segmentos.pop();
-      this.router.navigate(['/' + segmentos.join('/')]);
-    }
+    // Ruta actual al iniciar el componente
+    this.rutaActual = this.limpiarRuta(
+      this.router.url
+    );
+
+    // Escuchamos solamente las navegaciones finalizadas
+    this.router.events
+      .pipe(
+        filter(
+          (evento): evento is NavigationEnd =>
+            evento instanceof NavigationEnd
+        ),
+
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((evento: NavigationEnd) => {
+
+        this.rutaActual = this.limpiarRuta(
+          evento.urlAfterRedirects
+        );
+
+      });
+
   }
+
+  /* ===================================================
+     PROPIEDADES
+     =================================================== */
+
+  /**
+   * Muestra la flecha únicamente cuando
+   * estamos dentro de una subpantalla.
+   */
+  get mostrarFlecha(): boolean {
+
+    return this.obtenerSegmentosRuta().length > 1;
+
+  }
+
+  /* ===================================================
+     NAVEGACIÓN
+     =================================================== */
+
+  /**
+   * Regresa un nivel dentro de la aplicación.
+   */
+  async volver(): Promise<void> {
+
+    const segmentos = this.obtenerSegmentosRuta();
+
+    if (segmentos.length <= 1) {
+
+      await this.router.navigate(['/inicio']);
+      return;
+
+    }
+
+    segmentos.pop();
+
+    await this.router.navigateByUrl(
+      '/' + segmentos.join('/')
+    );
+
+  }
+
+  /* ===================================================
+     MÉTODOS PRIVADOS
+     =================================================== */
+
+  /**
+   * Devuelve los segmentos de la ruta.
+   */
+  private obtenerSegmentosRuta(): string[] {
+
+    return this.rutaActual
+      .split('/')
+      .filter(Boolean);
+
+  }
+
+  /**
+   * Elimina parámetros y fragmentos de la URL.
+   */
+  private limpiarRuta(url: string): string {
+
+    return url
+      .split('?')[0]
+      .split('#')[0];
+
+  }
+
 }

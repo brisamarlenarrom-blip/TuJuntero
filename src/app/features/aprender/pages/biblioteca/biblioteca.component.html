@@ -1,35 +1,57 @@
 <div class="page-wrapper">
 
-  <!-- ───────────────────────────────────────────── -->
-  <!-- HERO + NAVEGACIÓN -->
-  <!-- ───────────────────────────────────────────── -->
-  <div class="aprender-hero">
+  <!-- =====================================================
+       HERO DEL MÓDULO APRENDER
+       ===================================================== -->
+
+  <section class="aprender-hero">
 
     <div class="hero-content">
-      <div class="hero-icon">📖</div>
+
+      <div
+        class="hero-icon"
+        aria-hidden="true">
+        📖
+      </div>
 
       <div class="hero-text">
+
+        <span class="hero-etiqueta">
+          Módulo de aprendizaje
+        </span>
+
         <h1 class="aprender-titulo">
           Aprender
         </h1>
 
         <p class="hero-subtitulo">
-          Organiza tus materias, tareas y lecturas<br>
-          y sigue creciendo cada día.
+          Organizá tus materias, tareas y lecturas
+          para seguir creciendo cada día.
         </p>
+
       </div>
+
     </div>
 
-    <!-- Navegación entre módulos -->
-    <nav class="aprender-tabs">
+
+    <nav
+      class="aprender-tabs"
+      aria-label="Secciones del módulo Aprender">
 
       <a
         routerLink="/aprender/materias"
         routerLinkActive="tab-activo"
         class="tab-item">
 
-        <span class="tab-icono">🎓</span>
-        Materias
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          🎓
+        </span>
+
+        <span>
+          Materias
+        </span>
 
       </a>
 
@@ -38,8 +60,15 @@
         routerLinkActive="tab-activo"
         class="tab-item">
 
-        <span class="tab-icono">☑️</span>
-        Tareas
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          ☑️
+        </span>
+
+        <span>
+          Tareas
+        </span>
 
       </a>
 
@@ -48,125 +77,1089 @@
         routerLinkActive="tab-activo"
         class="tab-item">
 
-        <span class="tab-icono">📖</span>
-        Biblioteca
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          📖
+        </span>
+
+        <span>
+          Biblioteca
+        </span>
 
       </a>
 
     </nav>
 
-  </div>
+  </section>
 
-  <div class="biblioteca-wrapper">
 
-    <!-- ───────────────────────────────────────────── -->
-    <!-- MODAL NUEVO LIBRO -->
-    <!-- ───────────────────────────────────────────── -->
+  <!-- =====================================================
+       CONTENIDO DE BIBLIOTECA
+       ===================================================== -->
+
+  <main class="biblioteca-wrapper">
+
+
+    <!-- =====================================================
+         PRESENTACIÓN PRINCIPAL
+         ===================================================== -->
+
+    <section class="biblioteca-presentacion">
+
+      <div class="presentacion-contenido">
+
+        <span class="presentacion-etiqueta">
+          Biblioteca personal
+        </span>
+
+        <h2 class="presentacion-titulo">
+          Mis lecturas
+        </h2>
+
+        <p class="presentacion-descripcion">
+          Guardá tus libros, registrá tu progreso de lectura,
+          marcá favoritos y escribí tus propias reseñas.
+        </p>
+
+      </div>
+
+
+      <div class="presentacion-acciones">
+
+        <button
+          type="button"
+          class="btn-biblia-principal"
+          [disabled]="cargandoBiblia"
+          (click)="cargarBibliotecaBiblica()">
+
+          <span aria-hidden="true">
+            {{ cargandoBiblia ? '⏳' : '📖' }}
+          </span>
+
+          {{
+            cargandoBiblia
+              ? 'Cargando Biblia...'
+              : 'Biblioteca bíblica'
+          }}
+
+        </button>
+
+        <button
+          type="button"
+          class="btn-agregar-principal"
+          (click)="abrirForm()">
+
+          <span aria-hidden="true">
+            ＋
+          </span>
+
+          Agregar libro
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MENSAJES GENERALES
+         ===================================================== -->
+
+    <p
+      class="mensaje-biblioteca mensaje-exito"
+      *ngIf="mensaje"
+      role="status">
+
+      <span aria-hidden="true">
+        ✅
+      </span>
+
+      {{ mensaje }}
+
+    </p>
+
+    <p
+      class="mensaje-error"
+      *ngIf="mensajeError && !mostrarForm"
+      role="alert">
+
+      <span aria-hidden="true">
+        ⚠️
+      </span>
+
+      {{ mensajeError }}
+
+    </p>
+
+
+    <!-- =====================================================
+         ESTADÍSTICAS
+         ===================================================== -->
+
+    <section
+      class="stats-grid"
+      aria-label="Resumen de la biblioteca">
+
+      <article class="stat-item stat-violeta">
+
+        <div class="stat-icono-box">
+          <span
+            class="stat-icono"
+            aria-hidden="true">
+            📚
+          </span>
+        </div>
+
+        <div class="stat-contenido">
+
+          <span class="stat-label">
+            Libros guardados
+          </span>
+
+          <strong class="stat-numero">
+            {{ totalLibros }}
+          </strong>
+
+          <span class="stat-detalle">
+            Total de lecturas
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <article class="stat-item stat-amarillo">
+
+        <div class="stat-icono-box">
+          <span
+            class="stat-icono"
+            aria-hidden="true">
+            ⭐
+          </span>
+        </div>
+
+        <div class="stat-contenido">
+
+          <span class="stat-label">
+            Favoritos
+          </span>
+
+          <strong class="stat-numero">
+            {{ librosFavoritos }}
+          </strong>
+
+          <span class="stat-detalle">
+            Lecturas destacadas
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <article class="stat-item stat-azul">
+
+        <div class="stat-icono-box">
+          <span
+            class="stat-icono"
+            aria-hidden="true">
+            👁️
+          </span>
+        </div>
+
+        <div class="stat-contenido">
+
+          <span class="stat-label">
+            Leyendo
+          </span>
+
+          <strong class="stat-numero">
+            {{ librosLeyendo }}
+          </strong>
+
+          <span class="stat-detalle">
+            Lecturas actuales
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <article class="stat-item stat-verde">
+
+        <div class="stat-icono-box">
+          <span
+            class="stat-icono"
+            aria-hidden="true">
+            ✅
+          </span>
+        </div>
+
+        <div class="stat-contenido">
+
+          <span class="stat-label">
+            Leídos
+          </span>
+
+          <strong class="stat-numero">
+            {{ librosLeidos }}
+          </strong>
+
+          <span class="stat-detalle">
+            Lecturas terminadas
+          </span>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         LISTADO DE LIBROS
+         ===================================================== -->
+
+    <section
+      class="seccion-card"
+      aria-labelledby="titulo-mis-libros">
+
+      <header class="seccion-header seccion-header-listado">
+
+        <div class="seccion-header-texto">
+
+          <span class="seccion-etiqueta">
+            Seguimiento de lectura
+          </span>
+
+          <h2
+            id="titulo-mis-libros"
+            class="seccion-titulo">
+
+            Mis libros
+
+          </h2>
+
+          <p class="seccion-subtitulo">
+            Filtrá tus lecturas y administrá su progreso.
+          </p>
+
+        </div>
+
+
+        <!-- Filtros -->
+
+        <div
+          class="filtros"
+          role="group"
+          aria-label="Filtros de biblioteca">
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'todos'"
+            [attr.aria-pressed]="filtroActivo === 'todos'"
+            (click)="setFiltro('todos')">
+
+            Todos
+
+            <span class="filtro-contador">
+              {{ totalLibros }}
+            </span>
+
+          </button>
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'quiero_leer'"
+            [attr.aria-pressed]="filtroActivo === 'quiero_leer'"
+            (click)="setFiltro('quiero_leer')">
+
+            Quiero leer
+
+            <span class="filtro-contador">
+              {{ librosQuieroLeer }}
+            </span>
+
+          </button>
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'favoritos'"
+            [attr.aria-pressed]="filtroActivo === 'favoritos'"
+            (click)="setFiltro('favoritos')">
+
+            Favoritos
+
+            <span class="filtro-contador">
+              {{ librosFavoritos }}
+            </span>
+
+          </button>
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'leyendo'"
+            [attr.aria-pressed]="filtroActivo === 'leyendo'"
+            (click)="setFiltro('leyendo')">
+
+            Leyendo
+
+            <span class="filtro-contador">
+              {{ librosLeyendo }}
+            </span>
+
+          </button>
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'leido'"
+            [attr.aria-pressed]="filtroActivo === 'leido'"
+            (click)="setFiltro('leido')">
+
+            Leídos
+
+            <span class="filtro-contador">
+              {{ librosLeidos }}
+            </span>
+
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- =====================================================
+           ESTADO DE CARGA
+           ===================================================== -->
+
+      <div
+        class="estado-cargando"
+        *ngIf="cargando"
+        role="status">
+
+        <span
+          class="spinner"
+          aria-hidden="true">
+        </span>
+
+        <div class="estado-cargando-texto">
+
+          <strong>
+            Cargando biblioteca
+          </strong>
+
+          <p>
+            Estamos buscando tus libros guardados.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           GRID DE LIBROS
+           ===================================================== -->
+
+      <div
+        class="libros-grid"
+        *ngIf="
+          !cargando &&
+          librosFiltrados.length > 0
+        ">
+
+        <article
+          class="libro-card"
+          *ngFor="
+            let libro of librosFiltrados;
+            trackBy: trackByLibroId
+          ">
+
+          <!-- Encabezado -->
+
+          <header class="libro-card-header">
+
+            <div
+              class="libro-icono-box"
+              [style.background-color]="
+                getColorEstado(libro.estadoLectura) + '22'
+              "
+              aria-hidden="true">
+
+              <span
+                [style.color]="
+                  getColorEstado(libro.estadoLectura)
+                ">
+
+                {{ getIconoEstado(libro.estadoLectura) }}
+
+              </span>
+
+            </div>
+
+
+            <div class="libro-card-badges">
+
+              <span
+                class="libro-categoria"
+                *ngIf="libro.categoria">
+
+                {{ libro.categoria }}
+
+              </span>
+
+              <span
+                class="libro-badge"
+                [style.background-color]="
+                  getColorEstado(libro.estadoLectura) + '22'
+                "
+                [style.color]="
+                  getColorEstado(libro.estadoLectura)
+                ">
+
+                {{ getLabelEstado(libro.estadoLectura) }}
+
+              </span>
+
+            </div>
+
+          </header>
+
+
+          <!-- Información principal -->
+
+          <div class="libro-info">
+
+            <h3 class="libro-titulo">
+              {{ libro.titulo }}
+            </h3>
+
+            <p class="libro-autor">
+
+              <span aria-hidden="true">
+                ✍️
+              </span>
+
+              {{ libro.autor || 'Autor no registrado' }}
+
+            </p>
+
+            <p
+              class="libro-testamento"
+              *ngIf="libro.testamento">
+
+              {{ libro.testamento }}
+
+            </p>
+
+            <p
+              class="libro-resenia"
+              *ngIf="libro.resenia">
+
+              {{ libro.resenia }}
+
+            </p>
+
+            <p
+              class="libro-resenia libro-resenia-vacia"
+              *ngIf="!libro.resenia">
+
+              Este libro todavía no tiene una reseña personal.
+
+            </p>
+
+          </div>
+
+
+          <!-- Puntuación -->
+
+          <div class="libro-puntuacion">
+
+            <span class="puntuacion-label">
+              Puntuación
+            </span>
+
+            <div
+              class="libro-estrellas"
+              *ngIf="libro.puntuacion > 0"
+              [attr.aria-label]="
+                libro.puntuacion + ' de 5 estrellas'
+              ">
+
+              {{ getEstrellas(libro.puntuacion) }}
+
+            </div>
+
+            <span
+              class="sin-puntuacion"
+              *ngIf="!libro.puntuacion || libro.puntuacion === 0">
+
+              Sin puntuación
+
+            </span>
+
+          </div>
+
+
+          <!-- Estado -->
+
+          <div class="libro-meta">
+
+            <label
+              class="estado-label"
+              [for]="'estado-' + libro.id">
+
+              Cambiar estado de lectura
+
+            </label>
+
+            <select
+              class="estado-select"
+              [id]="'estado-' + libro.id"
+              [value]="libro.estadoLectura"
+              [disabled]="actualizandoId === libro.id"
+              (change)="
+                cambiarEstado(
+                  libro,
+                  $any($event.target).value
+                )
+              ">
+
+              <option value="quiero_leer">
+                Quiero leer
+              </option>
+
+              <option value="leyendo">
+                Leyendo
+              </option>
+
+              <option value="leido">
+                Leído
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Acciones rápidas -->
+
+          <div class="acciones-rapidas">
+
+            <button
+              type="button"
+              class="accion-rapida"
+              [class.accion-rapida-activa]="libro.favorito"
+              [disabled]="actualizandoId === libro.id"
+              (click)="toggleFavorito(libro)"
+              [attr.aria-label]="
+                libro.favorito
+                  ? 'Quitar de favoritos'
+                  : 'Agregar a favoritos'
+              ">
+
+              <span aria-hidden="true">
+                {{ libro.favorito ? '⭐' : '☆' }}
+              </span>
+
+              {{
+                libro.favorito
+                  ? 'Favorito'
+                  : 'Favorito'
+              }}
+
+            </button>
+
+
+            <button
+              type="button"
+              class="accion-rapida"
+              [class.accion-rapida-activa]="
+                libro.estadoLectura === 'leyendo'
+              "
+              [disabled]="
+                actualizandoId === libro.id ||
+                libro.estadoLectura === 'leyendo'
+              "
+              (click)="cambiarEstado(libro, 'leyendo')"
+              aria-label="Marcar libro como leyendo">
+
+              <span aria-hidden="true">
+                👁️
+              </span>
+
+              Leyendo
+
+            </button>
+
+
+            <button
+              type="button"
+              class="accion-rapida"
+              [class.accion-rapida-activa]="
+                libro.estadoLectura === 'leido'
+              "
+              [disabled]="
+                actualizandoId === libro.id ||
+                libro.estadoLectura === 'leido'
+              "
+              (click)="cambiarEstado(libro, 'leido')"
+              aria-label="Marcar libro como leído">
+
+              <span aria-hidden="true">
+                ✅
+              </span>
+
+              Leído
+
+            </button>
+
+          </div>
+
+
+          <!-- Acciones de administración -->
+
+          <footer class="libro-card-footer">
+
+            <button
+              type="button"
+              class="btn-editar"
+              [disabled]="
+                actualizandoId === libro.id ||
+                eliminandoId === libro.id
+              "
+              (click)="editarLibro(libro)"
+              [attr.aria-label]="
+                'Editar el libro ' + libro.titulo
+              ">
+
+              <span aria-hidden="true">
+                ✏️
+              </span>
+
+              Editar
+
+            </button>
+
+            <button
+              type="button"
+              class="btn-eliminar"
+              [disabled]="eliminandoId === libro.id"
+              (click)="eliminarLibro(libro.id)"
+              [attr.aria-label]="
+                'Eliminar el libro ' + libro.titulo
+              ">
+
+              <span aria-hidden="true">
+
+                {{
+                  eliminandoId === libro.id
+                    ? '⏳'
+                    : '🗑️'
+                }}
+
+              </span>
+
+              {{
+                eliminandoId === libro.id
+                  ? 'Eliminando'
+                  : 'Eliminar'
+              }}
+
+            </button>
+
+          </footer>
+
+        </article>
+
+      </div>
+
+
+      <!-- =====================================================
+           ESTADO VACÍO
+           ===================================================== -->
+
+      <div
+        class="estado-vacio"
+        *ngIf="
+          !cargando &&
+          librosFiltrados.length === 0 &&
+          !mostrarForm
+        ">
+
+        <div
+          class="estado-vacio-icono"
+          aria-hidden="true">
+          📚
+        </div>
+
+        <span class="estado-vacio-etiqueta">
+
+          {{
+            filtroActivo === 'todos'
+              ? 'Tu biblioteca'
+              : 'Resultado del filtro'
+          }}
+
+        </span>
+
+        <h3>
+
+          {{
+            filtroActivo === 'todos'
+              ? 'Todavía no guardaste libros'
+              : 'No encontramos libros'
+          }}
+
+        </h3>
+
+        <p>
+
+          {{
+            filtroActivo === 'todos'
+              ? 'Agregá un libro personal o cargá automáticamente la biblioteca bíblica.'
+              : 'No hay libros que coincidan con el filtro seleccionado.'
+          }}
+
+        </p>
+
+
+        <div
+          class="estado-vacio-acciones"
+          *ngIf="filtroActivo === 'todos'">
+
+          <button
+            type="button"
+            class="estado-vacio-secundario"
+            [disabled]="cargandoBiblia"
+            (click)="cargarBibliotecaBiblica()">
+
+            📖 Cargar Biblia
+
+          </button>
+
+          <button
+            type="button"
+            class="estado-vacio-principal"
+            (click)="abrirForm()">
+
+            ＋ Agregar libro
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FONDO DEL MODAL
+         ===================================================== -->
 
     <div
       class="form-overlay"
       *ngIf="mostrarForm"
-      (click)="cancelar()">
+      (click)="cancelar()"
+      aria-hidden="true">
     </div>
 
-    <div
+
+    <!-- =====================================================
+         MODAL PARA CREAR O EDITAR UN LIBRO
+         ===================================================== -->
+
+    <section
       class="form-modal"
-      *ngIf="mostrarForm">
+      *ngIf="mostrarForm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-formulario-libro">
 
-      <h3 class="form-titulo">
+      <header class="form-header">
 
-        {{ editando ? 'Editar libro' : 'Libro personal' }}
+        <div>
 
-      </h3>
+          <span class="form-etiqueta">
+
+            {{
+              editando
+                ? 'Modificar lectura'
+                : 'Nueva lectura'
+            }}
+
+          </span>
+
+          <h2
+            id="titulo-formulario-libro"
+            class="form-titulo">
+
+            {{
+              editando
+                ? 'Editar libro'
+                : 'Agregar libro personal'
+            }}
+
+          </h2>
+
+          <p class="form-descripcion">
+
+            {{
+              editando
+                ? 'Actualizá la información y el progreso de tu lectura.'
+                : 'Completá la información para guardar el libro en tu biblioteca.'
+            }}
+
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn-cerrar-modal"
+          aria-label="Cerrar formulario"
+          [disabled]="guardando"
+          (click)="cancelar()">
+
+          ×
+
+        </button>
+
+      </header>
+
 
       <form
         [formGroup]="libroForm"
-        (ngSubmit)="guardarLibro()">
+        (ngSubmit)="guardarLibro()"
+        novalidate>
+
 
         <!-- Título -->
 
         <div class="form-field">
 
-          <label>Título</label>
+          <label for="titulo-libro">
+            Título
+          </label>
 
           <input
+            id="titulo-libro"
+            type="text"
             formControlName="titulo"
-            placeholder="Ej: El hombre en busca de sentido">
+            placeholder="Ejemplo: El hombre en busca de sentido"
+            maxlength="120"
+            autocomplete="off">
+
+          <small
+            class="campo-ayuda"
+            *ngIf="
+              libroForm.controls.titulo.untouched ||
+              libroForm.controls.titulo.valid
+            ">
+
+            Ingresá el nombre completo del libro.
+
+          </small>
+
+          <small
+            class="campo-error"
+            *ngIf="
+              libroForm.controls.titulo.touched &&
+              libroForm.controls.titulo.hasError('required')
+            ">
+
+            El título es obligatorio.
+
+          </small>
+
+          <small
+            class="campo-error"
+            *ngIf="
+              libroForm.controls.titulo.touched &&
+              libroForm.controls.titulo.hasError('minlength')
+            ">
+
+            El título debe tener al menos 2 caracteres.
+
+          </small>
+
+          <small
+            class="campo-error"
+            *ngIf="
+              libroForm.controls.titulo.touched &&
+              libroForm.controls.titulo.hasError('maxlength')
+            ">
+
+            El título no puede superar los 120 caracteres.
+
+          </small>
 
         </div>
+
 
         <!-- Autor -->
 
         <div class="form-field">
 
-          <label>Autor</label>
+          <label for="autor-libro">
+            Autor
+          </label>
 
           <input
+            id="autor-libro"
+            type="text"
             formControlName="autor"
-            placeholder="Ej: Viktor Frankl">
+            placeholder="Ejemplo: Viktor Frankl"
+            maxlength="100"
+            autocomplete="off">
+
+          <small
+            class="campo-error"
+            *ngIf="
+              libroForm.controls.autor.touched &&
+              libroForm.controls.autor.hasError('maxlength')
+            ">
+
+            El autor no puede superar los 100 caracteres.
+
+          </small>
 
         </div>
 
-        <!-- Estado -->
 
-        <div class="form-field">
+        <!-- Estado y puntuación -->
 
-          <label>Estado</label>
+        <div class="form-row">
 
-          <select formControlName="estadoLectura">
+          <div class="form-field">
 
-            <option value="quiero_leer">
-              📚 Quiero leer
-            </option>
+            <label for="estado-lectura">
+              Estado de lectura
+            </label>
 
-            <option value="leyendo">
-              📖 Leyendo
-            </option>
+            <select
+              id="estado-lectura"
+              formControlName="estadoLectura">
 
-            <option value="leido">
-              ✅ Leído
-            </option>
+              <option value="quiero_leer">
+                📚 Quiero leer
+              </option>
 
-          </select>
+              <option value="leyendo">
+                👁️ Leyendo
+              </option>
+
+              <option value="leido">
+                ✅ Leído
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="puntuacion-libro">
+              Puntuación
+            </label>
+
+            <select
+              id="puntuacion-libro"
+              formControlName="puntuacion">
+
+              <option [ngValue]="0">
+                Sin puntuación
+              </option>
+
+              <option [ngValue]="1">
+                ⭐
+              </option>
+
+              <option [ngValue]="2">
+                ⭐⭐
+              </option>
+
+              <option [ngValue]="3">
+                ⭐⭐⭐
+              </option>
+
+              <option [ngValue]="4">
+                ⭐⭐⭐⭐
+              </option>
+
+              <option [ngValue]="5">
+                ⭐⭐⭐⭐⭐
+              </option>
+
+            </select>
+
+          </div>
 
         </div>
 
-        <!-- Puntuación -->
-
-        <div class="form-field">
-
-          <label>Puntuación</label>
-
-          <select formControlName="puntuacion">
-
-            <option [value]="0">
-              Sin puntuación
-            </option>
-
-            <option [value]="1">⭐</option>
-            <option [value]="2">⭐⭐</option>
-            <option [value]="3">⭐⭐⭐</option>
-            <option [value]="4">⭐⭐⭐⭐</option>
-            <option [value]="5">⭐⭐⭐⭐⭐</option>
-
-          </select>
-
-        </div>
 
         <!-- Reseña -->
 
         <div class="form-field">
 
-          <label>Reseña</label>
+          <label for="resenia-libro">
+            Reseña personal
+          </label>
 
           <textarea
+            id="resenia-libro"
             formControlName="resenia"
-            rows="2"
-            placeholder="¿Qué te pareció?">
-
+            rows="5"
+            maxlength="1000"
+            placeholder="Contá brevemente qué te pareció el libro.">
           </textarea>
 
+          <small class="campo-ayuda">
+            Podés escribir una opinión, reflexión o enseñanza.
+          </small>
+
+          <small
+            class="campo-error"
+            *ngIf="
+              libroForm.controls.resenia.touched &&
+              libroForm.controls.resenia.hasError('maxlength')
+            ">
+
+            La reseña no puede superar los 1000 caracteres.
+
+          </small>
+
         </div>
+
+
+        <!-- Error general -->
+
+        <p
+          class="mensaje-error"
+          *ngIf="mensajeError"
+          role="alert">
+
+          <span aria-hidden="true">
+            ⚠️
+          </span>
+
+          {{ mensajeError }}
+
+        </p>
+
 
         <!-- Botones -->
 
@@ -175,7 +1168,8 @@
           <button
             type="button"
             class="btn-cancelar"
-            (click)="cancelar()">
+            (click)="cancelar()"
+            [disabled]="guardando">
 
             Cancelar
 
@@ -184,9 +1178,15 @@
           <button
             type="submit"
             class="btn-guardar"
-            [disabled]="libroForm.invalid">
+            [disabled]="libroForm.invalid || guardando">
 
-            {{ editando ? 'Actualizar' : 'Agregar' }}
+            {{
+              guardando
+                ? 'Guardando...'
+                : editando
+                  ? 'Guardar cambios'
+                  : 'Agregar libro'
+            }}
 
           </button>
 
@@ -194,271 +1194,8 @@
 
       </form>
 
-    </div>
+    </section>
 
-    <!-- ───────────────────────────────────────────── -->
-    <!-- RESUMEN -->
-    <!-- ───────────────────────────────────────────── -->
-
-    <div class="seccion-card">
-
-      <div class="seccion-header">
-
-        <h2 class="seccion-titulo">
-
-          Resumen de tu biblioteca
-
-        </h2>
-
-        <button
-          class="btn-agregar-libro"
-          (click)="abrirForm()">
-
-          + Libro personal
-
-        </button>
-
-      </div>
-
-      <!-- Estadísticas -->
-
-      <div class="stats-grid">
-
-        <div class="stat-item stat-violeta">
-          <span class="stat-icono">📄</span>
-          <span class="stat-numero">{{ totalLibros }}</span>
-          <span class="stat-label">Libros guardados</span>
-        </div>
-
-        <div class="stat-item stat-azul">
-          <span class="stat-icono">⭐</span>
-          <span class="stat-numero">{{ librosFavoritos }}</span>
-          <span class="stat-label">Favoritos</span>
-        </div>
-
-        <div class="stat-item stat-verde">
-          <span class="stat-icono">📖</span>
-          <span class="stat-numero">{{ librosLeyendo }}</span>
-          <span class="stat-label">Leyendo</span>
-        </div>
-
-        <div class="stat-item stat-naranja">
-          <span class="stat-icono">✅</span>
-          <span class="stat-numero">{{ librosLeidos }}</span>
-          <span class="stat-label">Leídos</span>
-        </div>
-
-      </div>
-
-      <!-- Cargar automáticamente los 66 libros -->
-
-      <button
-        class="btn-nueva-materia"
-        (click)="cargarBibliotecaBiblica()">
-
-        📖 Cargar biblioteca bíblica
-
-      </button>
-
-      <p
-        class="mensaje-biblioteca"
-        *ngIf="mensaje">
-
-        {{ mensaje }}
-
-      </p>
-
-    </div>
-
-    <!-- ───────────────────────────────────────────── -->
-    <!-- LISTA DE LIBROS -->
-    <!-- ───────────────────────────────────────────── -->
-
-    <div class="seccion-card">
-
-      <div class="seccion-header">
-
-        <h2 class="seccion-titulo">
-
-          Mis libros
-
-        </h2>
-
-        <!-- Filtros -->
-
-        <div class="filtros">
-
-          <button
-            class="filtro-btn"
-            [class.filtro-activo]="filtroActivo=='todos'"
-            (click)="setFiltro('todos')">
-
-            Todos
-
-          </button>
-
-          <button
-             class="filtro-btn"
-             [class.filtro-activo]="filtroActivo=='quiero_leer'"
-             (click)="setFiltro('quiero_leer')">
-
-             Quiero leer
-
-          </button>
-
-          <button
-            class="filtro-btn"
-            [class.filtro-activo]="filtroActivo=='favoritos'"
-            (click)="setFiltro('favoritos')">
-
-            ⭐
-
-          </button>
-
-          <button
-            class="filtro-btn"
-            [class.filtro-activo]="filtroActivo=='leyendo'"
-            (click)="setFiltro('leyendo')">
-
-            Leyendo
-
-          </button>
-
-          <button
-            class="filtro-btn"
-            [class.filtro-activo]="filtroActivo=='leido'"
-            (click)="setFiltro('leido')">
-
-            Leídos
-
-          </button>
-
-        </div>
-
-      </div>
-
-      <!-- Libros -->
-
-      <div
-        class="libro-row"
-        *ngFor="let l of librosFiltrados">
-
-        <div
-          class="libro-icono-box"
-          [style.background-color]="getColorEstado(l.estadoLectura)+'22'">
-
-          <span
-            [style.color]="getColorEstado(l.estadoLectura)">
-
-            {{ getIconoEstado(l.estadoLectura) }}
-
-          </span>
-
-        </div>
-
-        <div class="libro-info">
-
-          <span class="libro-titulo">
-
-            {{ l.titulo }}
-
-          </span>
-
-          <span class="libro-autor">
-
-            {{ l.autor || 'Sin autor' }}
-
-            <span *ngIf="l.testamento">
-
-              · {{ l.testamento }}
-
-            </span>
-
-          </span>
-
-          <span
-            class="libro-estrellas"
-            *ngIf="l.puntuacion>0">
-
-            {{ getEstrellas(l.puntuacion) }}
-
-          </span>
-
-        </div>
-
-        <div class="libro-meta">
-
-          <span
-            class="libro-badge"
-            [style.background-color]="getColorEstado(l.estadoLectura)+'22'"
-            [style.color]="getColorEstado(l.estadoLectura)">
-
-            {{ getLabelEstado(l.estadoLectura) }}
-
-          </span>
-
-        </div>
-
-        <!-- Acciones rápidas -->
-
-        <div class="libro-acciones">
-
-          <button
-            class="btn-accion"
-            (click)="toggleFavorito(l)">
-
-            {{ l.favorito ? '⭐' : '☆' }}
-
-          </button>
-
-          <button
-            class="btn-accion"
-            (click)="cambiarEstado(l,'leyendo')">
-
-            👁️
-
-          </button>
-
-          <button
-            class="btn-accion"
-            (click)="cambiarEstado(l,'leido')">
-
-            ✅
-
-          </button>
-
-          <button
-            class="btn-accion"
-            (click)="editarLibro(l)">
-
-            ✏️
-
-          </button>
-
-          <button
-            class="btn-accion"
-            (click)="eliminarLibro(l.id)">
-
-            🗑️
-
-          </button>
-
-        </div>
-
-      </div>
-
-      <!-- Estado vacío -->
-
-      <ui-empty-state
-        *ngIf="librosFiltrados.length==0 && !mostrarForm"
-        icon="📚"
-        title="Sin libros"
-        text="Agregá un libro o cargá la biblioteca bíblica.">
-
-      </ui-empty-state>
-
-    </div>
-
-  </div>
+  </main>
 
 </div>

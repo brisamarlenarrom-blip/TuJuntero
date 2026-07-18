@@ -1,55 +1,239 @@
 <div class="auth-container">
+
   <div class="auth-card">
 
+    <!-- ==================================================
+         ENCABEZADO
+         ================================================== -->
+
     <div class="auth-header">
-      <div class="auth-logo">✨</div>
-       <p class="field-error" *ngIf="errorMensaje">
-       {{ errorMensaje }}
-       </p>
-      <h1 class="auth-titulo">Crear cuenta</h1>
-      <p class="auth-subtitulo">Completá tus datos para registrarte</p>
+
+      <div class="auth-logo" aria-hidden="true">
+        ✨
+      </div>
+
+      <h1 class="auth-titulo">
+        Crear cuenta
+      </h1>
+
+      <p class="auth-subtitulo">
+        Completá tus datos para registrarte
+      </p>
+
     </div>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- ==================================================
+         MENSAJE GENERAL DE ERROR
+         ================================================== -->
+
+    <p
+      class="error-general"
+      *ngIf="errorMensaje"
+      role="alert">
+
+      {{ errorMensaje }}
+
+    </p>
+
+    <!-- ==================================================
+         FORMULARIO DE REGISTRO
+         ================================================== -->
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      novalidate>
+
+      <!-- Nombre y apellido -->
 
       <div class="form-row">
+
         <div class="form-field">
-          <label>Nombre</label>
-          <input formControlName="nombre" placeholder="Tu nombre">
-          <span class="field-error" *ngIf="registerForm.get('nombre')?.touched && registerForm.get('nombre')?.hasError('required')">Requerido</span>
+
+          <label for="nombre">
+            Nombre
+          </label>
+
+          <input
+            id="nombre"
+            type="text"
+            formControlName="nombre"
+            placeholder="Tu nombre"
+            autocomplete="given-name">
+
+          <span
+            class="field-error"
+            *ngIf="
+              registerForm.get('nombre')?.touched &&
+              registerForm.get('nombre')?.hasError('required')
+            ">
+
+            El nombre es obligatorio.
+
+          </span>
+
         </div>
+
         <div class="form-field">
-          <label>Apellido</label>
-          <input formControlName="apellido" placeholder="Tu apellido">
-          <span class="field-error" *ngIf="registerForm.get('apellido')?.touched && registerForm.get('apellido')?.hasError('required')">Requerido</span>
+
+          <label for="apellido">
+            Apellido
+          </label>
+
+          <input
+            id="apellido"
+            type="text"
+            formControlName="apellido"
+            placeholder="Tu apellido"
+            autocomplete="family-name">
+
+          <span
+            class="field-error"
+            *ngIf="
+              registerForm.get('apellido')?.touched &&
+              registerForm.get('apellido')?.hasError('required')
+            ">
+
+            El apellido es obligatorio.
+
+          </span>
+
         </div>
+
       </div>
+
+      <!-- Email -->
 
       <div class="form-field">
-        <label>Email</label>
-        <input formControlName="email" type="email" placeholder="tu@email.com">
-        <span class="field-error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')">Requerido</span>
-        <span class="field-error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')">Email inválido</span>
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="tu@email.com"
+          autocomplete="email">
+
+        <span
+          class="field-error"
+          *ngIf="
+            registerForm.get('email')?.touched &&
+            registerForm.get('email')?.hasError('required')
+          ">
+
+          El email es obligatorio.
+
+        </span>
+
+        <span
+          class="field-error"
+          *ngIf="
+            registerForm.get('email')?.touched &&
+            registerForm.get('email')?.hasError('email')
+          ">
+
+          Ingresá un email válido.
+
+        </span>
+
       </div>
+
+      <!-- Contraseña -->
 
       <div class="form-field">
-        <label>Contraseña</label>
-        <input formControlName="password" type="password" placeholder="Mínimo 6 caracteres">
-        <span class="field-error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')">Requerida</span>
-        <span class="field-error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')">Mínimo 6 caracteres</span>
+
+        <label for="password">
+          Contraseña
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Mínimo 6 caracteres"
+          autocomplete="new-password">
+
+        <span
+          class="field-error"
+          *ngIf="
+            registerForm.get('password')?.touched &&
+            registerForm.get('password')?.hasError('required')
+          ">
+
+          La contraseña es obligatoria.
+
+        </span>
+
+        <span
+          class="field-error"
+          *ngIf="
+            registerForm.get('password')?.touched &&
+            registerForm.get('password')?.hasError('minlength')
+          ">
+
+          La contraseña debe tener al menos 6 caracteres.
+
+        </span>
+
       </div>
+
+      <!-- Fecha de nacimiento -->
 
       <div class="form-field">
-        <label>Fecha de nacimiento</label>
-        <input formControlName="fechaNacimiento" type="date">
-        <span class="field-error" *ngIf="registerForm.get('fechaNacimiento')?.touched && registerForm.get('fechaNacimiento')?.hasError('required')">Requerida</span>
+
+        <label for="fechaNacimiento">
+          Fecha de nacimiento
+        </label>
+
+        <input
+          id="fechaNacimiento"
+          type="date"
+          formControlName="fechaNacimiento"
+          autocomplete="bday">
+
+        <span
+          class="field-error"
+          *ngIf="
+            registerForm.get('fechaNacimiento')?.touched &&
+            registerForm.get('fechaNacimiento')?.hasError('required')
+          ">
+
+          La fecha de nacimiento es obligatoria.
+
+        </span>
+
       </div>
 
-      <button type="submit" class="btn-primary" [disabled]="!registerForm.valid">Crear cuenta</button>
+      <!-- Botón de registro -->
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="registerForm.invalid || cargando">
+
+        {{ cargando ? 'Creando cuenta...' : 'Crear cuenta' }}
+
+      </button>
 
     </form>
 
-    <p class="auth-link">¿Ya tenés cuenta? <a routerLink="/auth/login">Iniciar sesión</a></p>
+    <!-- ==================================================
+         ENLACE AL LOGIN
+         ================================================== -->
+
+    <p class="auth-link">
+
+      ¿Ya tenés cuenta?
+
+      <a routerLink="/auth/login">
+        Iniciar sesión
+      </a>
+
+    </p>
 
   </div>
+
 </div>

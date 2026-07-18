@@ -1,22 +1,124 @@
-<div class="navbar">
+<nav class="navbar" aria-label="Navegación principal">
 
-  <!-- Izquierda: flecha o logo -->
+  <!-- ==================================================
+       SECTOR IZQUIERDO
+       ================================================== -->
+
   <div class="navbar-izq">
-    <button class="btn-volver" *ngIf="mostrarFlecha" (click)="volver()">
+
+    <!-- Flecha para volver -->
+
+    <button
+      *ngIf="mostrarFlecha"
+      type="button"
+      class="btn-volver"
+      aria-label="Volver a la pantalla anterior"
+      title="Volver"
+      (click)="volver()">
+
       ←
+
     </button>
-    <span class="logo" *ngIf="!mostrarFlecha">TuJuntero</span>
-    <span class="ruta-titulo" *ngIf="mostrarFlecha">{{ tituloRuta }}</span>
+
+    <!-- Logo principal -->
+
+    <a
+      *ngIf="!mostrarFlecha"
+      class="logo"
+      routerLink="/inicio"
+      aria-label="Ir al inicio de TuJuntero">
+
+      TuJuntero
+
+    </a>
+
+    <!-- Título de la ruta actual -->
+
+    <span
+      *ngIf="mostrarFlecha"
+      class="ruta-titulo">
+
+      {{ tituloRuta }}
+
+    </span>
+
   </div>
 
-  <!-- Derecha: acciones -->
+  <!-- ==================================================
+       SECTOR DERECHO
+       ================================================== -->
+
   <div class="navbar-actions">
-    <button class="icon-btn" *ngIf="auth.getIsLogged()">🔔</button>
-    <div class="avatar" *ngIf="auth.getIsLogged()">
-      {{ nombre?.charAt(0)?.toUpperCase() }}
-    </div>
-    <button *ngIf="!auth.getIsLogged()" class="login-btn" routerLink="/auth/login">Ingresar</button>
-    <button *ngIf="auth.getIsLogged()" class="logout-btn" (click)="logout()">Salir</button>
+
+    <!-- ------------------------------------------------
+         USUARIO NO AUTENTICADO
+         ------------------------------------------------ -->
+
+    <a
+      *ngIf="!estaLogueado"
+      class="login-btn"
+      routerLink="/auth/login">
+
+      Ingresar
+
+    </a>
+
+    <!-- ------------------------------------------------
+         USUARIO AUTENTICADO
+         ------------------------------------------------ -->
+
+    <ng-container *ngIf="estaLogueado">
+
+      <!-- Panel de administración -->
+
+      <a
+        *ngIf="esAdmin"
+        class="admin-btn"
+        routerLink="/admin/mentores"
+        title="Administración de usuarios">
+
+        Administrar
+
+      </a>
+
+      <!-- Notificaciones -->
+
+      <button
+        type="button"
+        class="icon-btn"
+        aria-label="Ver notificaciones"
+        title="Notificaciones">
+
+        🔔
+
+      </button>
+
+      <!-- Avatar con acceso al perfil -->
+
+      <a
+        class="avatar"
+        routerLink="/perfil"
+        [attr.aria-label]="'Abrir el perfil de ' + nombre"
+        [title]="nombre || 'Perfil'">
+
+        {{ nombre.charAt(0).toUpperCase() || 'U' }}
+
+      </a>
+
+      <!-- Cerrar sesión -->
+
+      <button
+        type="button"
+        class="logout-btn"
+        aria-label="Cerrar sesión"
+        (click)="logout()">
+
+        Salir
+
+      </button>
+
+    </ng-container>
+
   </div>
 
-</div>
+</nav>

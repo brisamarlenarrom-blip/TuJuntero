@@ -1,28 +1,79 @@
-<div class="footer">
+<nav class="footer" aria-label="Navegación inferior">
 
-  <a class="footer-item" routerLink="/inicio" routerLinkActive="footer-activo" [routerLinkActiveOptions]="{exact:true}">
+  <!-- =========================
+       INICIO
+       ========================= -->
+
+  <a
+    class="footer-item"
+    routerLink="/inicio"
+    routerLinkActive="footer-activo"
+    [routerLinkActiveOptions]="{ exact: true }"
+    aria-label="Ir al inicio">
+
     <span class="footer-icon">🏠</span>
     <span class="footer-label">Inicio</span>
+
   </a>
 
-  <a class="footer-item" routerLink="/aprender" routerLinkActive="footer-activo">
+  <!-- =========================
+       APRENDER
+       ========================= -->
+
+  <a
+    class="footer-item"
+    routerLink="/aprender"
+    routerLinkActive="footer-activo"
+    aria-label="Ir a Aprender">
+
     <span class="footer-icon">📖</span>
     <span class="footer-label">Aprender</span>
+
   </a>
 
-  <a class="footer-item" routerLink="/alimentarse" routerLinkActive="footer-activo">
+  <!-- =========================
+       ALIMENTARSE
+       ========================= -->
+
+  <a
+    class="footer-item"
+    routerLink="/alimentarse"
+    routerLinkActive="footer-activo"
+    aria-label="Ir a Alimentarse">
+
     <span class="footer-icon">🍴</span>
     <span class="footer-label">Alimentarse</span>
+
   </a>
 
-  <a class="footer-item" routerLink="/entrenamiento" routerLinkActive="footer-activo">
+  <!-- =========================
+       ENTRENAMIENTO
+       ========================= -->
+
+  <a
+    class="footer-item"
+    routerLink="/entrenamiento"
+    routerLinkActive="footer-activo"
+    aria-label="Ir a Entrenamiento">
+
     <span class="footer-icon">🏋️</span>
     <span class="footer-label">Entrenamiento</span>
+
   </a>
 
- <a class="footer-item" routerLink="/perfil" routerLinkActive="footer-activo">
-  <span class="footer-icon">👤</span>
-  <span class="footer-label">Perfil</span>
-</a>
+  <!-- =========================
+       PERFIL
+       ========================= -->
 
-</div>
+  <a
+    class="footer-item"
+    routerLink="/perfil"
+    routerLinkActive="footer-activo"
+    aria-label="Ir al Perfil">
+
+    <span class="footer-icon">👤</span>
+    <span class="footer-label">Perfil</span>
+
+  </a>
+
+</nav>

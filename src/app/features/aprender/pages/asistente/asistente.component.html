@@ -1,90 +1,739 @@
-<button class="btn-volver" (click)="volver()">← Volver</button>
+<!-- =========================================================
+     ASISTENTE DE ESTUDIO IA
+     Archivo completo: asistente.component.html
+     ========================================================= -->
 
-<div class="asistente-container">
+<div class="asistente-page">
 
-  <div class="asistente-header">
-    <h2>🧠 Asistente de Estudio IA</h2>
-    <p>Respondé estas preguntas y recibí un plan de estudio personalizado.</p>
-  </div>
+  <!-- =======================================================
+       HERO PRINCIPAL
+       ======================================================= -->
 
-  <!-- FORMULARIO -->
-  <mat-card *ngIf="paso === 'formulario'" class="form-card">
-    <form [formGroup]="formAsistente" (ngSubmit)="generarRespuesta()">
-      
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>¿Cuántas materias tenés?</mat-label>
-        <input matInput formControlName="materias" placeholder="Ej: 3 materias (Álgebra, Física, Inglés)">
-      </mat-form-field>
+  <section class="asistente-hero">
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>¿Trabajás?</mat-label>
-        <mat-select formControlName="trabaja">
-          <mat-option value="no">No trabajo</mat-option>
-          <mat-option value="medio_tiempo">Medio tiempo</mat-option>
-          <mat-option value="tiempo_completo">Tiempo completo</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div class="hero-decoracion hero-decoracion-uno"></div>
+    <div class="hero-decoracion hero-decoracion-dos"></div>
 
-      <mat-form-field appearance="outline" class="full-width" *ngIf="formAsistente.value.trabaja !== 'no'">
-        <mat-label>Horas de trabajo por día</mat-label>
-        <input matInput formControlName="horasTrabajo" type="number">
-      </mat-form-field>
+    <div class="hero-contenido">
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>¿En qué horario estudiás mejor?</mat-label>
-        <mat-select formControlName="horarioEstudio">
-          <mat-option value="mañana">🌅 Mañana (6-12)</mat-option>
-          <mat-option value="tarde">☀️ Tarde (12-18)</mat-option>
-          <mat-option value="noche">🌙 Noche (18-24)</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div
+        class="hero-icono"
+        aria-hidden="true">
+        🧠
+      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>¿Cómo preferís estudiar?</mat-label>
-        <mat-select formControlName="estiloEstudio">
-          <mat-option value="leyendo">📖 Leyendo</mat-option>
-          <mat-option value="videos">🎥 Viendo videos</mat-option>
-          <mat-option value="resumenes">📝 Haciendo resúmenes</mat-option>
-          <mat-option value="practicando">✍️ Practicando ejercicios</mat-option>
-          <mat-option value="explicando">🗣️ Explicando a otros</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="hero-texto">
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Tiempo que podés concentrarte seguido</mat-label>
-        <mat-select formControlName="tiempoConcentracion">
-          <mat-option value="15">15 minutos</mat-option>
-          <mat-option value="30">30 minutos</mat-option>
-          <mat-option value="45">45 minutos</mat-option>
-          <mat-option value="60">1 hora</mat-option>
-          <mat-option value="90">1 hora y media</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <span class="hero-etiqueta">
+          Asistente inteligente
+        </span>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Días libres para estudiar</mat-label>
-        <mat-select formControlName="diasLibres">
-          <mat-option value="finde">Solo fines de semana</mat-option>
-          <mat-option value="algunos_dias">Algunos días entre semana</mat-option>
-          <mat-option value="todos_los_dias">Todos los días</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <h1 class="hero-titulo">
+          Asistente de Estudio IA
+        </h1>
 
-      <button mat-raised-button color="primary" type="submit" [disabled]="formAsistente.invalid || cargando" class="full-width">
-        {{ cargando ? '🧠 Pensando...' : '✨ Generar mi plan de estudio' }}
-      </button>
-    </form>
-  </mat-card>
+        <p class="hero-descripcion">
+          Respondé algunas preguntas sobre tu rutina y recibí
+          una propuesta de estudio personalizada según tus tiempos,
+          preferencias y disponibilidad.
+        </p>
 
-  <!-- RESPUESTA DE LA IA -->
-  <div *ngIf="paso === 'respuesta'">
-    <mat-card class="respuesta-card">
-      <h3>📋 Tu plan de estudio personalizado</h3>
-      <p class="respuesta-texto">{{ respuesta }}</p>
+      </div>
+
+    </div>
+
+
+    <!-- Beneficios rápidos -->
+
+    <div
+      class="hero-beneficios"
+      aria-label="Beneficios del asistente">
+
+      <div class="beneficio-item">
+
+        <span
+          class="beneficio-icono"
+          aria-hidden="true">
+          🎯
+        </span>
+
+        <div>
+          <strong>Plan personalizado</strong>
+          <span>Adaptado a tu rutina</span>
+        </div>
+
+      </div>
+
+
+      <div class="beneficio-item">
+
+        <span
+          class="beneficio-icono"
+          aria-hidden="true">
+          ⏱️
+        </span>
+
+        <div>
+          <strong>Mejor organización</strong>
+          <span>Según tu tiempo disponible</span>
+        </div>
+
+      </div>
+
+
+      <div class="beneficio-item">
+
+        <span
+          class="beneficio-icono"
+          aria-hidden="true">
+          ✨
+        </span>
+
+        <div>
+          <strong>Recomendaciones IA</strong>
+          <span>Pensadas para vos</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       CONTENIDO PRINCIPAL
+       ======================================================= -->
+
+  <main class="asistente-container">
+
+
+    <!-- =====================================================
+         COLUMNA INFORMATIVA
+         ===================================================== -->
+
+    <aside class="asistente-info-card">
+
+      <span class="seccion-etiqueta">
+        Cómo funciona
+      </span>
+
+      <h2 class="info-titulo">
+        Creá una rutina que puedas sostener
+      </h2>
+
+      <p class="info-descripcion">
+        El asistente utiliza la información de tu rutina para
+        sugerirte una forma de estudio más ordenada y realista.
+      </p>
+
+
+      <div class="pasos-lista">
+
+        <article class="paso-item">
+
+          <div class="paso-numero">
+            1
+          </div>
+
+          <div class="paso-contenido">
+
+            <h3>
+              Contanos tu situación
+            </h3>
+
+            <p>
+              Indicá cuántas materias tenés, tus horarios y tu
+              disponibilidad semanal.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article class="paso-item">
+
+          <div class="paso-numero">
+            2
+          </div>
+
+          <div class="paso-contenido">
+
+            <h3>
+              Elegí cómo estudiás
+            </h3>
+
+            <p>
+              Seleccioná tu horario de mayor rendimiento y el método
+              que mejor se adapta a vos.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article class="paso-item">
+
+          <div class="paso-numero">
+            3
+          </div>
+
+          <div class="paso-contenido">
+
+            <h3>
+              Recibí tu propuesta
+            </h3>
+
+            <p>
+              El sistema generará una planificación basada en
+              tus respuestas.
+            </p>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+      <div class="info-consejo">
+
+        <span
+          class="consejo-icono"
+          aria-hidden="true">
+          💡
+        </span>
+
+        <p>
+          Respondé con información realista. Un plan posible de cumplir
+          suele ser más útil que uno demasiado exigente.
+        </p>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         FORMULARIO
+         ===================================================== -->
+
+    <mat-card
+      *ngIf="paso === 'formulario'"
+      class="form-card">
+
+      <header class="form-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Configurá tu planificación
+          </span>
+
+          <h2 class="form-titulo">
+            Respondé estas preguntas
+          </h2>
+
+          <p class="form-subtitulo">
+            Completá todos los campos para generar tu plan de estudio.
+          </p>
+
+        </div>
+
+        <div
+          class="form-header-icono"
+          aria-hidden="true">
+          ✍️
+        </div>
+
+      </header>
+
+
+      <form
+        class="asistente-form"
+        [formGroup]="formAsistente"
+        (ngSubmit)="generarRespuesta()"
+        novalidate>
+
+
+        <!-- =================================================
+             MATERIAS
+             ================================================= -->
+
+        <mat-form-field
+          appearance="outline"
+          class="campo campo-completo">
+
+          <mat-label>
+            ¿Cuántas materias tenés?
+          </mat-label>
+
+          <input
+            matInput
+            type="text"
+            formControlName="materias"
+            placeholder="Ejemplo: Aspectos Legales y Algoritmos"
+            autocomplete="off">
+
+          <mat-hint>
+            Podés indicar la cantidad y los nombres.
+          </mat-hint>
+
+          <mat-error
+            *ngIf="formAsistente.controls.materias.hasError('required')">
+            Escribí al menos una materia o tema.
+          </mat-error>
+
+          <mat-error
+            *ngIf="formAsistente.controls.materias.hasError('minlength')">
+            La descripción debe tener al menos 3 caracteres.
+          </mat-error>
+
+          <mat-error
+            *ngIf="formAsistente.controls.materias.hasError('maxlength')">
+            La descripción es demasiado extensa.
+          </mat-error>
+
+        </mat-form-field>
+
+
+        <!-- =================================================
+             TRABAJO
+             ================================================= -->
+
+        <mat-form-field
+          appearance="outline"
+          class="campo">
+
+          <mat-label>
+            ¿Trabajás actualmente?
+          </mat-label>
+
+          <mat-select formControlName="trabaja">
+
+            <mat-option value="no">
+              No trabajo
+            </mat-option>
+
+            <mat-option value="medio_tiempo">
+              Trabajo medio tiempo
+            </mat-option>
+
+            <mat-option value="tiempo_completo">
+              Trabajo tiempo completo
+            </mat-option>
+
+          </mat-select>
+
+        </mat-form-field>
+
+
+        <!-- =================================================
+             HORARIO DE ESTUDIO
+             ================================================= -->
+
+        <mat-form-field
+          appearance="outline"
+          class="campo">
+
+          <mat-label>
+            ¿En qué horario estudiás mejor?
+          </mat-label>
+
+          <mat-select formControlName="horarioEstudio">
+
+            <mat-option value="mañana">
+              🌅 Mañana — de 6 a 12
+            </mat-option>
+
+            <mat-option value="tarde">
+              ☀️ Tarde — de 12 a 18
+            </mat-option>
+
+            <mat-option value="noche">
+              🌙 Noche — de 18 a 24
+            </mat-option>
+
+          </mat-select>
+
+        </mat-form-field>
+
+
+        <!-- =================================================
+             HORAS DE TRABAJO
+             ================================================= -->
+
+        <mat-form-field
+          *ngIf="usuarioTrabaja"
+          appearance="outline"
+          class="campo campo-completo">
+
+          <mat-label>
+            Horas de trabajo por día
+          </mat-label>
+
+          <input
+            matInput
+            type="number"
+            min="1"
+            max="16"
+            formControlName="horasTrabajo"
+            placeholder="Ejemplo: 8">
+
+          <mat-hint>
+            Indicá aproximadamente cuántas horas trabajás.
+          </mat-hint>
+
+          <mat-error
+            *ngIf="formAsistente.controls.horasTrabajo.hasError('required')">
+            Indicá la cantidad de horas de trabajo.
+          </mat-error>
+
+          <mat-error
+            *ngIf="formAsistente.controls.horasTrabajo.hasError('min')">
+            La cantidad mínima es 1 hora.
+          </mat-error>
+
+          <mat-error
+            *ngIf="formAsistente.controls.horasTrabajo.hasError('max')">
+            La cantidad máxima permitida es 16 horas.
+          </mat-error>
+
+        </mat-form-field>
+
+
+        <!-- =================================================
+             ESTILO DE ESTUDIO
+             ================================================= -->
+
+        <mat-form-field
+          appearance="outline"
+          class="campo">
+
+          <mat-label>
+            ¿Cómo preferís estudiar?
+          </mat-label>
+
+          <mat-select formControlName="estiloEstudio">
+
+            <mat-option value="leyendo">
+              📖 Leyendo material
+            </mat-option>
+
+            <mat-option value="videos">
+              🎥 Viendo videos
+            </mat-option>
+
+            <mat-option value="resumenes">
+              📝 Haciendo resúmenes
+            </mat-option>
+
+            <mat-option value="practicando">
+              ✍️ Practicando ejercicios
+            </mat-option>
+
+            <mat-option value="explicando">
+              🗣️ Explicando a otras personas
+            </mat-option>
+
+          </mat-select>
+
+        </mat-form-field>
+
+
+        <!-- =================================================
+             TIEMPO DE CONCENTRACIÓN
+             IMPORTANTE: [value] conserva el tipo number
+             ================================================= -->
+
+        <mat-form-field
+          appearance="outline"
+          class="campo">
+
+          <mat-label>
+            Tiempo de concentración
+          </mat-label>
+
+          <mat-select formControlName="tiempoConcentracion">
+
+            <mat-option [value]="15">
+              15 minutos
+            </mat-option>
+
+            <mat-option [value]="30">
+              30 minutos
+            </mat-option>
+
+            <mat-option [value]="45">
+              45 minutos
+            </mat-option>
+
+            <mat-option [value]="60">
+              1 hora
+            </mat-option>
+
+            <mat-option [value]="90">
+              1 hora y media
+            </mat-option>
+
+          </mat-select>
+
+          <mat-error
+            *ngIf="formAsistente.controls.tiempoConcentracion.hasError('required')">
+            Elegí un tiempo de concentración.
+          </mat-error>
+
+          <mat-error
+            *ngIf="formAsistente.controls.tiempoConcentracion.hasError('min')">
+            El tiempo mínimo es de 15 minutos.
+          </mat-error>
+
+          <mat-error
+            *ngIf="formAsistente.controls.tiempoConcentracion.hasError('max')">
+            El tiempo máximo es de 90 minutos.
+          </mat-error>
+
+        </mat-form-field>
+
+
+        <!-- =================================================
+             DÍAS DISPONIBLES
+             ================================================= -->
+
+        <mat-form-field
+          appearance="outline"
+          class="campo campo-completo">
+
+          <mat-label>
+            Días disponibles para estudiar
+          </mat-label>
+
+          <mat-select formControlName="diasLibres">
+
+            <mat-option value="finde">
+              Solo fines de semana
+            </mat-option>
+
+            <mat-option value="algunos_dias">
+              Algunos días entre semana
+            </mat-option>
+
+            <mat-option value="todos_los_dias">
+              Todos los días
+            </mat-option>
+
+          </mat-select>
+
+          <mat-hint>
+            Elegí la opción que más se parezca a tu rutina real.
+          </mat-hint>
+
+        </mat-form-field>
+
+
+        <!-- =================================================
+             MENSAJE DE ERROR GENERAL
+             ================================================= -->
+
+        <div
+          *ngIf="mensajeError && paso === 'formulario'"
+          class="form-aviso">
+
+          <span
+            class="form-aviso-icono"
+            aria-hidden="true">
+            ⚠️
+          </span>
+
+          <p>
+            {{ mensajeError }}
+          </p>
+
+        </div>
+
+
+        <!-- =================================================
+             MENSAJE INFORMATIVO
+             ================================================= -->
+
+        <div class="form-aviso">
+
+          <span
+            class="form-aviso-icono"
+            aria-hidden="true">
+            🔒
+          </span>
+
+          <p>
+            Tus respuestas se utilizan únicamente para generar
+            la propuesta de estudio.
+          </p>
+
+        </div>
+
+
+        <!-- =================================================
+             BOTÓN GENERAR
+             Se deshabilita únicamente durante la carga.
+             La validación se realiza dentro de generarRespuesta().
+             ================================================= -->
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="btn-generar"
+          [disabled]="cargando">
+
+          <span
+            class="btn-generar-contenido"
+            *ngIf="!cargando">
+
+            <span aria-hidden="true">
+              ✨
+            </span>
+
+            Generar mi plan de estudio
+
+          </span>
+
+          <span
+            class="btn-generar-contenido"
+            *ngIf="cargando">
+
+            <mat-spinner
+              diameter="20"
+              aria-label="Generando planificación">
+            </mat-spinner>
+
+            Analizando tus respuestas...
+
+          </span>
+
+        </button>
+
+      </form>
+
     </mat-card>
-    <button mat-button color="primary" (click)="nuevoPlan()" style="margin-top: 16px;">
-      🔄 Generar otro plan
-    </button>
-  </div>
+
+
+    <!-- =====================================================
+         RESPUESTA GENERADA
+         ===================================================== -->
+
+    <section
+      *ngIf="paso === 'respuesta'"
+      class="respuesta-wrapper">
+
+      <mat-card class="respuesta-card">
+
+        <header class="respuesta-header">
+
+          <div
+            class="respuesta-icono"
+            aria-hidden="true">
+            📋
+          </div>
+
+          <div>
+
+            <span class="seccion-etiqueta">
+              Propuesta generada
+            </span>
+
+            <h2 class="respuesta-titulo">
+              Tu plan de estudio personalizado
+            </h2>
+
+            <p class="respuesta-subtitulo">
+              Esta planificación fue creada según las respuestas
+              que ingresaste.
+            </p>
+
+          </div>
+
+        </header>
+
+
+        <!-- Aviso cuando se utilizó el generador local -->
+
+        <div
+          *ngIf="respuestaGeneradaLocalmente"
+          class="respuesta-aviso">
+
+          <span aria-hidden="true">
+            ℹ️
+          </span>
+
+          <p>
+            {{ mensajeError }}
+          </p>
+
+        </div>
+
+
+        <div class="respuesta-contenido">
+
+          <p class="respuesta-texto">
+            {{ respuesta }}
+          </p>
+
+        </div>
+
+
+        <div class="respuesta-aviso">
+
+          <span aria-hidden="true">
+            💡
+          </span>
+
+          <p>
+            Podés adaptar esta propuesta a tus horarios reales.
+            La constancia es más importante que cumplir un plan perfecto.
+          </p>
+
+        </div>
+
+
+        <footer class="respuesta-footer">
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="btn-nuevo-plan"
+            (click)="nuevoPlan()">
+
+            <span aria-hidden="true">
+              🔄
+            </span>
+
+            Generar otro plan
+
+          </button>
+
+
+          <button
+            mat-button
+            type="button"
+            class="btn-nuevo-plan"
+            (click)="reiniciarFormulario()">
+
+            <span aria-hidden="true">
+              🧹
+            </span>
+
+            Limpiar formulario
+
+          </button>
+
+        </footer>
+
+      </mat-card>
+
+    </section>
+
+  </main>
 
 </div>

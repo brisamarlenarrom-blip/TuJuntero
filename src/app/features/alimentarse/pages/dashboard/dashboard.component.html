@@ -1,222 +1,1109 @@
+<!-- =========================================================
+     DASHBOARD DEL MÓDULO ALIMENTARSE
+     Archivo completo: dashboard.component.html
+     ========================================================= -->
+
 <div class="alimentarse-container">
 
-  <!-- HERO -->
-  <div class="alimentarse-hero">
+  <!-- =======================================================
+       HERO PRINCIPAL
+       ======================================================= -->
+
+  <section class="alimentarse-hero">
+
     <div class="hero-content">
-      <div class="hero-icon">🥗</div>
+
+      <div
+        class="hero-icon"
+        aria-hidden="true">
+        🥗
+      </div>
 
       <div class="hero-text">
-        <h1 class="hero-titulo">Alimentarse</h1>
+
+        <span class="hero-etiqueta">
+          Bienestar y alimentación
+        </span>
+
+        <h1 class="hero-titulo">
+          Alimentarse
+        </h1>
+
         <p class="hero-subtitulo">
-          Descubrí recetas saludables<br>
-          y mejorá tus hábitos.
+          Descubrí recetas, organizá tus comidas y construí
+          hábitos que puedas sostener todos los días.
         </p>
+
       </div>
+
     </div>
 
-    <nav class="alimentarse-tabs">
-      <a routerLink="recetas" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">❤️</span> Favoritos
+
+    <!-- Navegación interna -->
+
+    <nav
+      class="alimentarse-tabs"
+      aria-label="Secciones de Alimentarse">
+
+      <a
+        routerLink="/alimentarse"
+        routerLinkActive="tab-activo"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="tab-item">
+
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          🏠
+        </span>
+
+        Inicio
+
       </a>
+
+
+      <a
+        routerLink="/alimentarse/diario"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          📝
+        </span>
+
+        Diario
+
+      </a>
+
+
+      <a
+        routerLink="/alimentarse/recetas"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          ❤️
+        </span>
+
+        Favoritos
+
+      </a>
+
     </nav>
+
+  </section>
+
+
+  <!-- =======================================================
+       MENSAJE DE ERROR GENERAL
+       ======================================================= -->
+
+  <div
+    *ngIf="mensajeError && !mostrarForm"
+    class="mensaje-estado mensaje-error"
+    role="alert">
+
+    <span aria-hidden="true">
+      ⚠️
+    </span>
+
+    <p>
+      {{ mensajeError }}
+    </p>
+
   </div>
 
-  <!-- FORMULARIO MODAL -->
-  <div class="form-overlay" *ngIf="mostrarForm" (click)="cancelar()"></div>
 
-  <div class="form-modal" *ngIf="mostrarForm">
-    <h3 class="form-titulo">
-      {{ editando ? 'Editar receta' : 'Nueva receta' }}
-    </h3>
+  <!-- =======================================================
+       FORMULARIO MODAL
+       ======================================================= -->
 
-    <form [formGroup]="recetaForm" (ngSubmit)="guardarReceta()">
+  <div
+    *ngIf="mostrarForm"
+    class="form-overlay"
+    aria-hidden="true"
+    (click)="cancelar()">
+  </div>
 
-      <div class="form-field">
-        <label>Nombre</label>
-        <input formControlName="nombre" placeholder="Ej: Lentejas con verduras">
-      </div>
 
-      <div class="form-field">
-        <label>Categoría</label>
-        <select formControlName="categoria">
-          <option value="desayuno">🥣 Desayuno</option>
-          <option value="almuerzo">🍽️ Almuerzo</option>
-          <option value="merienda">☕ Merienda</option>
-          <option value="cena">🌙 Cena</option>
-        </select>
-      </div>
+  <section
+    *ngIf="mostrarForm"
+    class="form-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="titulo-form-receta">
 
-      <div class="form-field">
-        <label>Ingredientes</label>
-        <textarea formControlName="ingredientes" rows="3" placeholder="1 taza lentejas, 2 zanahorias..."></textarea>
-      </div>
+    <header class="form-modal-header">
 
-      <div class="form-field">
-        <label>Pasos</label>
-        <textarea formControlName="pasos" rows="3" placeholder="1. Lavar lentejas. 2. Picar verduras..."></textarea>
-      </div>
+      <div>
 
-      <div class="form-row">
-        <div class="form-field">
-          <label>Nivel</label>
-          <select formControlName="nivel">
-            <option value="facil">🟢 Fácil</option>
-            <option value="medio">🟡 Medio</option>
-            <option value="dificil">🔴 Difícil</option>
-          </select>
-        </div>
-
-        <div class="form-field">
-          <label>Tiempo (min)</label>
-          <input formControlName="tiempoPreparacion" type="number">
-        </div>
-      </div>
-
-      <div class="mentor-check" *ngIf="puedeGestionar">
-        <span class="check-label">
-          🌟 Publicado como {{ nombreMentor || 'Mentor' }}
+        <span class="form-etiqueta">
+          {{ editando ? 'Modificación' : 'Publicación' }}
         </span>
+
+        <h2
+          id="titulo-form-receta"
+          class="form-titulo">
+
+          {{ editando ? 'Editar receta' : 'Nueva receta' }}
+
+        </h2>
+
+        <p class="form-subtitulo">
+          Completá los datos para publicar una receta clara y fácil de seguir.
+        </p>
+
       </div>
 
-      <div class="form-botones">
-        <button type="button" class="btn-cancelar" (click)="cancelar()">
+
+      <button
+        type="button"
+        class="btn-cerrar"
+        aria-label="Cerrar formulario"
+        [disabled]="guardandoReceta"
+        (click)="cancelar()">
+
+        ✕
+
+      </button>
+
+    </header>
+
+
+    <form
+      class="receta-form"
+      [formGroup]="recetaForm"
+      (ngSubmit)="guardarReceta()"
+      novalidate>
+
+
+      <!-- Nombre -->
+
+      <div class="form-field form-field-completo">
+
+        <label for="nombre-receta">
+          Nombre de la receta
+          <span aria-hidden="true">*</span>
+        </label>
+
+        <input
+          id="nombre-receta"
+          type="text"
+          formControlName="nombre"
+          placeholder="Ejemplo: Lentejas con verduras"
+          autocomplete="off"
+          [class.campo-error]="campoInvalido('nombre')">
+
+        <small
+          *ngIf="recetaForm.controls.nombre.hasError('required')
+                 && recetaForm.controls.nombre.touched"
+          class="form-error">
+
+          Ingresá el nombre de la receta.
+
+        </small>
+
+        <small
+          *ngIf="recetaForm.controls.nombre.hasError('minlength')
+                 && recetaForm.controls.nombre.touched"
+          class="form-error">
+
+          El nombre debe tener al menos 3 caracteres.
+
+        </small>
+
+        <small
+          *ngIf="recetaForm.controls.nombre.hasError('maxlength')
+                 && recetaForm.controls.nombre.touched"
+          class="form-error">
+
+          El nombre no puede superar los 100 caracteres.
+
+        </small>
+
+      </div>
+
+
+      <!-- Categoría -->
+
+      <div class="form-field">
+
+        <label for="categoria-receta">
+          Categoría
+        </label>
+
+        <select
+          id="categoria-receta"
+          formControlName="categoria">
+
+          <option value="desayuno">
+            🥣 Desayuno
+          </option>
+
+          <option value="almuerzo">
+            🍽️ Almuerzo
+          </option>
+
+          <option value="merienda">
+            ☕ Merienda
+          </option>
+
+          <option value="cena">
+            🌙 Cena
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- Nivel -->
+
+      <div class="form-field">
+
+        <label for="nivel-receta">
+          Nivel de dificultad
+        </label>
+
+        <select
+          id="nivel-receta"
+          formControlName="nivel">
+
+          <option value="facil">
+            🟢 Fácil
+          </option>
+
+          <option value="medio">
+            🟡 Medio
+          </option>
+
+          <option value="dificil">
+            🔴 Difícil
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- Tiempo de preparación -->
+
+      <div class="form-field">
+
+        <label for="tiempo-receta">
+          Tiempo de preparación
+        </label>
+
+        <div class="input-con-sufijo">
+
+          <input
+            id="tiempo-receta"
+            type="number"
+            min="1"
+            max="600"
+            formControlName="tiempoPreparacion"
+            [class.campo-error]="campoInvalido('tiempoPreparacion')">
+
+          <span>
+            minutos
+          </span>
+
+        </div>
+
+        <small
+          *ngIf="recetaForm.controls.tiempoPreparacion.hasError('required')
+                 && recetaForm.controls.tiempoPreparacion.touched"
+          class="form-error">
+
+          Indicá el tiempo de preparación.
+
+        </small>
+
+        <small
+          *ngIf="recetaForm.controls.tiempoPreparacion.hasError('min')
+                 && recetaForm.controls.tiempoPreparacion.touched"
+          class="form-error">
+
+          El tiempo mínimo es de 1 minuto.
+
+        </small>
+
+        <small
+          *ngIf="recetaForm.controls.tiempoPreparacion.hasError('max')
+                 && recetaForm.controls.tiempoPreparacion.touched"
+          class="form-error">
+
+          El tiempo máximo permitido es de 600 minutos.
+
+        </small>
+
+      </div>
+
+
+      <!-- Ingredientes -->
+
+      <div class="form-field form-field-completo">
+
+        <label for="ingredientes-receta">
+          Ingredientes
+        </label>
+
+        <textarea
+          id="ingredientes-receta"
+          formControlName="ingredientes"
+          rows="5"
+          placeholder="Ejemplo: 1 taza de lentejas, 2 zanahorias, 1 cebolla...">
+        </textarea>
+
+        <div class="form-ayuda">
+
+          <small>
+            Podés separar cada ingrediente con una coma o escribir uno por línea.
+          </small>
+
+          <small>
+            {{ recetaForm.controls.ingredientes.value.length }}/1500
+          </small>
+
+        </div>
+
+        <small
+          *ngIf="recetaForm.controls.ingredientes.hasError('maxlength')
+                 && recetaForm.controls.ingredientes.touched"
+          class="form-error">
+
+          Los ingredientes no pueden superar los 1500 caracteres.
+
+        </small>
+
+      </div>
+
+
+      <!-- Pasos -->
+
+      <div class="form-field form-field-completo">
+
+        <label for="pasos-receta">
+          Preparación
+        </label>
+
+        <textarea
+          id="pasos-receta"
+          formControlName="pasos"
+          rows="6"
+          placeholder="Ejemplo: 1. Lavar las lentejas. 2. Cortar las verduras...">
+        </textarea>
+
+        <div class="form-ayuda">
+
+          <small>
+            Escribí los pasos en el orden en que deben realizarse.
+          </small>
+
+          <small>
+            {{ recetaForm.controls.pasos.value.length }}/3000
+          </small>
+
+        </div>
+
+        <small
+          *ngIf="recetaForm.controls.pasos.hasError('maxlength')
+                 && recetaForm.controls.pasos.touched"
+          class="form-error">
+
+          La preparación no puede superar los 3000 caracteres.
+
+        </small>
+
+      </div>
+
+
+      <!-- Publicación del mentor -->
+
+      <div
+        *ngIf="puedeGestionar"
+        class="mentor-check form-field-completo">
+
+        <span
+          class="mentor-check-icono"
+          aria-hidden="true">
+          🌟
+        </span>
+
+        <div>
+
+          <strong>
+            Publicación habilitada
+          </strong>
+
+          <span class="check-label">
+            La receta será publicada como
+            {{ nombreMentor || (esAdmin ? 'Administrador' : 'Mentor') }}.
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- Error del formulario -->
+
+      <div
+        *ngIf="mensajeError"
+        class="form-mensaje-error form-field-completo"
+        role="alert">
+
+        <span aria-hidden="true">
+          ⚠️
+        </span>
+
+        <p>
+          {{ mensajeError }}
+        </p>
+
+      </div>
+
+
+      <!-- Botones -->
+
+      <footer class="form-botones form-field-completo">
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          [disabled]="guardandoReceta"
+          (click)="cancelar()">
+
           Cancelar
+
         </button>
 
-        <button type="submit" class="btn-guardar" [disabled]="recetaForm.invalid">
-          {{ editando ? 'Actualizar' : 'Agregar' }}
+
+        <button
+          type="submit"
+          class="btn-guardar"
+          [disabled]="recetaForm.invalid || guardandoReceta">
+
+          <span *ngIf="!guardandoReceta">
+            {{ editando ? 'Actualizar receta' : 'Publicar receta' }}
+          </span>
+
+          <span
+            *ngIf="guardandoReceta"
+            class="boton-cargando">
+
+            <span
+              class="spinner-pequeno"
+              aria-hidden="true">
+            </span>
+
+            Guardando...
+
+          </span>
+
         </button>
-      </div>
+
+      </footer>
 
     </form>
-  </div>
 
-  <!-- BUSCADOR -->
-  <div class="busqueda-card">
-    <div class="busqueda-input">
-      <span class="busqueda-icono">🔍</span>
+  </section>
 
-      <input
-        type="text"
-        placeholder="Buscar recetas, ingredientes..."
-        [(ngModel)]="busqueda"
-        (input)="aplicarFiltro()">
+
+  <!-- =======================================================
+       BUSCADOR
+       No utiliza ngModel porque el componente usa formularios
+       reactivos y no necesita FormsModule.
+       ======================================================= -->
+
+  <section class="busqueda-card">
+
+    <div class="busqueda-contenido">
+
+      <div class="busqueda-texto">
+
+        <span class="busqueda-etiqueta">
+          Explorá las opciones
+        </span>
+
+        <h2>
+          ¿Qué te gustaría preparar?
+        </h2>
+
+      </div>
+
+
+      <label class="busqueda-input">
+
+        <span
+          class="busqueda-icono"
+          aria-hidden="true">
+          🔍
+        </span>
+
+        <input
+          type="search"
+          placeholder="Buscar por receta, ingrediente o mentor..."
+          autocomplete="off"
+          aria-label="Buscar recetas"
+          [value]="busqueda"
+          (input)="busqueda = $any($event.target).value; aplicarFiltro()">
+
+        <button
+          *ngIf="busqueda"
+          type="button"
+          class="btn-limpiar-busqueda"
+          aria-label="Limpiar búsqueda"
+          (click)="busqueda = ''; aplicarFiltro()">
+
+          ✕
+
+        </button>
+
+      </label>
+
     </div>
-  </div>
 
-  <!-- CATEGORÍAS -->
-  <div class="categorias-grid">
+  </section>
+
+
+  <!-- =======================================================
+       CATEGORÍAS
+       ======================================================= -->
+
+  <section
+    class="categorias-grid"
+    aria-label="Categorías de recetas">
+
     <button
-      *ngFor="let cat of categorias"
+      *ngFor="let categoria of categorias"
+      type="button"
       class="categoria-btn"
-      [class.categoria-activa]="categoriaActiva === cat.valor"
-      (click)="setCategoria(cat.valor)">
+      [class.categoria-activa]="categoriaActiva === categoria.valor"
+      [attr.aria-pressed]="categoriaActiva === categoria.valor"
+      (click)="setCategoria(categoria.valor)">
 
-      <span class="cat-icono">{{ cat.icono }}</span>
-      <span class="cat-label">{{ cat.label }}</span>
+      <span
+        class="cat-icono"
+        aria-hidden="true">
+
+        {{ categoria.icono }}
+
+      </span>
+
+      <span class="cat-contenido">
+
+        <strong class="cat-label">
+          {{ categoria.label }}
+        </strong>
+
+        <small>
+          Ver recetas
+        </small>
+
+      </span>
+
     </button>
-  </div>
 
-  <!-- RESUMEN -->
-  <div class="seccion-card">
-    <h2 class="seccion-titulo">Resumen de hoy</h2>
+  </section>
+
+
+  <!-- =======================================================
+       RESUMEN DEL DÍA
+       ======================================================= -->
+
+  <section class="seccion-card">
+
+    <header class="seccion-header">
+
+      <div>
+
+        <span class="seccion-etiqueta">
+          Tu actividad
+        </span>
+
+        <h2 class="seccion-titulo">
+          Resumen de hoy
+        </h2>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-diario"
+        (click)="irADiario()">
+
+        Abrir diario
+
+        <span aria-hidden="true">
+          →
+        </span>
+
+      </button>
+
+    </header>
+
 
     <div class="stats-grid">
 
-      <div class="stat-card stat-verde">
-        <span class="stat-icono">🍽️</span>
+      <!-- Recetas disponibles -->
+
+      <article class="stat-card stat-verde">
+
+        <span
+          class="stat-icono"
+          aria-hidden="true">
+          🍽️
+        </span>
+
         <div class="stat-info">
-          <span class="stat-numero">{{ totalRecetas }}</span>
-          <span class="stat-label">Recetas disponibles</span>
+
+          <span
+            *ngIf="!cargandoRecetas"
+            class="stat-numero">
+
+            {{ totalRecetas }}
+
+          </span>
+
+          <span
+            *ngIf="cargandoRecetas"
+            class="stat-numero stat-cargando">
+
+            …
+
+          </span>
+
+          <span class="stat-label">
+            Recetas disponibles
+          </span>
+
         </div>
-      </div>
 
-      <div class="stat-card stat-azul stat-click" (click)="irADiario()">
-        <span class="stat-icono">📝</span>
-        <div class="stat-info">
-          <span class="stat-numero">{{ comidasHoy }}</span>
-          <span class="stat-label">Registros hoy</span>
-        </div>
-      </div>
+      </article>
 
-      <div class="stat-card stat-violeta">
-        <span class="stat-icono">❤️</span>
-        <div class="stat-info">
-          <span class="stat-numero">{{ recetasFavoritas }}</span>
-          <span class="stat-label">Favoritas</span>
-        </div>
-      </div>
 
-      <div class="stat-card stat-naranja">
-        <span class="stat-icono">🔥</span>
-        <div class="stat-info">
-          <span class="stat-numero">{{ caloriasHoy }}</span>
-          <span class="stat-label">Calorías hoy</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- RECETAS -->
-  <div class="seccion-card">
-
-    <div class="seccion-header">
-      <h2 class="seccion-titulo">
-        Recetas de {{ getCategoriaLabel() }}
-      </h2>
+      <!-- Comidas registradas -->
 
       <button
-        class="btn-nueva"
-        *ngIf="puedeGestionar"
-        (click)="abrirForm()">
-        + Nueva receta
-      </button>
-    </div>
+        type="button"
+        class="stat-card stat-azul stat-click"
+        (click)="irADiario()">
 
-    <div class="receta-row" *ngFor="let r of recetasFiltradas">
+        <span
+          class="stat-icono"
+          aria-hidden="true">
+          📝
+        </span>
 
-      <div class="receta-icono-box">🍳</div>
+        <span class="stat-info">
 
-      <div class="receta-info">
-        <span class="receta-nombre">{{ r.nombre }}</span>
+          <span
+            *ngIf="!cargandoComidas"
+            class="stat-numero">
 
-        <div class="receta-meta-row">
-          <span class="receta-badge">{{ getNivelLabel(r.nivel) }}</span>
+            {{ comidasHoy }}
 
-          <span class="receta-tiempo">
-            ⏱ {{ r.tiempoPreparacion || 30 }} min
           </span>
+
+          <span
+            *ngIf="cargandoComidas"
+            class="stat-numero stat-cargando">
+
+            …
+
+          </span>
+
+          <span class="stat-label">
+            Registros de hoy
+          </span>
+
+        </span>
+
+      </button>
+
+
+      <!-- Favoritas -->
+
+      <article class="stat-card stat-violeta">
+
+        <span
+          class="stat-icono"
+          aria-hidden="true">
+          ❤️
+        </span>
+
+        <div class="stat-info">
+
+          <span
+            *ngIf="!cargandoRecetas"
+            class="stat-numero">
+
+            {{ recetasFavoritas }}
+
+          </span>
+
+          <span
+            *ngIf="cargandoRecetas"
+            class="stat-numero stat-cargando">
+
+            …
+
+          </span>
+
+          <span class="stat-label">
+            Recetas favoritas
+          </span>
+
         </div>
 
-        <span class="receta-mentor" *ngIf="r.nombreMentor">
-          🌟 {{ r.nombreMentor }}
+      </article>
+
+
+      <!-- Calorías -->
+
+      <article class="stat-card stat-naranja">
+
+        <span
+          class="stat-icono"
+          aria-hidden="true">
+          🔥
         </span>
+
+        <div class="stat-info">
+
+          <span
+            *ngIf="!cargandoComidas"
+            class="stat-numero">
+
+            {{ caloriasHoy }}
+
+          </span>
+
+          <span
+            *ngIf="cargandoComidas"
+            class="stat-numero stat-cargando">
+
+            …
+
+          </span>
+
+          <span class="stat-label">
+            Calorías registradas
+          </span>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       LISTADO DE RECETAS
+       ======================================================= -->
+
+  <section class="seccion-card recetas-seccion">
+
+    <header class="seccion-header">
+
+      <div>
+
+        <span class="seccion-etiqueta">
+          Categoría seleccionada
+        </span>
+
+        <h2 class="seccion-titulo">
+          {{ getCategoriaLabel() }}
+        </h2>
+
+        <p class="seccion-descripcion">
+
+          <ng-container *ngIf="!busqueda">
+            Explorá las recetas disponibles para esta comida.
+          </ng-container>
+
+          <ng-container *ngIf="busqueda">
+            Resultados encontrados para “{{ busqueda }}”.
+          </ng-container>
+
+        </p>
+
       </div>
 
-      <button class="btn-favorito" (click)="toggleFavorito(r)">
-        {{ esFavorita(r) ? '❤️' : '🤍' }}
+
+      <button
+        *ngIf="puedeGestionar"
+        type="button"
+        class="btn-nueva"
+        (click)="abrirForm()">
+
+        <span aria-hidden="true">
+          ＋
+        </span>
+
+        Nueva receta
+
       </button>
 
-      <div class="receta-acciones" *ngIf="puedeEditarReceta(r)">
-        <button class="btn-accion" (click)="editarReceta(r)">✏️</button>
-        <button class="btn-accion" (click)="eliminarReceta(r.id)">🗑️</button>
+    </header>
+
+
+    <!-- Estado de carga -->
+
+    <div
+      *ngIf="cargandoRecetas"
+      class="estado-recetas"
+      aria-live="polite">
+
+      <span
+        class="spinner-recetas"
+        aria-hidden="true">
+      </span>
+
+      <p>
+        Cargando recetas...
+      </p>
+
+    </div>
+
+
+    <!-- Recetas -->
+
+    <div
+      *ngIf="!cargandoRecetas && recetasFiltradas.length > 0"
+      class="recetas-lista">
+
+      <article
+        *ngFor="let receta of recetasFiltradas"
+        class="receta-row">
+
+        <div
+          class="receta-icono-box"
+          aria-hidden="true">
+
+          <ng-container [ngSwitch]="receta.categoria">
+
+            <span *ngSwitchCase="'desayuno'">
+              🥣
+            </span>
+
+            <span *ngSwitchCase="'almuerzo'">
+              🍽️
+            </span>
+
+            <span *ngSwitchCase="'merienda'">
+              ☕
+            </span>
+
+            <span *ngSwitchCase="'cena'">
+              🌙
+            </span>
+
+            <span *ngSwitchDefault>
+              🍳
+            </span>
+
+          </ng-container>
+
+        </div>
+
+
+        <div class="receta-info">
+
+          <div class="receta-encabezado">
+
+            <h3 class="receta-nombre">
+              {{ receta.nombre }}
+            </h3>
+
+            <span
+              *ngIf="receta.nombreMentor"
+              class="receta-mentor">
+
+              🌟 {{ receta.nombreMentor }}
+
+            </span>
+
+          </div>
+
+
+          <div class="receta-meta-row">
+
+            <span
+              class="receta-badge"
+              [class.nivel-facil]="receta.nivel === 'facil'"
+              [class.nivel-medio]="receta.nivel === 'medio'"
+              [class.nivel-dificil]="receta.nivel === 'dificil'">
+
+              {{ getNivelLabel(receta.nivel) }}
+
+            </span>
+
+            <span class="receta-tiempo">
+
+              <span aria-hidden="true">
+                ⏱️
+              </span>
+
+              {{ receta.tiempoPreparacion }} min
+
+            </span>
+
+          </div>
+
+
+          <p
+            *ngIf="receta.ingredientes"
+            class="receta-ingredientes">
+
+            {{ receta.ingredientes }}
+
+          </p>
+
+        </div>
+
+
+        <div class="receta-controles">
+
+          <button
+            type="button"
+            class="btn-favorito"
+            [class.es-favorita]="esFavorita(receta)"
+            [attr.aria-label]="
+              esFavorita(receta)
+                ? 'Quitar de favoritos'
+                : 'Agregar a favoritos'
+            "
+            [attr.title]="
+              esFavorita(receta)
+                ? 'Quitar de favoritos'
+                : 'Agregar a favoritos'
+            "
+            (click)="toggleFavorito(receta)">
+
+            {{ esFavorita(receta) ? '❤️' : '🤍' }}
+
+          </button>
+
+
+          <div
+            *ngIf="puedeEditarReceta(receta)"
+            class="receta-acciones">
+
+            <button
+              type="button"
+              class="btn-accion"
+              aria-label="Editar receta"
+              title="Editar receta"
+              (click)="editarReceta(receta)">
+
+              ✏️
+
+            </button>
+
+
+            <button
+              type="button"
+              class="btn-accion btn-eliminar"
+              aria-label="Eliminar receta"
+              title="Eliminar receta"
+              (click)="eliminarReceta(receta)">
+
+              🗑️
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- Estado vacío -->
+
+    <div
+      *ngIf="!cargandoRecetas && recetasFiltradas.length === 0"
+      class="empty-mini">
+
+      <div
+        class="empty-icono"
+        aria-hidden="true">
+        🍳
       </div>
 
+      <h3>
+        No encontramos recetas
+      </h3>
+
+      <p *ngIf="!busqueda">
+        Todavía no hay recetas publicadas en la categoría
+        {{ getCategoriaLabel().toLowerCase() }}.
+      </p>
+
+      <p *ngIf="busqueda">
+        No hay recetas que coincidan con “{{ busqueda }}”
+        dentro de esta categoría.
+      </p>
+
+
+      <button
+        *ngIf="busqueda"
+        type="button"
+        class="btn-vaciar-filtro"
+        (click)="busqueda = ''; aplicarFiltro()">
+
+        Limpiar búsqueda
+
+      </button>
+
+
+      <button
+        *ngIf="!busqueda && puedeGestionar"
+        type="button"
+        class="btn-nueva"
+        (click)="abrirForm()">
+
+        Publicar primera receta
+
+      </button>
+
     </div>
 
-    <div class="empty-mini" *ngIf="recetasFiltradas.length === 0">
-      🍳 Todavía no hay recetas en esta categoría.
-    </div>
+  </section>
 
-  </div>
 
-  <!-- FRASE -->
-  <div class="frase-card">
+  <!-- =======================================================
+       FRASE FINAL
+       ======================================================= -->
+
+  <blockquote class="frase-card">
+
+    <span
+      class="frase-icono"
+      aria-hidden="true">
+      ✨
+    </span>
+
     <p class="frase-texto">
-      "¿No saben que su cuerpo es templo del Espíritu Santo, que está en ustedes y que han recibido de Dios?"
+      “¿No saben que su cuerpo es templo del Espíritu Santo,
+      que está en ustedes y que han recibido de Dios?”
     </p>
-    <span class="frase-autor">— 1 Corintios 6:19</span>
-  </div>
+
+    <footer class="frase-autor">
+      1 Corintios 6:19
+    </footer>
+
+  </blockquote>
 
 </div>
