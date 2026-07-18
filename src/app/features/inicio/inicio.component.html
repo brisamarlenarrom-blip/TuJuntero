@@ -1,58 +1,142 @@
+<!-- =========================================================
+     INICIO — TUJUNTERO
+     Pantalla principal unificada con el estilo violeta
+     del resto de la aplicación.
+     ========================================================= -->
+
 <div class="inicio-wrapper">
 
-  <!-- ==================================================
+  <!-- =======================================================
        HERO PRINCIPAL
-       Presenta el saludo, el nombre del usuario
-       y un resumen general de su progreso.
-       ================================================== -->
+       ======================================================= -->
 
   <section
     class="hero-section"
     aria-labelledby="titulo-bienvenida">
 
-    <!-- Capa visual utilizada por el CSS -->
+    <!-- Elementos decorativos -->
     <div
-      class="hero-overlay"
+      class="hero-decoracion hero-decoracion-uno"
+      aria-hidden="true">
+    </div>
+
+    <div
+      class="hero-decoracion hero-decoracion-dos"
       aria-hidden="true">
     </div>
 
     <div class="hero-content">
 
-      <h1 id="titulo-bienvenida">
-        ¡{{ saludo }}
-        <span *ngIf="nombre">, {{ nombre }}</span>!
-        <span aria-hidden="true">👋</span>
-      </h1>
+      <!-- Texto principal -->
 
-      <p class="hero-subtitulo">
-        Hoy es un buen día para crecer
-        <span aria-hidden="true">🌱</span>
-      </p>
+      <div class="hero-texto">
 
-      <!-- Resumen de progreso -->
+        <span class="hero-etiqueta">
+          Tu espacio personal
+        </span>
+
+        <h1 id="titulo-bienvenida">
+
+          ¡{{ saludo }}
+
+          <span *ngIf="nombre">
+            , {{ nombre }}
+          </span>!
+
+          <span aria-hidden="true">
+            👋
+          </span>
+
+        </h1>
+
+        <p class="hero-subtitulo">
+          Organizá tu aprendizaje, alimentación y entrenamiento
+          desde un solo lugar.
+        </p>
+
+      </div>
+
+
+      <!-- Resumen dentro del hero -->
 
       <div
-        class="hero-badges"
-        aria-label="Resumen del día">
+        class="hero-resumen"
+        aria-label="Resumen general del día">
 
-        <div class="hero-badge">
-          <span aria-hidden="true">🔥</span>
+        <!-- Racha -->
 
-          <span>
-            {{ diasSeguidos }}
-            {{ diasSeguidos === 1 ? 'día seguido' : 'días seguidos' }}
-          </span>
-        </div>
+        <article class="hero-resumen-item">
 
-        <div class="hero-badge">
-          <span aria-hidden="true">🎯</span>
+          <div
+            class="hero-resumen-icono"
+            aria-hidden="true">
+            🔥
+          </div>
 
-          <span>Meta diaria</span>
+          <div class="hero-resumen-texto">
 
-          <span class="badge-highlight">
-            {{ metaDiaria }}/{{ metaDiariaTotal }}
-          </span>
-        </div>
+            <span class="hero-resumen-label">
+              Racha actual
+            </span>
+
+            <strong>
+              {{ diasSeguidos }}
+              {{ diasSeguidos === 1 ? 'día' : 'días' }}
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <!-- Meta diaria -->
+
+        <article class="hero-resumen-item">
+
+          <div
+            class="hero-resumen-icono"
+            aria-hidden="true">
+            🎯
+          </div>
+
+          <div class="hero-resumen-texto">
+
+            <span class="hero-resumen-label">
+              Meta diaria
+            </span>
+
+            <strong>
+              {{ metaDiaria }}/{{ metaDiariaTotal }}
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <!-- Tareas pendientes -->
+
+        <article class="hero-resumen-item">
+
+          <div
+            class="hero-resumen-icono"
+            aria-hidden="true">
+            📚
+          </div>
+
+          <div class="hero-resumen-texto">
+
+            <span class="hero-resumen-label">
+              Tareas pendientes
+            </span>
+
+            <strong>
+              {{ tareasPendientes }}
+            </strong>
+
+          </div>
+
+        </article>
 
       </div>
 
@@ -60,78 +144,137 @@
 
   </section>
 
-  <!-- ==================================================
+
+  <!-- =======================================================
        CONTENIDO PRINCIPAL
-       ================================================== -->
+       ======================================================= -->
 
   <main class="inicio-container">
 
-    <!-- ===============================================
+
+    <!-- =====================================================
          VERSÍCULO DEL DÍA
-         =============================================== -->
+         ===================================================== -->
 
     <section
       class="seccion-card versiculo-card"
       aria-labelledby="titulo-versiculo">
 
-      <div class="versiculo-header">
+      <header class="card-header">
 
-        <h2
-          id="titulo-versiculo"
-          class="versiculo-label">
+        <div class="card-header-titulo">
 
-          Versículo del día
+          <div
+            class="card-icono card-icono-violeta"
+            aria-hidden="true">
+            📖
+          </div>
 
-        </h2>
+          <div>
+
+            <span class="card-etiqueta">
+              Inspiración diaria
+            </span>
+
+            <h2 id="titulo-versiculo">
+              Versículo del día
+            </h2>
+
+          </div>
+
+        </div>
 
         <span
           class="versiculo-bookmark"
           aria-hidden="true">
-
           🔖
+        </span>
 
+      </header>
+
+
+      <div class="versiculo-contenido">
+
+        <span
+          class="comilla comilla-inicio"
+          aria-hidden="true">
+          “
+        </span>
+
+        <blockquote
+          class="versiculo-texto"
+          aria-live="polite">
+
+          {{ frase }}
+
+        </blockquote>
+
+        <span
+          class="comilla comilla-final"
+          aria-hidden="true">
+          ”
         </span>
 
       </div>
 
-      <!--
-        aria-live permite que lectores de pantalla
-        anuncien el contenido cuando termina de cargar.
-      -->
 
-      <blockquote
-        class="versiculo-texto"
-        aria-live="polite">
-
-        {{ frase }}
-
-      </blockquote>
-
-      <p
+      <footer
         *ngIf="referencia"
-        class="versiculo-ref">
+        class="versiculo-footer">
 
-        {{ referencia }}
+        <span
+          class="referencia-linea"
+          aria-hidden="true">
+        </span>
 
-      </p>
+        <p class="versiculo-ref">
+          {{ referencia }}
+        </p>
+
+      </footer>
 
     </section>
 
-    <!-- ===============================================
+
+    <!-- =====================================================
          CHECK-IN EMOCIONAL
-         =============================================== -->
+         ===================================================== -->
 
     <section
-      class="seccion-card"
+      class="seccion-card checkin-card"
       aria-labelledby="titulo-checkin">
 
-      <h2
-        id="titulo-checkin"
-        class="checkin-titulo">
+      <header class="card-header">
 
-        ¿Cómo te sentís hoy?
+        <div class="card-header-titulo">
 
-      </h2>
+          <div
+            class="card-icono card-icono-rosa"
+            aria-hidden="true">
+            💜
+          </div>
+
+          <div>
+
+            <span class="card-etiqueta">
+              Bienestar personal
+            </span>
+
+            <h2 id="titulo-checkin">
+              ¿Cómo te sentís hoy?
+            </h2>
+
+          </div>
+
+        </div>
+
+      </header>
+
+
+      <p class="checkin-descripcion">
+        Seleccioná la opción que mejor represente tu estado de ánimo.
+      </p>
+
 
       <div
         class="emojis-row"
@@ -163,139 +306,346 @@
 
       </div>
 
-      <!-- Confirmación visual accesible -->
-
-      <p
-        *ngIf="estadoAnimo > 0"
-        class="estado-seleccionado"
-        aria-live="polite">
-
-        Estado registrado:
-        {{ emojis[estadoAnimo - 1].label }}
-
-      </p>
-
     </section>
 
-    <!-- ===============================================
-         ACCESOS RÁPIDOS
-         =============================================== -->
+
+    <!-- =====================================================
+         RESUMEN DE HOY
+         Reemplaza la sección anterior de accesos rápidos.
+         ===================================================== -->
 
     <section
-      class="seccion-card"
-      aria-labelledby="titulo-accesos">
+      class="seccion-card resumen-card"
+      aria-labelledby="titulo-resumen">
 
-      <h2
-        id="titulo-accesos"
-        class="seccion-titulo">
+      <header class="card-header resumen-header">
 
-        Accesos rápidos
-
-      </h2>
-
-      <div class="accesos-grid">
-
-        <!-- Aprender -->
-
-        <a
-          class="acceso-item"
-          routerLink="/aprender"
-          aria-label="Ir al módulo Aprender">
+        <div class="card-header-titulo">
 
           <div
-            class="acceso-icono-box acceso-azul"
+            class="card-icono card-icono-azul"
             aria-hidden="true">
+            📅
+          </div>
 
-            📖
+          <div>
+
+            <span class="card-etiqueta">
+              Organización diaria
+            </span>
+
+            <h2 id="titulo-resumen">
+              Resumen de hoy
+            </h2>
 
           </div>
 
-          <h3 class="acceso-titulo">
-            Aprender
-          </h3>
+        </div>
 
-          <p class="acceso-sub">
-            Materias, tareas<br>
-            y biblioteca
-          </p>
+        <span class="resumen-fecha">
+          Hoy
+        </span>
+
+      </header>
+
+
+      <div class="resumen-grid">
+
+        <!-- Tareas pendientes -->
+
+        <a
+          class="resumen-item"
+          routerLink="/aprender/tareas"
+          aria-label="Ver tareas pendientes">
+
+          <div
+            class="resumen-icono resumen-icono-azul"
+            aria-hidden="true">
+            📝
+          </div>
+
+          <div class="resumen-info">
+
+            <span class="resumen-label">
+              Tareas pendientes
+            </span>
+
+            <strong class="resumen-valor">
+              {{ tareasPendientes }}
+            </strong>
+
+            <span class="resumen-descripcion">
+              Actividades por completar
+            </span>
+
+          </div>
+
+          <span
+            class="resumen-flecha"
+            aria-hidden="true">
+            →
+          </span>
 
         </a>
 
-        <!-- Alimentarse -->
+
+        <!-- Alimentación -->
 
         <a
-          class="acceso-item"
+          class="resumen-item"
           routerLink="/alimentarse"
-          aria-label="Ir al módulo Alimentarse">
+          aria-label="Ver registro de alimentación">
 
           <div
-            class="acceso-icono-box acceso-verde"
+            class="resumen-icono resumen-icono-verde"
             aria-hidden="true">
-
             🥗
+          </div>
+
+          <div class="resumen-info">
+
+            <span class="resumen-label">
+              Alimentación
+            </span>
+
+            <strong
+              class="resumen-estado"
+              [class.estado-completado]="almuerzoRegistrado"
+              [class.estado-pendiente]="!almuerzoRegistrado">
+
+              {{
+                almuerzoRegistrado
+                  ? 'Registrado'
+                  : 'Pendiente'
+              }}
+
+            </strong>
+
+            <span class="resumen-descripcion">
+              Registro diario de comidas
+            </span>
 
           </div>
 
-          <h3 class="acceso-titulo">
-            Alimentarse
-          </h3>
-
-          <p class="acceso-sub">
-            Recetas y<br>
-            registro diario
-          </p>
+          <span
+            class="resumen-flecha"
+            aria-hidden="true">
+            →
+          </span>
 
         </a>
+
 
         <!-- Entrenamiento -->
 
         <a
-          class="acceso-item"
+          class="resumen-item"
+          routerLink="/entrenamiento"
+          aria-label="Ver entrenamiento del día">
+
+          <div
+            class="resumen-icono resumen-icono-violeta"
+            aria-hidden="true">
+            🏋️
+          </div>
+
+          <div class="resumen-info">
+
+            <span class="resumen-label">
+              Entrenamiento
+            </span>
+
+            <strong class="resumen-valor resumen-valor-texto">
+              {{ entrenamientoHoy || 'Sin rutina asignada' }}
+            </strong>
+
+            <span class="resumen-descripcion">
+              Rutina planificada para hoy
+            </span>
+
+          </div>
+
+          <span
+            class="resumen-flecha"
+            aria-hidden="true">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- Estado emocional -->
+
+        <article class="resumen-item resumen-item-estatico">
+
+          <div
+            class="resumen-icono resumen-icono-rosa"
+            aria-hidden="true">
+            😊
+          </div>
+
+          <div class="resumen-info">
+
+            <span class="resumen-label">
+              Bienestar
+            </span>
+
+            <strong
+              class="resumen-estado"
+              [class.estado-completado]="estadoAnimo > 0"
+              [class.estado-pendiente]="estadoAnimo === 0">
+
+              {{
+                estadoAnimo > 0
+                  ? 'Check-in completado'
+                  : 'Sin registrar'
+              }}
+
+            </strong>
+
+            <span class="resumen-descripcion">
+              Seguimiento de tu estado de ánimo
+            </span>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTINUAR EXPLORANDO
+         Mantiene accesos, pero en un formato secundario.
+         ===================================================== -->
+
+    <section
+      class="continuar-section"
+      aria-labelledby="titulo-continuar">
+
+      <div class="continuar-header">
+
+        <div>
+
+          <span class="card-etiqueta">
+            TuJuntero
+          </span>
+
+          <h2 id="titulo-continuar">
+            Continuá organizando tu día
+          </h2>
+
+          <p>
+            Accedé a cada módulo para administrar tus actividades.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="modulos-grid">
+
+        <!-- Aprender -->
+
+        <a
+          class="modulo-card"
+          routerLink="/aprender"
+          aria-label="Ir al módulo Aprender">
+
+          <div
+            class="modulo-icono modulo-icono-azul"
+            aria-hidden="true">
+            📚
+          </div>
+
+          <div class="modulo-contenido">
+
+            <h3>
+              Aprender
+            </h3>
+
+            <p>
+              Organizá materias, tareas y libros.
+            </p>
+
+          </div>
+
+          <span
+            class="modulo-flecha"
+            aria-hidden="true">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- Alimentarse -->
+
+        <a
+          class="modulo-card"
+          routerLink="/alimentarse"
+          aria-label="Ir al módulo Alimentarse">
+
+          <div
+            class="modulo-icono modulo-icono-verde"
+            aria-hidden="true">
+            🥗
+          </div>
+
+          <div class="modulo-contenido">
+
+            <h3>
+              Alimentarse
+            </h3>
+
+            <p>
+              Descubrí recetas y registrá tus comidas.
+            </p>
+
+          </div>
+
+          <span
+            class="modulo-flecha"
+            aria-hidden="true">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- Entrenamiento -->
+
+        <a
+          class="modulo-card"
           routerLink="/entrenamiento"
           aria-label="Ir al módulo Entrenamiento">
 
           <div
-            class="acceso-icono-box acceso-violeta"
+            class="modulo-icono modulo-icono-violeta"
             aria-hidden="true">
-
             🏋️
+          </div>
+
+          <div class="modulo-contenido">
+
+            <h3>
+              Entrenamiento
+            </h3>
+
+            <p>
+              Administrá rutinas y registrá tu progreso.
+            </p>
 
           </div>
 
-          <h3 class="acceso-titulo">
-            Entrenamiento
-          </h3>
-
-          <p class="acceso-sub">
-            Rutinas y<br>
-            bitácora
-          </p>
-
-        </a>
-
-        <!-- Perfil -->
-
-        <a
-          class="acceso-item"
-          routerLink="/perfil"
-          aria-label="Ir al perfil del usuario">
-
-          <div
-            class="acceso-icono-box acceso-rosa"
+          <span
+            class="modulo-flecha"
             aria-hidden="true">
-
-            👤
-
-          </div>
-
-          <h3 class="acceso-titulo">
-            Perfil
-          </h3>
-
-          <p class="acceso-sub">
-            Datos personales<br>
-            y configuración
-          </p>
+            →
+          </span>
 
         </a>
 
