@@ -389,7 +389,58 @@
 
         </a>
 
-      </div>
+          
+          </div>
+
+          <span
+            class="accion-flecha"
+            aria-hidden="true">
+            →
+          </span>
+
+        
+
+
+        <!-- Publicar receta: solo mentor o administrador -->
+
+        <button
+          *ngIf="puedeGestionar"
+          type="button"
+          class="accion-card accion-card-mentor"
+          (click)="abrirForm()">
+
+          <div
+            class="accion-icono"
+            aria-hidden="true">
+            👨‍🍳
+          </div>
+
+          <div class="accion-contenido">
+
+            <span class="accion-etiqueta">
+              Mentor
+            </span>
+
+            <h3>
+              Publicar una receta
+            </h3>
+
+            <p>
+              Creá una nueva receta para compartirla
+              con los usuarios de TuJuntero.
+            </p>
+
+          </div>
+
+          <span
+            class="accion-flecha"
+            aria-hidden="true">
+            ＋
+          </span>
+
+        </button>
+
+
 
     </section>
 
@@ -1053,3 +1104,259 @@
   </blockquote>
 
 </div>
+
+<!-- FONDO OSCURO DEL FORMULARIO -->
+
+<div
+  class="form-overlay"
+  *ngIf="mostrarForm"
+  (click)="cancelar()">
+</div>
+
+
+<!-- FORMULARIO PARA PUBLICAR RECETA -->
+
+<section
+  class="form-modal"
+  *ngIf="mostrarForm"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="receta-form-titulo">
+
+  <div class="form-modal-header">
+
+    <div>
+
+      <span class="form-etiqueta">
+        {{ editando ? 'Editar publicación' : 'Nueva publicación' }}
+      </span>
+
+      <h2
+        id="receta-form-titulo"
+        class="form-titulo">
+
+        {{ editando ? 'Editar receta' : 'Publicar una receta' }}
+
+      </h2>
+
+      <p class="form-descripcion">
+        Completá los datos para compartir la receta
+        con los usuarios de TuJuntero.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn-cerrar-form"
+      aria-label="Cerrar formulario"
+      (click)="cancelar()">
+      ✕
+    </button>
+
+  </div>
+
+
+  <form
+    class="receta-form"
+    [formGroup]="recetaForm"
+    (ngSubmit)="guardarReceta()">
+
+
+    <!-- NOMBRE -->
+
+    <div class="form-field form-field-completo">
+
+      <label for="receta-nombre">
+        Nombre de la receta
+      </label>
+
+      <input
+        id="receta-nombre"
+        type="text"
+        formControlName="nombre"
+        placeholder="Ejemplo: Pollo al horno con verduras">
+
+      <span
+        class="campo-error"
+        *ngIf="campoInvalido('nombre')">
+        Ingresá un nombre de al menos 3 caracteres.
+      </span>
+
+    </div>
+
+
+    <!-- CATEGORÍA -->
+
+    <div class="form-field">
+
+      <label for="receta-categoria">
+        Categoría
+      </label>
+
+      <select
+        id="receta-categoria"
+        formControlName="categoria">
+
+        <option
+          *ngFor="let categoria of categorias"
+          [value]="categoria.valor">
+
+          {{ categoria.icono }} {{ categoria.label }}
+
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- DIFICULTAD -->
+
+    <div class="form-field">
+
+      <label for="receta-nivel">
+        Dificultad
+      </label>
+
+      <select
+        id="receta-nivel"
+        formControlName="nivel">
+
+        <option value="facil">
+          Fácil
+        </option>
+
+        <option value="medio">
+          Medio
+        </option>
+
+        <option value="dificil">
+          Difícil
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- TIEMPO -->
+
+    <div class="form-field form-field-completo">
+
+      <label for="receta-tiempo">
+        Tiempo de preparación
+      </label>
+
+      <div class="input-con-unidad">
+
+        <input
+          id="receta-tiempo"
+          type="number"
+          min="1"
+          max="600"
+          formControlName="tiempoPreparacion">
+
+        <span class="input-unidad">
+          minutos
+        </span>
+
+      </div>
+
+      <span
+        class="campo-error"
+        *ngIf="campoInvalido('tiempoPreparacion')">
+        El tiempo debe ser de entre 1 y 600 minutos.
+      </span>
+
+    </div>
+
+
+    <!-- INGREDIENTES -->
+
+    <div class="form-field form-field-completo">
+
+      <label for="receta-ingredientes">
+        Ingredientes
+      </label>
+
+      <textarea
+        id="receta-ingredientes"
+        rows="6"
+        formControlName="ingredientes"
+        placeholder="Ejemplo:
+2 pechugas de pollo
+2 papas
+1 cebolla">
+      </textarea>
+
+      <span class="campo-ayuda">
+        Escribí un ingrediente por línea.
+      </span>
+
+    </div>
+
+
+    <!-- PREPARACIÓN -->
+
+    <div class="form-field form-field-completo">
+
+      <label for="receta-pasos">
+        Preparación
+      </label>
+
+      <textarea
+        id="receta-pasos"
+        rows="8"
+        formControlName="pasos"
+        placeholder="Explicá paso a paso cómo preparar la receta.">
+      </textarea>
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div
+      class="form-mensaje-error"
+      *ngIf="mensajeError">
+
+      ⚠️ {{ mensajeError }}
+
+    </div>
+
+
+    <!-- BOTONES -->
+
+    <div class="form-acciones">
+
+      <button
+        type="button"
+        class="btn-cancelar"
+        [disabled]="guardandoReceta"
+        (click)="cancelar()">
+
+        Cancelar
+
+      </button>
+
+      <button
+        type="submit"
+        class="btn-publicar"
+        [disabled]="recetaForm.invalid || guardandoReceta">
+
+        <span *ngIf="!guardandoReceta">
+          {{ editando ? 'Guardar cambios' : 'Publicar receta' }}
+        </span>
+
+        <span *ngIf="guardandoReceta">
+          Guardando…
+        </span>
+
+      </button>
+
+    </div>
+
+  </form>
+
+</section>

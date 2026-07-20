@@ -1,23 +1,206 @@
-<button class="btn-volver" (click)="volver()">← Volver</button>
+<div class="page-wrapper">
 
-<div class="mentores-container">
+  <!-- ========================= -->
+  <!-- HERO -->
+  <!-- ========================= -->
 
-  <ui-section-title *ngIf="mentores.length > 0">🌟 Nuestros Mentores</ui-section-title>
+  <header class="mentores-header">
 
-  <ui-card *ngFor="let mentor of mentores" accent="purple" [clickable]="true">
-    <div class="mentor-avatar">👤</div>
-    <div class="mentor-info">
-      <p class="mentor-nombre">{{ mentor.nombre }}</p>
-      <p class="mentor-especialidad">{{ mentor.especialidad }}</p>
-      <p class="mentor-frase" *ngIf="mentor.frase">"{{ mentor.frase }}"</p>
+    <button
+      class="btn-volver"
+      type="button"
+      (click)="volver()">
+      ← Volver
+    </button>
+
+    <div class="header-content">
+
+      <div class="header-icono">
+        🌟
+      </div>
+
+      <div class="header-texto">
+
+        <span class="header-etiqueta">
+          Comunidad TuJuntero
+        </span>
+
+        <h1>
+          Nuestros mentores
+        </h1>
+
+        <p>
+          Conocé a las personas que comparten recetas,
+          conocimientos y contenido dentro de TuJuntero.
+        </p>
+
+      </div>
+
     </div>
-  </ui-card>
 
-  <ui-empty-state 
-    *ngIf="mentores.length === 0" 
-    icon="🌟" 
-    title="Próximamente" 
-    text="Los mentores estarán disponibles muy pronto.">
-  </ui-empty-state>
+  </header>
+
+  <!-- ========================= -->
+  <!-- RESUMEN -->
+  <!-- ========================= -->
+
+  <section
+    class="stats-grid"
+    *ngIf="mentores.length > 0">
+
+    <article class="stat-card">
+
+      <div class="stat-icono">
+        👥
+      </div>
+
+      <div class="stat-info">
+
+        <span class="stat-numero">
+          {{ mentores.length }}
+        </span>
+
+        <span class="stat-label">
+          Mentores disponibles
+        </span>
+
+      </div>
+
+    </article>
+
+    <article class="stat-card">
+
+      <div class="stat-icono stat-icono-contenido">
+        🍽️
+      </div>
+
+      <div class="stat-info">
+
+        <span class="stat-titulo">
+          Contenido especializado
+        </span>
+
+        <span class="stat-label">
+          Recetas y recomendaciones publicadas por mentores
+        </span>
+
+      </div>
+
+    </article>
+
+  </section>
+
+  <!-- ========================= -->
+  <!-- LISTA DE MENTORES -->
+  <!-- ========================= -->
+
+  <section
+    class="seccion-card"
+    *ngIf="mentores.length > 0">
+
+    <div class="seccion-header">
+
+      <div>
+
+        <h2 class="seccion-titulo">
+          Mentores de TuJuntero
+        </h2>
+
+        <p class="seccion-descripcion">
+          Personas autorizadas para publicar contenido
+          dentro de la aplicación.
+        </p>
+
+      </div>
+
+      <div class="seccion-icono">
+        🌟
+      </div>
+
+    </div>
+
+    <div class="mentores-grid">
+
+      <article
+        class="mentor-card"
+        *ngFor="let mentor of mentores">
+
+        <div class="mentor-card-header">
+
+          <div class="mentor-avatar">
+            👤
+          </div>
+
+          <span class="mentor-badge">
+            🌟 Mentor
+          </span>
+
+        </div>
+
+        <div class="mentor-info">
+
+          <h3 class="mentor-nombre">
+            {{ mentor.nombre }}
+          </h3>
+
+          <p
+            class="mentor-especialidad"
+            *ngIf="mentor.especialidad">
+
+            {{ mentor.especialidad }}
+
+          </p>
+
+          <p
+            class="mentor-frase"
+            *ngIf="mentor.frase">
+
+            “{{ mentor.frase }}”
+
+          </p>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+  <!-- ========================= -->
+  <!-- ESTADO VACÍO -->
+  <!-- ========================= -->
+
+  <section
+    class="seccion-card empty-wrapper"
+    *ngIf="mentores.length === 0">
+
+    <div class="empty-state">
+
+      <div class="empty-icono">
+        🌟
+      </div>
+
+      <h2>
+        Próximamente
+      </h2>
+
+      <p>
+        Los mentores de TuJuntero estarán disponibles
+        muy pronto.
+      </p>
+
+      <button
+        class="btn-volver-inicio"
+        type="button"
+        (click)="volver()">
+
+        Volver
+
+      </button>
+
+    </div>
+
+  </section>
 
 </div>

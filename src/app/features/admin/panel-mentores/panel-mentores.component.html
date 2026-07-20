@@ -1,22 +1,224 @@
-<div class="panel-container">
-  <h2>🛡️ Panel de Administración</h2>
-  <p>Gestioná los mentores de TuJuntero</p>
+<div class="page-wrapper">
 
-  <div class="usuario-card" *ngFor="let user of usuarios">
-    <div class="user-info">
-      <p class="user-nombre">{{ user.nombre }} {{ user.apellido }}</p>
-      <p class="user-email">{{ user.email }}</p>
-      <span class="rol-badge" [class.mentor]="user.esMentor">
-        {{ user.esMentor ? '🌟 Mentor' : '👤 Usuario' }}
-      </span>
+  <!-- ========================= -->
+  <!-- HERO -->
+  <!-- ========================= -->
+
+  <header class="admin-header">
+
+    <div class="header-content">
+
+      <div class="header-icono">
+        🛡️
+      </div>
+
+      <div class="header-texto">
+
+        <span class="header-etiqueta">
+          Administración
+        </span>
+
+        <h1>
+          Panel de Administración
+        </h1>
+
+        <p>
+          Gestioná los usuarios de TuJuntero y asigná
+          o quitá permisos de mentor.
+        </p>
+
+      </div>
+
     </div>
-    <div class="user-acciones">
-      <button *ngIf="!user.esMentor" mat-raised-button color="primary" (click)="convertirEnMentor(user)">
-        Convertir en Mentor
-      </button>
-      <button *ngIf="user.esMentor" mat-raised-button color="warn" (click)="quitarMentor(user)">
-        Quitar Mentor
-      </button>
+
+  </header>
+
+  <!-- ========================= -->
+  <!-- RESUMEN -->
+  <!-- ========================= -->
+
+  <section class="stats-grid">
+
+    <article class="stat-card">
+
+      <div class="stat-icono stat-icono-usuarios">
+        👥
+      </div>
+
+      <div class="stat-info">
+
+        <span class="stat-numero">
+          {{ usuarios.length }}
+        </span>
+
+        <span class="stat-label">
+          Usuarios registrados
+        </span>
+
+      </div>
+
+    </article>
+
+    <article class="stat-card">
+
+      <div class="stat-icono stat-icono-mentor">
+        🌟
+      </div>
+
+      <div class="stat-info">
+
+        <span class="stat-titulo">
+          Gestión de mentores
+        </span>
+
+        <span class="stat-label">
+          Administrá los permisos de cada usuario
+        </span>
+
+      </div>
+
+    </article>
+
+  </section>
+
+  <!-- ========================= -->
+  <!-- LISTA DE USUARIOS -->
+  <!-- ========================= -->
+
+  <section class="seccion-card">
+
+    <div class="seccion-header">
+
+      <div>
+
+        <h2 class="seccion-titulo">
+          Administración de usuarios
+        </h2>
+
+        <p class="seccion-descripcion">
+          Revisá los usuarios registrados y modificá
+          sus permisos dentro de la aplicación.
+        </p>
+
+      </div>
+
+      <div class="seccion-icono">
+        ⚙️
+      </div>
+
     </div>
-  </div>
+
+    <!-- USUARIOS -->
+
+    <div
+      class="usuarios-lista"
+      *ngIf="usuarios.length > 0">
+
+      <article
+        class="usuario-card"
+        *ngFor="let user of usuarios">
+
+        <div
+          class="usuario-avatar"
+          [class.avatar-mentor]="user.esMentor">
+
+          {{ user.esMentor ? '🌟' : '👤' }}
+
+        </div>
+
+        <div class="user-info">
+
+          <div class="user-encabezado">
+
+            <h3 class="user-nombre">
+              {{ user.nombre }} {{ user.apellido }}
+            </h3>
+
+            <span
+              class="rol-badge"
+              [class.mentor]="user.esMentor">
+
+              {{ user.esMentor ? '🌟 Mentor' : '👤 Usuario' }}
+
+            </span>
+
+          </div>
+
+          <p class="user-email">
+            ✉️ {{ user.email }}
+          </p>
+
+          <p class="user-descripcion">
+            {{
+              user.esMentor
+                ? 'Puede publicar y administrar recetas.'
+                : 'Utiliza las funciones generales de TuJuntero.'
+            }}
+          </p>
+
+        </div>
+
+        <div class="user-acciones">
+
+          <button
+            *ngIf="!user.esMentor"
+            mat-raised-button
+            color="primary"
+            class="btn-mentor"
+            type="button"
+            (click)="convertirEnMentor(user)">
+
+            <span class="btn-icono">
+              🌟
+            </span>
+
+            Convertir en mentor
+
+          </button>
+
+          <button
+            *ngIf="user.esMentor"
+            mat-raised-button
+            color="warn"
+            class="btn-quitar"
+            type="button"
+            (click)="quitarMentor(user)">
+
+            <span class="btn-icono">
+              ✕
+            </span>
+
+            Quitar mentor
+
+          </button>
+
+        </div>
+
+      </article>
+
+    </div>
+
+    <!-- ESTADO VACÍO -->
+
+    <div
+      class="empty-state"
+      *ngIf="usuarios.length === 0">
+
+      <div class="empty-icono">
+        👥
+      </div>
+
+      <h3>
+        No hay usuarios registrados
+      </h3>
+
+      <p>
+        Cuando se registren usuarios en TuJuntero,
+        aparecerán en esta sección.
+      </p>
+
+    </div>
+
+  </section>
+
 </div>
