@@ -1,0 +1,276 @@
+<div class="page-wrapper">
+
+  <!-- ========================= -->
+  <!-- HERO -->
+  <!-- ========================= -->
+
+  <header class="favoritos-header">
+
+
+    <div>
+
+      <h1>
+        ❤️ Mis recetas favoritas
+      </h1>
+
+      <p>
+        Todas las recetas que guardaste para cocinar cuando quieras.
+        Buscalas por categoría o abrí el detalle completo.
+      </p>
+
+    </div>
+
+  </header>
+
+  <!-- ========================= -->
+  <!-- BUSCADOR -->
+  <!-- ========================= -->
+
+  <section class="busqueda-section">
+
+    <input
+      type="text"
+      placeholder="🔍 Buscar recetas..."
+      [(ngModel)]="busqueda"
+      (input)="aplicarFiltro()">
+
+  </section>
+
+  <!-- ========================= -->
+  <!-- CATEGORÍAS -->
+  <!-- ========================= -->
+
+  <section class="categorias">
+
+    <button
+      class="categoria"
+      [class.activa]="categoriaActiva === ''"
+      (click)="seleccionarCategoria('')">
+
+      Todas
+
+    </button>
+
+    <button
+      *ngFor="let cat of categorias"
+      class="categoria"
+      [class.activa]="categoriaActiva === cat.valor"
+      (click)="seleccionarCategoria(cat.valor)">
+
+      {{ cat.icono }}
+      {{ cat.label }}
+
+    </button>
+
+  </section>
+
+  <!-- ========================= -->
+  <!-- LISTADO -->
+  <!-- ========================= -->
+
+  <section class="seccion-card">
+
+    <div class="seccion-header">
+
+      <div>
+
+        <h2 class="seccion-titulo">
+          Tus recetas guardadas
+        </h2>
+
+        <p class="seccion-descripcion">
+
+          {{ recetasFiltradas.length }}
+          receta(s)
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <div
+      class="receta-row"
+      *ngFor="let r of recetasFiltradas">
+
+      <div
+        class="receta-icono-box"
+        [style.background-color]="getNivelColor(r.nivel)+'22'">
+
+        🍳
+
+      </div>
+
+      <div
+        class="receta-info"
+        (click)="verDetalle(r)">
+
+        <span class="receta-nombre">
+
+          {{ r.nombre }}
+
+        </span>
+
+        <div class="receta-meta-row">
+
+          <span
+            class="receta-badge"
+            [style.background-color]="getNivelColor(r.nivel)+'22'"
+            [style.color]="getNivelColor(r.nivel)">
+
+            {{ getNivelLabel(r.nivel) }}
+
+          </span>
+
+          <span class="receta-tiempo">
+
+            ⏱ {{ r.tiempoPreparacion }} min
+
+          </span>
+
+        </div>
+
+        <span
+          class="receta-mentor"
+          *ngIf="r.nombreMentor">
+
+          👨‍🍳 {{ r.nombreMentor }}
+
+        </span>
+
+      </div>
+
+      <div class="receta-acciones">
+
+        <button
+          type="button"
+          class="btn-detalle"
+          (click)="verDetalle(r)">
+
+          Ver receta
+
+        </button>
+
+        <button
+          type="button"
+          class="btn-favorito"
+          (click)="quitarFavorito(r)">
+
+          ❤️
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <ui-empty-state
+      *ngIf="recetasFiltradas.length===0"
+      icon="❤️"
+      title="Sin favoritos"
+      text="Todavía no guardaste ninguna receta.">
+
+    </ui-empty-state>
+
+  </section>
+
+</div>
+
+<!-- ========================= -->
+<!-- MODAL -->
+<!-- ========================= -->
+
+<div
+  class="form-overlay"
+  *ngIf="recetaDetalle"
+  (click)="cerrarDetalle()">
+
+</div>
+
+<div
+  class="form-modal"
+  *ngIf="recetaDetalle">
+
+  <h3 class="form-titulo">
+
+    {{ recetaDetalle.nombre }}
+
+  </h3>
+
+  <div class="detalle-meta">
+
+    <span
+      class="receta-badge"
+      [style.background-color]="getNivelColor(recetaDetalle.nivel)+'22'"
+      [style.color]="getNivelColor(recetaDetalle.nivel)">
+
+      {{ getNivelLabel(recetaDetalle.nivel) }}
+
+    </span>
+
+    <span class="receta-tiempo">
+
+      ⏱ {{ recetaDetalle.tiempoPreparacion }} min
+
+    </span>
+
+  </div>
+
+  <div
+    class="detalle-bloque"
+    *ngIf="recetaDetalle.nombreMentor">
+
+    <h4>
+      👨‍🍳 Publicada por
+    </h4>
+
+    <p>
+
+      {{ recetaDetalle.nombreMentor }}
+
+    </p>
+
+  </div>
+
+  <div class="detalle-bloque">
+
+    <h4>
+
+      Ingredientes
+
+    </h4>
+
+    <p>
+
+      {{ recetaDetalle.ingredientes || 'Sin ingredientes cargados.' }}
+
+    </p>
+
+  </div>
+
+  <div class="detalle-bloque">
+
+    <h4>
+
+      Preparación
+
+    </h4>
+
+    <p>
+
+      {{ recetaDetalle.pasos || 'Sin pasos cargados.' }}
+
+    </p>
+
+  </div>
+
+  <button
+    class="btn-guardar"
+    type="button"
+    (click)="cerrarDetalle()">
+
+    Cerrar
+
+  </button>
+
+</div>

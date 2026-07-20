@@ -1,10 +1,15 @@
+// Componente Favoritos
+// Muestra solo las recetas que el usuario guardó como favoritas.
+// Permite filtrar por categoría, buscar recetas y ver el detalle completo.
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+
 import { FirestoreService } from '../../../../core/firestore.service';
 import { AuthService } from '../../../../core/auth.service';
-
+import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
 
 type CategoriaReceta =
   | 'desayuno'
@@ -14,32 +19,50 @@ type CategoriaReceta =
   | '';
 
 @Component({
-  selector: 'app-recetas',
+  selector: 'app-favoritos',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    EmptyStateComponent
   ],
-  templateUrl: './recetas.component.html',
-  styleUrl: './recetas.component.css'
+  templateUrl: './favoritos.component.html',
+  styleUrl: './favoritos.component.css'
 })
-export class RecetasComponent implements OnInit {
+export class FavoritosComponent implements OnInit {
 
   usuarioId = '';
   busqueda = '';
 
-  recetas: any[] = [];
+  recetasFavoritas: any[] = [];
   recetasFiltradas: any[] = [];
 
   categoriaActiva: CategoriaReceta = '';
+
   recetaDetalle: any | null = null;
 
   categorias = [
-    { valor: 'desayuno', label: 'Desayuno', icono: '🥣' },
-    { valor: 'almuerzo', label: 'Almuerzo', icono: '🍽️' },
-    { valor: 'merienda', label: 'Merienda', icono: '☕' },
-    { valor: 'cena', label: 'Cena', icono: '🌙' }
+    {
+      valor: 'desayuno',
+      label: 'Desayuno',
+      icono: '🥣'
+    },
+    {
+      valor: 'almuerzo',
+      label: 'Almuerzo',
+      icono: '🍽️'
+    },
+    {
+      valor: 'merienda',
+      label: 'Merienda',
+      icono: '☕'
+    },
+    {
+      valor: 'cena',
+      label: 'Cena',
+      icono: '🌙'
+    }
   ];
 
   constructor(
@@ -55,12 +78,17 @@ export class RecetasComponent implements OnInit {
       this.usuarioId = usuario.id;
     }
 
-    this.cargarRecetas();
+    this.cargarFavoritos();
   }
 
-  cargarRecetas(): void {
+  cargarFavoritos(): void {
     this.fs.getCollection('recetas').subscribe((data: any[]) => {
-      this.recetas = data;
+
+      this.recetasFavoritas = data.filter((receta: any) =>
+        Array.isArray(receta.favoritos) &&
+        receta.favoritos.includes(this.usuarioId)
+      );
+
       this.aplicarFiltro();
     });
   }
@@ -77,7 +105,8 @@ export class RecetasComponent implements OnInit {
   aplicarFiltro(): void {
     const texto = this.busqueda.toLowerCase().trim();
 
-    this.recetasFiltradas = this.recetas.filter((receta: any) => {
+    this.recetasFiltradas = this.recetasFavoritas.filter((receta: any) => {
+
       const coincideCategoria =
         !this.categoriaActiva ||
         receta.categoria === this.categoriaActiva;
@@ -85,42 +114,12 @@ export class RecetasComponent implements OnInit {
       const coincideBusqueda =
         !texto ||
         receta.nombre?.toLowerCase().includes(texto) ||
-        receta.descripcion?.toLowerCase().includes(texto) ||
         receta.ingredientes?.toLowerCase().includes(texto) ||
         receta.pasos?.toLowerCase().includes(texto) ||
         receta.nombreMentor?.toLowerCase().includes(texto);
 
       return coincideCategoria && coincideBusqueda;
     });
-  }
-
-  esFavorita(receta: any): boolean {
-    return (
-      Array.isArray(receta.favoritos) &&
-      receta.favoritos.includes(this.usuarioId)
-    );
-  }
-
-  async alternarFavorito(receta: any): Promise<void> {
-    if (!this.usuarioId || !receta?.id) {
-      return;
-    }
-
-    if (this.esFavorita(receta)) {
-      await this.fs.removeFromArray(
-        'recetas',
-        receta.id,
-        'favoritos',
-        this.usuarioId
-      );
-    } else {
-      await this.fs.addToArray(
-        'recetas',
-        receta.id,
-        'favoritos',
-        this.usuarioId
-      );
-    }
   }
 
   verDetalle(receta: any): void {
@@ -131,6 +130,19 @@ export class RecetasComponent implements OnInit {
     this.recetaDetalle = null;
   }
 
+  async quitarFavorito(receta: any): Promise<void> {
+    if (!this.usuarioId || !receta?.id) {
+      return;
+    }
+
+    await this.fs.removeFromArray(
+      'recetas',
+      receta.id,
+      'favoritos',
+      this.usuarioId
+    );
+  }
+
   volver(): void {
     this.router.navigate(['/alimentarse']);
   }
@@ -139,10 +151,13 @@ export class RecetasComponent implements OnInit {
     switch (nivel) {
       case 'facil':
         return '#34D399';
+
       case 'medio':
         return '#FBBF24';
+
       case 'dificil':
         return '#EF4444';
+
       default:
         return '#34D399';
     }
@@ -152,10 +167,13 @@ export class RecetasComponent implements OnInit {
     switch (nivel) {
       case 'facil':
         return 'Fácil';
+
       case 'medio':
         return 'Medio';
+
       case 'dificil':
         return 'Difícil';
+
       default:
         return nivel || 'Fácil';
     }

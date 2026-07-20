@@ -5,13 +5,15 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Pages
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { RecetasComponent } from './pages/recetas/recetas.component';
+import { FavoritosComponent } from './pages/favoritos/favoritos.component';
 import { DiarioComponent } from './pages/diario/diario.component';
+import { RecetasComponent } from './pages/recetas/recetas.component';
 
 // Rutas hijas
 const routes: Routes = [
   { path: '', component: DashboardComponent },
-  { path: 'recetas', component: RecetasComponent },
+   { path: 'recetas', component: RecetasComponent },
+  { path: 'favoritos', component: FavoritosComponent },
   { path: 'diario', component: DiarioComponent }
 ];
 
@@ -21,8 +23,9 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     DashboardComponent,
-    RecetasComponent,
-    DiarioComponent
+    FavoritosComponent,
+    DiarioComponent,
+    RecetasComponent
   ]
 })
 export class AlimentarseModule { }
