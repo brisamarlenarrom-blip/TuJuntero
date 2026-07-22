@@ -1,268 +1,104 @@
-<div class="ejercicios-container">
+<div class="ejercicios-page">
 
-  <!-- ───────────────────────────────────────────── -->
-  <!-- HERO -->
-  <!-- ───────────────────────────────────────────── -->
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
 
-  <div class="ejercicios-hero">
-
-    <div class="hero-content">
-
-      <div class="hero-icon">
-        🏋️
-      </div>
-
-      <div class="hero-text">
-
-        <h1 class="hero-titulo">
-          Gestión de ejercicios
-        </h1>
-
-        <p class="hero-subtitulo">
-          Creá ejercicios de Fuerza, Cardio,<br>
-          Movilidad o HIIT para los usuarios.
-        </p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- ───────────────────────────────────────────── -->
-  <!-- MENSAJE -->
-  <!-- ───────────────────────────────────────────── -->
-
-  <p
-    class="mensaje"
-    *ngIf="mensaje">
-
-    {{ mensaje }}
-
-  </p>
-
-  <!-- ───────────────────────────────────────────── -->
-  <!-- BUSCADOR Y FILTROS -->
-  <!-- ───────────────────────────────────────────── -->
-
-  <div class="herramientas">
-
-    <!-- Buscador -->
-
-    <div class="busqueda-card">
-
-      <span class="busqueda-icono">
-        🔍
-      </span>
-
-      <input
-        type="text"
-        placeholder="Buscar ejercicios..."
-        [(ngModel)]="busqueda"
-        (input)="aplicarFiltro()">
-
-    </div>
-
-    <!-- Filtros -->
-
-    <div class="filtros">
-
-      <button
-        type="button"
-        class="filtro-btn"
-        *ngFor="let categoria of categorias"
-        [class.filtro-activo]="categoriaActiva === categoria.valor"
-        (click)="setCategoria(categoria.valor)">
-
-        {{ categoria.icono }}
-        {{ categoria.label }}
-
-      </button>
-
-    </div>
-
-  </div>
-
-  <!-- ───────────────────────────────────────────── -->
-  <!-- LISTADO -->
-  <!-- ───────────────────────────────────────────── -->
-
-  <div class="seccion-card">
-
-    <div class="seccion-header">
-
-      <div>
-
-        <h2 class="seccion-titulo">
-          Ejercicios publicados
-        </h2>
-
-        <p class="seccion-subtitulo">
-          Administrá los ejercicios que estarán disponibles en Entrenamiento.
-        </p>
-
-      </div>
-
-      <button
-        type="button"
-        class="btn-nuevo"
-        (click)="abrirNuevo()">
-
-        + Nuevo ejercicio
-
-      </button>
-
-    </div>
-
-    <!-- Grilla de ejercicios -->
+  <header class="ejercicios-hero">
 
     <div
-      class="ejercicios-grid"
-      *ngIf="ejerciciosFiltrados.length > 0">
+      class="hero-decoracion hero-decoracion-uno"
+      aria-hidden="true">
+    </div>
 
-      <article
-        class="ejercicio-card"
-        *ngFor="let ejercicio of ejerciciosFiltrados">
+    <div
+      class="hero-decoracion hero-decoracion-dos"
+      aria-hidden="true">
+    </div>
 
-        <!-- Encabezado de la tarjeta -->
+    <div class="hero-superior">
 
-        <div class="ejercicio-header">
+      <div class="hero-presentacion">
 
-          <div class="ejercicio-icono">
+        <div
+          class="hero-icono"
+          aria-hidden="true">
+          🏋️
+        </div>
 
-            {{ getIconoCategoria(ejercicio.categoria) }}
+        <div class="hero-texto">
 
-          </div>
+          <span class="hero-etiqueta">
+            Panel del mentor
+          </span>
 
-          <div class="ejercicio-info">
+          <h1>
+            Gestión de ejercicios
+          </h1>
 
-            <span class="ejercicio-nombre">
-
-              {{ ejercicio.nombre }}
-
-            </span>
-
-            <span class="ejercicio-badge">
-
-              {{ getLabelCategoria(ejercicio.categoria) }}
-
-            </span>
-
-          </div>
+          <p>
+            Creá y administrá ejercicios de fuerza, cardio,
+            movilidad o HIIT para los usuarios de TuJuntero.
+          </p>
 
         </div>
 
-        <!-- Descripción -->
+      </div>
 
-        <p
-          class="ejercicio-descripcion"
-          *ngIf="ejercicio.descripcion">
+      <button
+        type="button"
+        class="btn-hero-nuevo"
+        (click)="abrirNuevo()">
 
-          {{ ejercicio.descripcion }}
+        <span aria-hidden="true">
+          ＋
+        </span>
 
-        </p>
+        Nuevo ejercicio
 
-        <!-- Datos del ejercicio -->
+      </button>
 
-        <div class="ejercicio-datos">
+    </div>
 
-          <div class="dato-item">
+    <!-- RESUMEN DEL HERO -->
 
-            <span class="dato-label">
-              Grupo muscular
-            </span>
+    <div class="hero-resumen">
 
-            <span class="dato-valor">
-              {{ ejercicio.grupoMuscular }}
-            </span>
+      <article class="hero-stat">
 
-          </div>
+        <span class="hero-stat-icono">
+          🏋️
+        </span>
 
-          <div class="dato-item">
+        <div>
 
-            <span class="dato-label">
-              Nivel
-            </span>
+          <span class="hero-stat-label">
+            Ejercicios visibles
+          </span>
 
-            <span class="dato-valor">
-              {{ getLabelNivel(ejercicio.nivel) }}
-            </span>
-
-          </div>
-
-          <div class="dato-item">
-
-            <span class="dato-label">
-              Equipamiento
-            </span>
-
-            <span class="dato-valor">
-              {{ getLabelEquipamiento(ejercicio.equipamiento) }}
-            </span>
-
-          </div>
-
-          <div class="dato-item">
-
-            <span class="dato-label">
-              Series
-            </span>
-
-            <span class="dato-valor">
-              {{ ejercicio.series }}
-            </span>
-
-          </div>
-
-          <div class="dato-item">
-
-            <span class="dato-label">
-              Repeticiones
-            </span>
-
-            <span class="dato-valor">
-              {{ ejercicio.repeticiones }}
-            </span>
-
-          </div>
-
-          <div class="dato-item">
-
-            <span class="dato-label">
-              Descanso
-            </span>
-
-            <span class="dato-valor">
-              {{ ejercicio.descanso }}
-            </span>
-
-          </div>
+          <strong>
+            {{ ejerciciosFiltrados.length }}
+          </strong>
 
         </div>
 
-        <!-- Acciones -->
+      </article>
 
-        <div class="ejercicio-acciones">
+      <article class="hero-stat">
 
-          <button
-            type="button"
-            class="btn-accion"
-            title="Editar ejercicio"
-            (click)="editarEjercicio(ejercicio)">
+        <span class="hero-stat-icono">
+          🗂️
+        </span>
 
-            ✏️
+        <div>
 
-          </button>
+          <span class="hero-stat-label">
+            Categorías
+          </span>
 
-          <button
-            type="button"
-            class="btn-accion btn-eliminar"
-            title="Eliminar ejercicio"
-            (click)="eliminarEjercicio(ejercicio)">
-
-            🗑️
-
-          </button>
+          <strong>
+            {{ categorias.length }}
+          </strong>
 
         </div>
 
@@ -270,31 +106,408 @@
 
     </div>
 
-    <!-- Estado vacío -->
+  </header>
+
+
+  <!-- =====================================================
+       CONTENIDO
+       ===================================================== -->
+
+  <main class="ejercicios-contenido">
+
+    <!-- MENSAJE -->
 
     <div
-      class="empty-state"
-      *ngIf="ejerciciosFiltrados.length === 0">
+      class="mensaje"
+      *ngIf="mensaje">
 
-      <span class="empty-icono">
-        🏋️
+      <span aria-hidden="true">
+        ℹ️
       </span>
 
-      <h3 class="empty-titulo">
-        No hay ejercicios
-      </h3>
-
-      <p class="empty-texto">
-        Creá el primer ejercicio para esta categoría.
-      </p>
+      {{ mensaje }}
 
     </div>
 
-  </div>
 
-  <!-- ───────────────────────────────────────────── -->
-  <!-- MODAL -->
-  <!-- ───────────────────────────────────────────── -->
+    <!-- ===================================================
+         BUSCADOR Y FILTROS
+         =================================================== -->
+
+    <section class="herramientas-card">
+
+      <header class="herramientas-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Biblioteca de ejercicios
+          </span>
+
+          <h2>
+            Buscá y filtrá el contenido
+          </h2>
+
+          <p>
+            Encontrá rápidamente los ejercicios publicados
+            o seleccioná una categoría.
+          </p>
+
+        </div>
+
+        <div
+          class="herramientas-icono"
+          aria-hidden="true">
+          🔎
+        </div>
+
+      </header>
+
+
+      <div class="herramientas">
+
+        <!-- BUSCADOR -->
+
+        <div class="busqueda-card">
+
+          <span
+            class="busqueda-icono"
+            aria-hidden="true">
+            🔍
+          </span>
+
+          <input
+            type="text"
+            placeholder="Buscar ejercicios..."
+            aria-label="Buscar ejercicios"
+            [(ngModel)]="busqueda"
+            (input)="aplicarFiltro()">
+
+        </div>
+
+
+        <!-- FILTROS -->
+
+        <div class="filtros">
+
+          <button
+            type="button"
+            class="filtro-btn"
+            *ngFor="let categoria of categorias"
+            [class.filtro-activo]="
+              categoriaActiva === categoria.valor
+            "
+            (click)="setCategoria(categoria.valor)">
+
+            <span class="filtro-icono">
+              {{ categoria.icono }}
+            </span>
+
+            <span>
+              {{ categoria.label }}
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         LISTADO
+         =================================================== -->
+
+    <section class="seccion-card">
+
+      <header class="seccion-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Contenido publicado
+          </span>
+
+          <h2>
+            Ejercicios publicados
+          </h2>
+
+          <p>
+            Administrá los ejercicios que estarán disponibles
+            dentro del módulo Entrenamiento.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="btn-nuevo"
+          (click)="abrirNuevo()">
+
+          <span aria-hidden="true">
+            ＋
+          </span>
+
+          Nuevo ejercicio
+
+        </button>
+
+      </header>
+
+
+      <!-- GRILLA DE EJERCICIOS -->
+
+      <div
+        class="ejercicios-grid"
+        *ngIf="ejerciciosFiltrados.length > 0">
+
+        <article
+          class="ejercicio-card"
+          *ngFor="let ejercicio of ejerciciosFiltrados">
+
+          <!-- ENCABEZADO -->
+
+          <header class="ejercicio-header">
+
+            <div class="ejercicio-presentacion">
+
+              <div class="ejercicio-icono">
+
+                {{ getIconoCategoria(ejercicio.categoria) }}
+
+              </div>
+
+              <div class="ejercicio-info">
+
+                <span class="ejercicio-etiqueta">
+                  Ejercicio
+                </span>
+
+                <h3 class="ejercicio-nombre">
+                  {{ ejercicio.nombre }}
+                </h3>
+
+              </div>
+
+            </div>
+
+            <span class="ejercicio-badge">
+
+              {{ getLabelCategoria(ejercicio.categoria) }}
+
+            </span>
+
+          </header>
+
+
+          <!-- DESCRIPCIÓN -->
+
+          <p
+            class="ejercicio-descripcion"
+            *ngIf="ejercicio.descripcion">
+
+            {{ ejercicio.descripcion }}
+
+          </p>
+
+
+          <!-- DATOS PRINCIPALES -->
+
+          <div class="ejercicio-datos">
+
+            <div class="dato-item">
+
+              <span class="dato-icono">
+                💪
+              </span>
+
+              <div>
+
+                <span class="dato-label">
+                  Grupo muscular
+                </span>
+
+                <strong class="dato-valor">
+                  {{ ejercicio.grupoMuscular }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="dato-item">
+
+              <span class="dato-icono">
+                🌱
+              </span>
+
+              <div>
+
+                <span class="dato-label">
+                  Nivel
+                </span>
+
+                <strong class="dato-valor">
+                  {{ getLabelNivel(ejercicio.nivel) }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="dato-item">
+
+              <span class="dato-icono">
+                🏋️
+              </span>
+
+              <div>
+
+                <span class="dato-label">
+                  Equipamiento
+                </span>
+
+                <strong class="dato-valor">
+                  {{ getLabelEquipamiento(ejercicio.equipamiento) }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- PLAN DEL EJERCICIO -->
+
+          <div class="ejercicio-plan">
+
+            <div class="plan-item">
+
+              <span class="plan-label">
+                Series
+              </span>
+
+              <strong>
+                {{ ejercicio.series }}
+              </strong>
+
+            </div>
+
+            <div class="plan-item">
+
+              <span class="plan-label">
+                Repeticiones
+              </span>
+
+              <strong>
+                {{ ejercicio.repeticiones }}
+              </strong>
+
+            </div>
+
+            <div class="plan-item">
+
+              <span class="plan-label">
+                Descanso
+              </span>
+
+              <strong>
+                {{ ejercicio.descanso }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- ACCIONES -->
+
+          <footer class="ejercicio-acciones">
+
+            <button
+              type="button"
+              class="btn-accion btn-editar"
+              title="Editar ejercicio"
+              (click)="editarEjercicio(ejercicio)">
+
+              <span aria-hidden="true">
+                ✏️
+              </span>
+
+              Editar
+
+            </button>
+
+            <button
+              type="button"
+              class="btn-accion btn-eliminar"
+              title="Eliminar ejercicio"
+              (click)="eliminarEjercicio(ejercicio)">
+
+              <span aria-hidden="true">
+                🗑️
+              </span>
+
+              Eliminar
+
+            </button>
+
+          </footer>
+
+        </article>
+
+      </div>
+
+
+      <!-- ESTADO VACÍO -->
+
+      <div
+        class="empty-state"
+        *ngIf="ejerciciosFiltrados.length === 0">
+
+        <div class="empty-decoracion"></div>
+
+        <div class="empty-icono">
+          🏋️
+        </div>
+
+        <span class="empty-etiqueta">
+          Sin ejercicios disponibles
+        </span>
+
+        <h3 class="empty-titulo">
+          No hay ejercicios
+        </h3>
+
+        <p class="empty-texto">
+          Creá el primer ejercicio para esta categoría
+          y hacelo disponible para los usuarios.
+        </p>
+
+        <button
+          type="button"
+          class="btn-empty"
+          (click)="abrirNuevo()">
+
+          ＋ Crear ejercicio
+
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FONDO DEL MODAL
+       ===================================================== -->
 
   <div
     class="form-overlay"
@@ -302,38 +515,82 @@
     (click)="cerrarForm()">
   </div>
 
-  <div
+
+  <!-- =====================================================
+       MODAL
+       ===================================================== -->
+
+  <section
     class="form-modal"
-    *ngIf="mostrarForm">
+    *ngIf="mostrarForm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="ejercicio-form-titulo">
 
-    <h3 class="form-titulo">
+    <header class="form-modal-header">
 
-      {{ editando ? 'Editar ejercicio' : 'Nuevo ejercicio' }}
+      <div class="form-presentacion">
 
-    </h3>
+        <div class="form-icono">
+          {{ editando ? '✏️' : '🏋️' }}
+        </div>
 
-    <p class="form-subtitulo">
-      Completá los datos que utilizará el generador de rutinas.
-    </p>
+        <div>
+
+          <span class="form-etiqueta">
+            {{ editando ? 'Editar contenido' : 'Nuevo contenido' }}
+          </span>
+
+          <h2
+            id="ejercicio-form-titulo"
+            class="form-titulo">
+
+            {{ editando ? 'Editar ejercicio' : 'Nuevo ejercicio' }}
+
+          </h2>
+
+          <p class="form-subtitulo">
+            Completá los datos que utilizará
+            el generador de rutinas.
+          </p>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn-cerrar"
+        aria-label="Cerrar formulario"
+        (click)="cerrarForm()">
+
+        ✕
+
+      </button>
+
+    </header>
+
 
     <form
+      class="ejercicio-form"
       [formGroup]="ejercicioForm"
       (ngSubmit)="guardarEjercicio()">
 
       <div class="form-grid">
 
-        <!-- Nombre -->
+        <!-- NOMBRE -->
 
         <div class="form-field form-field-completo">
 
-          <label>
+          <label for="nombre-ejercicio">
             Nombre
           </label>
 
           <input
+            id="nombre-ejercicio"
             type="text"
             formControlName="nombre"
-            placeholder="Ej: Sentadilla con mancuernas">
+            placeholder="Ejemplo: Sentadilla con mancuernas">
 
           <span
             class="form-error"
@@ -348,15 +605,18 @@
 
         </div>
 
-        <!-- Categoría -->
+
+        <!-- CATEGORÍA -->
 
         <div class="form-field">
 
-          <label>
+          <label for="categoria-ejercicio">
             Categoría
           </label>
 
-          <select formControlName="categoria">
+          <select
+            id="categoria-ejercicio"
+            formControlName="categoria">
 
             <option value="fuerza">
               🏋️ Fuerza
@@ -378,18 +638,20 @@
 
         </div>
 
-        <!-- Grupo muscular -->
+
+        <!-- GRUPO MUSCULAR -->
 
         <div class="form-field">
 
-          <label>
+          <label for="grupo-muscular">
             Grupo muscular
           </label>
 
           <input
+            id="grupo-muscular"
             type="text"
             formControlName="grupoMuscular"
-            placeholder="Ej: Piernas">
+            placeholder="Ejemplo: Piernas">
 
           <span
             class="form-error"
@@ -404,15 +666,18 @@
 
         </div>
 
-        <!-- Nivel -->
+
+        <!-- NIVEL -->
 
         <div class="form-field">
 
-          <label>
+          <label for="nivel-ejercicio">
             Nivel
           </label>
 
-          <select formControlName="nivel">
+          <select
+            id="nivel-ejercicio"
+            formControlName="nivel">
 
             <option value="principiante">
               🌱 Principiante
@@ -430,15 +695,18 @@
 
         </div>
 
-        <!-- Equipamiento -->
+
+        <!-- EQUIPAMIENTO -->
 
         <div class="form-field">
 
-          <label>
+          <label for="equipamiento-ejercicio">
             Equipamiento
           </label>
 
-          <select formControlName="equipamiento">
+          <select
+            id="equipamiento-ejercicio"
+            formControlName="equipamiento">
 
             <option value="sin_equipamiento">
               🏠 Sin equipamiento
@@ -460,60 +728,69 @@
 
         </div>
 
-        <!-- Series -->
+
+        <!-- SERIES -->
 
         <div class="form-field">
 
-          <label>
+          <label for="series-ejercicio">
             Series
           </label>
 
           <input
+            id="series-ejercicio"
             type="number"
             min="1"
-            formControlName="series">
+            formControlName="series"
+            placeholder="Ejemplo: 3">
 
         </div>
 
-        <!-- Repeticiones -->
+
+        <!-- REPETICIONES -->
 
         <div class="form-field">
 
-          <label>
+          <label for="repeticiones-ejercicio">
             Repeticiones o tiempo
           </label>
 
           <input
+            id="repeticiones-ejercicio"
             type="text"
             formControlName="repeticiones"
-            placeholder="Ej: 10-12 o 30 segundos">
+            placeholder="Ejemplo: 10-12 o 30 segundos">
 
         </div>
 
-        <!-- Descanso -->
 
-        <div class="form-field">
+        <!-- DESCANSO -->
 
-          <label>
+        <div class="form-field form-field-completo">
+
+          <label for="descanso-ejercicio">
             Descanso
           </label>
 
           <input
+            id="descanso-ejercicio"
             type="text"
             formControlName="descanso"
-            placeholder="Ej: 60 segundos">
+            placeholder="Ejemplo: 60 segundos">
 
         </div>
 
-        <!-- Descripción -->
+
+        <!-- DESCRIPCIÓN -->
 
         <div class="form-field form-field-completo">
 
-          <label>
+          <label for="descripcion-ejercicio">
             Descripción
           </label>
 
           <textarea
+            id="descripcion-ejercicio"
             formControlName="descripcion"
             placeholder="Indicaciones para realizar el ejercicio correctamente">
           </textarea>
@@ -522,7 +799,8 @@
 
       </div>
 
-      <!-- Botones -->
+
+      <!-- BOTONES -->
 
       <div class="form-botones">
 
@@ -544,7 +822,7 @@
             guardando
               ? 'Guardando...'
               : editando
-                ? 'Actualizar'
+                ? 'Actualizar ejercicio'
                 : 'Guardar ejercicio'
           }}
 
@@ -554,6 +832,6 @@
 
     </form>
 
-  </div>
+  </section>
 
 </div>

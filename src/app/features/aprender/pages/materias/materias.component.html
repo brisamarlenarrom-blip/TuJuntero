@@ -1,30 +1,95 @@
-<div class="page-wrapper">
+<div class="materias-page">
 
-  <!-- HERO -->
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
 
-  <section class="aprender-hero">
+  <header class="materias-hero">
 
-    <div class="hero-content">
+    <div
+      class="hero-decoracion hero-decoracion-uno"
+      aria-hidden="true">
+    </div>
 
-      <div class="hero-icon" aria-hidden="true">
-        📖
+    <div
+      class="hero-decoracion hero-decoracion-dos"
+      aria-hidden="true">
+    </div>
+
+    <div class="hero-superior">
+
+      <div class="hero-presentacion">
+
+        <div
+          class="hero-icono"
+          aria-hidden="true">
+          🎓
+        </div>
+
+        <div class="hero-texto">
+
+          <span class="hero-etiqueta">
+            Organización académica
+          </span>
+
+          <h1>
+            Mis materias
+          </h1>
+
+          <p>
+            Organizá las materias que estás cursando,
+            regularizaste o tenés que rendir.
+          </p>
+
+        </div>
+
       </div>
 
-      <div class="hero-text">
 
-        <h1 class="aprender-titulo">
-          Aprender
-        </h1>
+      <div class="hero-acciones">
 
-        <p class="hero-subtitulo">
-          Organizá tus materias, tareas y lecturas
-          <br>
-          y seguí creciendo cada día.
-        </p>
+        <div class="hero-contador">
+
+          <span
+            class="hero-contador-icono"
+            aria-hidden="true">
+            📚
+          </span>
+
+          <div>
+
+            <span class="hero-contador-label">
+              Registradas
+            </span>
+
+            <strong>
+              {{ materias.length }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn-hero-nueva"
+          (click)="abrirForm()">
+
+          <span aria-hidden="true">
+            ＋
+          </span>
+
+          Nueva materia
+
+        </button>
 
       </div>
 
     </div>
+
+
+    <!-- NAVEGACIÓN -->
 
     <nav
       class="aprender-tabs"
@@ -35,66 +100,96 @@
         routerLinkActive="tab-activo"
         class="tab-item">
 
-        <span class="tab-icono">🎓</span>
-        <span>Materias</span>
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          🎓
+        </span>
+
+        <span>
+          Materias
+        </span>
 
       </a>
+
 
       <a
         routerLink="/aprender/tareas"
         routerLinkActive="tab-activo"
         class="tab-item">
 
-        <span class="tab-icono">☑️</span>
-        <span>Tareas</span>
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          ☑️
+        </span>
+
+        <span>
+          Tareas
+        </span>
 
       </a>
+
 
       <a
         routerLink="/aprender/biblioteca"
         routerLinkActive="tab-activo"
         class="tab-item">
 
-        <span class="tab-icono">📖</span>
-        <span>Biblioteca</span>
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          📖
+        </span>
+
+        <span>
+          Biblioteca
+        </span>
 
       </a>
 
     </nav>
 
-  </section>
+  </header>
 
 
-  <!-- CONTENIDO -->
+  <!-- =====================================================
+       CONTENIDO
+       ===================================================== -->
 
-  <main class="materias-wrapper">
+  <main class="materias-contenido">
 
-    <section class="materias-encabezado">
+    <!-- ===================================================
+         ENCABEZADO
+         =================================================== -->
 
-      <div class="encabezado-texto">
+    <section class="encabezado-card">
 
-        <span class="encabezado-etiqueta">
-          Organización académica
+      <div class="encabezado-info">
+
+        <span class="seccion-etiqueta">
+          Tu recorrido académico
         </span>
 
-        <h2 class="encabezado-titulo">
-          Mis materias
+        <h2>
+          Administrá tus materias
         </h2>
 
-        <p class="encabezado-descripcion">
-          Administrá las materias que estás cursando,
-          regularizaste o tenés que rendir.
+        <p>
+          Guardá el estado de cada materia y registrá
+          horarios, llamados o próximas fechas de examen.
         </p>
 
       </div>
+
 
       <div class="encabezado-acciones">
 
         <div class="contador-materias">
 
-          <span class="contador-icono">
+          <div class="contador-icono">
             🎓
-          </span>
+          </div>
 
           <div class="contador-info">
 
@@ -110,12 +205,16 @@
 
         </div>
 
+
         <button
-          class="btn-nueva-principal"
           type="button"
+          class="btn-nueva-principal"
           (click)="abrirForm()">
 
-          <span>＋</span>
+          <span aria-hidden="true">
+            ＋
+          </span>
+
           Nueva materia
 
         </button>
@@ -125,17 +224,24 @@
     </section>
 
 
-    <!-- CARGANDO -->
+    <!-- ===================================================
+         CARGANDO
+         =================================================== -->
 
     <section
       class="estado-cargando"
       *ngIf="cargando">
 
-      <span class="spinner"></span>
+      <span
+        class="spinner"
+        aria-hidden="true">
+      </span>
 
       <div>
 
-        <strong>Cargando materias</strong>
+        <strong>
+          Cargando materias
+        </strong>
 
         <p>
           Estamos buscando tu información académica.
@@ -146,7 +252,9 @@
     </section>
 
 
-    <!-- LISTADO -->
+    <!-- ===================================================
+         LISTADO
+         =================================================== -->
 
     <section
       class="materias-seccion"
@@ -157,20 +265,32 @@
         <div>
 
           <span class="seccion-etiqueta">
-            Tu recorrido
+            Materias registradas
           </span>
 
           <h2 class="seccion-titulo">
-            Materias registradas
+            Tu recorrido
           </h2>
+
+          <p>
+            Consultá el estado y la próxima actividad
+            relacionada con cada materia.
+          </p>
 
         </div>
 
         <span class="seccion-total">
+
+          <span aria-hidden="true">
+            📚
+          </span>
+
           {{ materias.length }} en total
+
         </span>
 
       </header>
+
 
       <div class="materias-grid">
 
@@ -181,44 +301,58 @@
             trackBy: trackByMateriaId
           ">
 
+          <!-- ENCABEZADO -->
+
           <header class="materia-card-header">
 
-            <div
-              class="materia-icono-box"
-              [style.background-color]="
-                getColorEstado(m.estado) + '22'
-              ">
+            <div class="materia-presentacion">
 
-              <span
-                [style.color]="getColorEstado(m.estado)">
-
-                {{ getIconoEstado(m.estado) }}
-
-              </span>
-
-            </div>
-
-            <div class="materia-info">
-
-              <h3 class="materia-nombre">
-                {{ m.nombre }}
-              </h3>
-
-              <span
-                class="materia-estado-badge"
+              <div
+                class="materia-icono-box"
                 [style.background-color]="
                   getColorEstado(m.estado) + '22'
-                "
-                [style.color]="getColorEstado(m.estado)">
+                ">
 
-                {{ getLabelEstado(m.estado) }}
+                <span
+                  [style.color]="getColorEstado(m.estado)">
 
-              </span>
+                  {{ getIconoEstado(m.estado) }}
+
+                </span>
+
+              </div>
+
+
+              <div class="materia-info">
+
+                <span class="materia-etiqueta">
+                  Materia
+                </span>
+
+                <h3 class="materia-nombre">
+                  {{ m.nombre }}
+                </h3>
+
+              </div>
 
             </div>
+
+
+            <span
+              class="materia-estado-badge"
+              [style.background-color]="
+                getColorEstado(m.estado) + '22'
+              "
+              [style.color]="getColorEstado(m.estado)">
+
+              {{ getLabelEstado(m.estado) }}
+
+            </span>
 
           </header>
 
+
+          <!-- INFORMACIÓN DE FECHA -->
 
           <div class="materia-card-contenido">
 
@@ -243,6 +377,7 @@
               </div>
 
             </div>
+
 
             <div
               class="materia-meta materia-meta-vacio"
@@ -269,24 +404,33 @@
           </div>
 
 
+          <!-- ACCIONES -->
+
           <footer class="materia-card-footer">
 
             <button
-              class="btn-editar"
               type="button"
+              class="btn-editar"
               (click)="editarMateria(m)">
 
-              <span>✏️</span>
+              <span aria-hidden="true">
+                ✏️
+              </span>
+
               Editar
 
             </button>
 
+
             <button
-              class="btn-eliminar"
               type="button"
+              class="btn-eliminar"
               (click)="eliminarMateria(m.id)">
 
-              <span>🗑️</span>
+              <span aria-hidden="true">
+                🗑️
+              </span>
+
               Eliminar
 
             </button>
@@ -300,7 +444,9 @@
     </section>
 
 
-    <!-- ESTADO VACÍO -->
+    <!-- ===================================================
+         ESTADO VACÍO
+         =================================================== -->
 
     <section
       class="estado-vacio"
@@ -309,6 +455,11 @@
         materias.length === 0 &&
         !mostrarForm
       ">
+
+      <div
+        class="estado-vacio-decoracion"
+        aria-hidden="true">
+      </div>
 
       <div class="estado-vacio-icono">
         🎓
@@ -327,12 +478,31 @@
         horario o próxima fecha de examen.
       </p>
 
+      <div class="estado-vacio-beneficios">
+
+        <span>
+          ✓ Estado académico
+        </span>
+
+        <span>
+          ✓ Horarios de cursada
+        </span>
+
+        <span>
+          ✓ Fechas de examen
+        </span>
+
+      </div>
+
       <button
-        class="estado-vacio-boton"
         type="button"
+        class="estado-vacio-boton"
         (click)="abrirForm()">
 
-        <span>＋</span>
+        <span aria-hidden="true">
+          ＋
+        </span>
+
         Agregar primera materia
 
       </button>
@@ -342,7 +512,9 @@
   </main>
 
 
-  <!-- FONDO DEL MODAL -->
+  <!-- =====================================================
+       FONDO DEL MODAL
+       ===================================================== -->
 
   <div
     class="form-overlay"
@@ -351,34 +523,61 @@
   </div>
 
 
-  <!-- MODAL -->
+  <!-- =====================================================
+       MODAL
+       ===================================================== -->
 
   <section
     class="form-modal"
     *ngIf="mostrarForm"
     role="dialog"
-    aria-modal="true">
+    aria-modal="true"
+    aria-labelledby="materia-form-titulo">
 
     <header class="form-header">
 
-      <div>
+      <div class="form-presentacion">
 
-        <span class="form-etiqueta">
-          {{ editando ? 'Modificar información' : 'Nueva inscripción' }}
-        </span>
+        <div class="form-icono">
+          {{ editando ? '✏️' : '🎓' }}
+        </div>
 
-        <h3 class="form-titulo">
-          {{ editando ? 'Editar materia' : 'Nueva materia' }}
-        </h3>
+        <div>
+
+          <span class="form-etiqueta">
+
+            {{
+              editando
+                ? 'Modificar información'
+                : 'Nueva inscripción'
+            }}
+
+          </span>
+
+          <h2
+            id="materia-form-titulo"
+            class="form-titulo">
+
+            {{ editando ? 'Editar materia' : 'Nueva materia' }}
+
+          </h2>
+
+          <p class="form-subtitulo">
+            Completá los datos académicos de la materia.
+          </p>
+
+        </div>
 
       </div>
 
+
       <button
-        class="btn-cerrar-modal"
         type="button"
+        class="btn-cerrar-modal"
+        aria-label="Cerrar formulario"
         (click)="cancelar()">
 
-        ×
+        ✕
 
       </button>
 
@@ -386,9 +585,12 @@
 
 
     <form
+      class="materia-form"
       [formGroup]="materiaForm"
       (ngSubmit)="guardarMateria()"
       novalidate>
+
+      <!-- NOMBRE -->
 
       <div class="form-field">
 
@@ -417,6 +619,8 @@
       </div>
 
 
+      <!-- ESTADO -->
+
       <div class="form-field">
 
         <label for="estado">
@@ -428,21 +632,23 @@
           formControlName="estado">
 
           <option value="cursando">
-            Cursando
+            📘 Cursando
           </option>
 
           <option value="regular">
-            Regular — debo final
+            📗 Regular — debo final
           </option>
 
           <option value="a_rendir">
-            A rendir
+            📝 A rendir
           </option>
 
         </select>
 
       </div>
 
+
+      <!-- DÍA Y HORARIO -->
 
       <div
         class="form-field"
@@ -464,6 +670,8 @@
       </div>
 
 
+      <!-- PRÓXIMO LLAMADO -->
+
       <div
         class="form-field"
         *ngIf="
@@ -481,6 +689,8 @@
 
       </div>
 
+
+      <!-- FECHA DE EXAMEN -->
 
       <div
         class="form-field"
@@ -500,14 +710,22 @@
       </div>
 
 
+      <!-- ERROR GENERAL -->
+
       <p
         class="mensaje-error"
         *ngIf="mensajeError">
 
-        ⚠️ {{ mensajeError }}
+        <span aria-hidden="true">
+          ⚠️
+        </span>
+
+        {{ mensajeError }}
 
       </p>
 
+
+      <!-- BOTONES -->
 
       <div class="form-botones">
 
@@ -519,6 +737,7 @@
           Cancelar
 
         </button>
+
 
         <button
           type="submit"

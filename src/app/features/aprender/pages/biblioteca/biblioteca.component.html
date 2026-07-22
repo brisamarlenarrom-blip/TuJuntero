@@ -1,38 +1,192 @@
-<div class="page-wrapper">
+<div class="biblioteca-page">
 
   <!-- =====================================================
-       HERO DEL MÓDULO APRENDER
+       HERO
        ===================================================== -->
 
-  <section class="aprender-hero">
+  <header class="biblioteca-hero">
 
-    <div class="hero-content">
+    <div
+      class="hero-decoracion hero-decoracion-uno"
+      aria-hidden="true">
+    </div>
 
-      <div
-        class="hero-icon"
-        aria-hidden="true">
-        📖
+    <div
+      class="hero-decoracion hero-decoracion-dos"
+      aria-hidden="true">
+    </div>
+
+
+    <div class="hero-superior">
+
+      <div class="hero-presentacion">
+
+        <div
+          class="hero-icono"
+          aria-hidden="true">
+          📚
+        </div>
+
+        <div class="hero-texto">
+
+          <span class="hero-etiqueta">
+            Biblioteca personal
+          </span>
+
+          <h1>
+            Mis lecturas
+          </h1>
+
+          <p>
+            Guardá tus libros, registrá tu progreso,
+            marcá favoritos y escribí tus propias reseñas.
+          </p>
+
+        </div>
+
       </div>
 
-      <div class="hero-text">
 
-        <span class="hero-etiqueta">
-          Módulo de aprendizaje
-        </span>
+      <div class="hero-acciones">
 
-        <h1 class="aprender-titulo">
-          Aprender
-        </h1>
+        <button
+          type="button"
+          class="btn-hero-biblia"
+          [disabled]="cargandoBiblia"
+          (click)="cargarBibliotecaBiblica()">
 
-        <p class="hero-subtitulo">
-          Organizá tus materias, tareas y lecturas
-          para seguir creciendo cada día.
-        </p>
+          <span aria-hidden="true">
+            {{ cargandoBiblia ? '⏳' : '📖' }}
+          </span>
+
+          {{
+            cargandoBiblia
+              ? 'Cargando Biblia...'
+              : 'Biblioteca bíblica'
+          }}
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn-hero-agregar"
+          (click)="abrirForm()">
+
+          <span aria-hidden="true">
+            ＋
+          </span>
+
+          Agregar libro
+
+        </button>
 
       </div>
 
     </div>
 
+
+    <!-- RESUMEN DEL HERO -->
+
+    <div
+      class="hero-resumen"
+      aria-label="Resumen de biblioteca">
+
+      <article class="hero-stat">
+
+        <span
+          class="hero-stat-icono"
+          aria-hidden="true">
+          📚
+        </span>
+
+        <div>
+
+          <span class="hero-stat-label">
+            Libros
+          </span>
+
+          <strong>
+            {{ totalLibros }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="hero-stat">
+
+        <span
+          class="hero-stat-icono"
+          aria-hidden="true">
+          ⭐
+        </span>
+
+        <div>
+
+          <span class="hero-stat-label">
+            Favoritos
+          </span>
+
+          <strong>
+            {{ librosFavoritos }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="hero-stat">
+
+        <span
+          class="hero-stat-icono"
+          aria-hidden="true">
+          👁️
+        </span>
+
+        <div>
+
+          <span class="hero-stat-label">
+            Leyendo
+          </span>
+
+          <strong>
+            {{ librosLeyendo }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="hero-stat">
+
+        <span
+          class="hero-stat-icono"
+          aria-hidden="true">
+          ✅
+        </span>
+
+        <div>
+
+          <span class="hero-stat-label">
+            Leídos
+          </span>
+
+          <strong>
+            {{ librosLeidos }}
+          </strong>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- NAVEGACIÓN -->
 
     <nav
       class="aprender-tabs"
@@ -55,6 +209,7 @@
 
       </a>
 
+
       <a
         routerLink="/aprender/tareas"
         routerLinkActive="tab-activo"
@@ -71,6 +226,7 @@
         </span>
 
       </a>
+
 
       <a
         routerLink="/aprender/biblioteca"
@@ -91,35 +247,34 @@
 
     </nav>
 
-  </section>
+  </header>
 
 
   <!-- =====================================================
-       CONTENIDO DE BIBLIOTECA
+       CONTENIDO
        ===================================================== -->
 
-  <main class="biblioteca-wrapper">
+  <main class="biblioteca-contenido">
 
+    <!-- ===================================================
+         PRESENTACIÓN
+         =================================================== -->
 
-    <!-- =====================================================
-         PRESENTACIÓN PRINCIPAL
-         ===================================================== -->
+    <section class="presentacion-card">
 
-    <section class="biblioteca-presentacion">
+      <div class="presentacion-texto">
 
-      <div class="presentacion-contenido">
-
-        <span class="presentacion-etiqueta">
-          Biblioteca personal
+        <span class="seccion-etiqueta">
+          Seguimiento de lectura
         </span>
 
-        <h2 class="presentacion-titulo">
-          Mis lecturas
+        <h2>
+          Administrá tu biblioteca
         </h2>
 
-        <p class="presentacion-descripcion">
-          Guardá tus libros, registrá tu progreso de lectura,
-          marcá favoritos y escribí tus propias reseñas.
+        <p>
+          Agregá libros personales o cargá la biblioteca bíblica.
+          Después podés actualizar el estado, puntuación y reseña.
         </p>
 
       </div>
@@ -145,6 +300,7 @@
 
         </button>
 
+
         <button
           type="button"
           class="btn-agregar-principal"
@@ -163,9 +319,9 @@
     </section>
 
 
-    <!-- =====================================================
-         MENSAJES GENERALES
-         ===================================================== -->
+    <!-- ===================================================
+         MENSAJES
+         =================================================== -->
 
     <p
       class="mensaje-biblioteca mensaje-exito"
@@ -180,8 +336,9 @@
 
     </p>
 
+
     <p
-      class="mensaje-error"
+      class="mensaje-error mensaje-error-listado"
       *ngIf="mensajeError && !mostrarForm"
       role="alert">
 
@@ -194,9 +351,9 @@
     </p>
 
 
-    <!-- =====================================================
+    <!-- ===================================================
          ESTADÍSTICAS
-         ===================================================== -->
+         =================================================== -->
 
     <section
       class="stats-grid"
@@ -205,11 +362,7 @@
       <article class="stat-item stat-violeta">
 
         <div class="stat-icono-box">
-          <span
-            class="stat-icono"
-            aria-hidden="true">
-            📚
-          </span>
+          📚
         </div>
 
         <div class="stat-contenido">
@@ -234,11 +387,7 @@
       <article class="stat-item stat-amarillo">
 
         <div class="stat-icono-box">
-          <span
-            class="stat-icono"
-            aria-hidden="true">
-            ⭐
-          </span>
+          ⭐
         </div>
 
         <div class="stat-contenido">
@@ -263,11 +412,7 @@
       <article class="stat-item stat-azul">
 
         <div class="stat-icono-box">
-          <span
-            class="stat-icono"
-            aria-hidden="true">
-            👁️
-          </span>
+          👁️
         </div>
 
         <div class="stat-contenido">
@@ -292,11 +437,7 @@
       <article class="stat-item stat-verde">
 
         <div class="stat-icono-box">
-          <span
-            class="stat-icono"
-            aria-hidden="true">
-            ✅
-          </span>
+          ✅
         </div>
 
         <div class="stat-contenido">
@@ -320,20 +461,20 @@
     </section>
 
 
-    <!-- =====================================================
-         LISTADO DE LIBROS
-         ===================================================== -->
+    <!-- ===================================================
+         LISTADO
+         =================================================== -->
 
     <section
-      class="seccion-card"
+      class="biblioteca-seccion"
       aria-labelledby="titulo-mis-libros">
 
-      <header class="seccion-header seccion-header-listado">
+      <header class="seccion-header">
 
         <div class="seccion-header-texto">
 
           <span class="seccion-etiqueta">
-            Seguimiento de lectura
+            Biblioteca personal
           </span>
 
           <h2
@@ -351,7 +492,7 @@
         </div>
 
 
-        <!-- Filtros -->
+        <!-- FILTROS -->
 
         <div
           class="filtros"
@@ -365,13 +506,16 @@
             [attr.aria-pressed]="filtroActivo === 'todos'"
             (click)="setFiltro('todos')">
 
-            Todos
+            <span>
+              Todos
+            </span>
 
             <span class="filtro-contador">
               {{ totalLibros }}
             </span>
 
           </button>
+
 
           <button
             type="button"
@@ -380,13 +524,16 @@
             [attr.aria-pressed]="filtroActivo === 'quiero_leer'"
             (click)="setFiltro('quiero_leer')">
 
-            Quiero leer
+            <span>
+              Quiero leer
+            </span>
 
             <span class="filtro-contador">
               {{ librosQuieroLeer }}
             </span>
 
           </button>
+
 
           <button
             type="button"
@@ -395,13 +542,16 @@
             [attr.aria-pressed]="filtroActivo === 'favoritos'"
             (click)="setFiltro('favoritos')">
 
-            Favoritos
+            <span>
+              Favoritos
+            </span>
 
             <span class="filtro-contador">
               {{ librosFavoritos }}
             </span>
 
           </button>
+
 
           <button
             type="button"
@@ -410,13 +560,16 @@
             [attr.aria-pressed]="filtroActivo === 'leyendo'"
             (click)="setFiltro('leyendo')">
 
-            Leyendo
+            <span>
+              Leyendo
+            </span>
 
             <span class="filtro-contador">
               {{ librosLeyendo }}
             </span>
 
           </button>
+
 
           <button
             type="button"
@@ -425,7 +578,9 @@
             [attr.aria-pressed]="filtroActivo === 'leido'"
             (click)="setFiltro('leido')">
 
-            Leídos
+            <span>
+              Leídos
+            </span>
 
             <span class="filtro-contador">
               {{ librosLeidos }}
@@ -438,9 +593,7 @@
       </header>
 
 
-      <!-- =====================================================
-           ESTADO DE CARGA
-           ===================================================== -->
+      <!-- ESTADO DE CARGA -->
 
       <div
         class="estado-cargando"
@@ -467,9 +620,9 @@
       </div>
 
 
-      <!-- =====================================================
+      <!-- =================================================
            GRID DE LIBROS
-           ===================================================== -->
+           ================================================= -->
 
       <div
         class="libros-grid"
@@ -485,25 +638,42 @@
             trackBy: trackByLibroId
           ">
 
-          <!-- Encabezado -->
+          <!-- ENCABEZADO -->
 
           <header class="libro-card-header">
 
-            <div
-              class="libro-icono-box"
-              [style.background-color]="
-                getColorEstado(libro.estadoLectura) + '22'
-              "
-              aria-hidden="true">
+            <div class="libro-presentacion">
 
-              <span
-                [style.color]="
-                  getColorEstado(libro.estadoLectura)
-                ">
+              <div
+                class="libro-icono-box"
+                [style.background-color]="
+                  getColorEstado(libro.estadoLectura) + '22'
+                "
+                aria-hidden="true">
 
-                {{ getIconoEstado(libro.estadoLectura) }}
+                <span
+                  [style.color]="
+                    getColorEstado(libro.estadoLectura)
+                  ">
 
-              </span>
+                  {{ getIconoEstado(libro.estadoLectura) }}
+
+                </span>
+
+              </div>
+
+
+              <div class="libro-card-titulo">
+
+                <span class="libro-etiqueta">
+                  Lectura
+                </span>
+
+                <h3 class="libro-titulo">
+                  {{ libro.titulo }}
+                </h3>
+
+              </div>
 
             </div>
 
@@ -536,13 +706,9 @@
           </header>
 
 
-          <!-- Información principal -->
+          <!-- INFORMACIÓN -->
 
           <div class="libro-info">
-
-            <h3 class="libro-titulo">
-              {{ libro.titulo }}
-            </h3>
 
             <p class="libro-autor">
 
@@ -554,6 +720,7 @@
 
             </p>
 
+
             <p
               class="libro-testamento"
               *ngIf="libro.testamento">
@@ -562,6 +729,7 @@
 
             </p>
 
+
             <p
               class="libro-resenia"
               *ngIf="libro.resenia">
@@ -569,6 +737,7 @@
               {{ libro.resenia }}
 
             </p>
+
 
             <p
               class="libro-resenia libro-resenia-vacia"
@@ -581,13 +750,22 @@
           </div>
 
 
-          <!-- Puntuación -->
+          <!-- PUNTUACIÓN -->
 
           <div class="libro-puntuacion">
 
-            <span class="puntuacion-label">
-              Puntuación
-            </span>
+            <div>
+
+              <span class="puntuacion-icono">
+                ⭐
+              </span>
+
+              <span class="puntuacion-label">
+                Puntuación
+              </span>
+
+            </div>
+
 
             <div
               class="libro-estrellas"
@@ -600,9 +778,13 @@
 
             </div>
 
+
             <span
               class="sin-puntuacion"
-              *ngIf="!libro.puntuacion || libro.puntuacion === 0">
+              *ngIf="
+                !libro.puntuacion ||
+                libro.puntuacion === 0
+              ">
 
               Sin puntuación
 
@@ -611,17 +793,28 @@
           </div>
 
 
-          <!-- Estado -->
+          <!-- CAMBIO DE ESTADO -->
 
           <div class="libro-meta">
 
-            <label
-              class="estado-label"
-              [for]="'estado-' + libro.id">
+            <div class="estado-presentacion">
 
-              Cambiar estado de lectura
+              <span
+                class="estado-icono"
+                aria-hidden="true">
+                🔄
+              </span>
 
-            </label>
+              <label
+                class="estado-label"
+                [for]="'estado-' + libro.id">
+
+                Cambiar estado
+
+              </label>
+
+            </div>
+
 
             <select
               class="estado-select"
@@ -652,7 +845,7 @@
           </div>
 
 
-          <!-- Acciones rápidas -->
+          <!-- ACCIONES RÁPIDAS -->
 
           <div class="acciones-rapidas">
 
@@ -672,11 +865,7 @@
                 {{ libro.favorito ? '⭐' : '☆' }}
               </span>
 
-              {{
-                libro.favorito
-                  ? 'Favorito'
-                  : 'Favorito'
-              }}
+              Favorito
 
             </button>
 
@@ -727,7 +916,7 @@
           </div>
 
 
-          <!-- Acciones de administración -->
+          <!-- ADMINISTRACIÓN -->
 
           <footer class="libro-card-footer">
 
@@ -750,6 +939,7 @@
               Editar
 
             </button>
+
 
             <button
               type="button"
@@ -785,9 +975,9 @@
       </div>
 
 
-      <!-- =====================================================
+      <!-- =================================================
            ESTADO VACÍO
-           ===================================================== -->
+           ================================================= -->
 
       <div
         class="estado-vacio"
@@ -796,6 +986,11 @@
           librosFiltrados.length === 0 &&
           !mostrarForm
         ">
+
+        <div
+          class="estado-vacio-decoracion"
+          aria-hidden="true">
+        </div>
 
         <div
           class="estado-vacio-icono"
@@ -835,6 +1030,25 @@
 
 
         <div
+          class="estado-vacio-beneficios"
+          *ngIf="filtroActivo === 'todos'">
+
+          <span>
+            ✓ Seguimiento de lectura
+          </span>
+
+          <span>
+            ✓ Favoritos
+          </span>
+
+          <span>
+            ✓ Reseñas personales
+          </span>
+
+        </div>
+
+
+        <div
           class="estado-vacio-acciones"
           *ngIf="filtroActivo === 'todos'">
 
@@ -847,6 +1061,7 @@
             📖 Cargar Biblia
 
           </button>
+
 
           <button
             type="button"
@@ -863,31 +1078,41 @@
 
     </section>
 
-
-    <!-- =====================================================
-         FONDO DEL MODAL
-         ===================================================== -->
-
-    <div
-      class="form-overlay"
-      *ngIf="mostrarForm"
-      (click)="cancelar()"
-      aria-hidden="true">
-    </div>
+  </main>
 
 
-    <!-- =====================================================
-         MODAL PARA CREAR O EDITAR UN LIBRO
-         ===================================================== -->
+  <!-- =====================================================
+       FONDO DEL MODAL
+       ===================================================== -->
 
-    <section
-      class="form-modal"
-      *ngIf="mostrarForm"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="titulo-formulario-libro">
+  <div
+    class="form-overlay"
+    *ngIf="mostrarForm"
+    (click)="cancelar()"
+    aria-hidden="true">
+  </div>
 
-      <header class="form-header">
+
+  <!-- =====================================================
+       MODAL
+       ===================================================== -->
+
+  <section
+    class="form-modal"
+    *ngIf="mostrarForm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="titulo-formulario-libro">
+
+    <header class="form-header">
+
+      <div class="form-presentacion">
+
+        <div class="form-icono">
+
+          {{ editando ? '✏️' : '📚' }}
+
+        </div>
 
         <div>
 
@@ -925,277 +1150,275 @@
 
         </div>
 
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-cerrar-modal"
+        aria-label="Cerrar formulario"
+        [disabled]="guardando"
+        (click)="cancelar()">
+
+        ✕
+
+      </button>
+
+    </header>
+
+
+    <form
+      class="libro-form"
+      [formGroup]="libroForm"
+      (ngSubmit)="guardarLibro()"
+      novalidate>
+
+      <!-- TÍTULO -->
+
+      <div class="form-field form-field-completo">
+
+        <label for="titulo-libro">
+          Título
+        </label>
+
+        <input
+          id="titulo-libro"
+          type="text"
+          formControlName="titulo"
+          placeholder="Ejemplo: El hombre en busca de sentido"
+          maxlength="120"
+          autocomplete="off">
+
+        <small
+          class="campo-ayuda"
+          *ngIf="
+            libroForm.controls.titulo.untouched ||
+            libroForm.controls.titulo.valid
+          ">
+
+          Ingresá el nombre completo del libro.
+
+        </small>
+
+        <small
+          class="campo-error"
+          *ngIf="
+            libroForm.controls.titulo.touched &&
+            libroForm.controls.titulo.hasError('required')
+          ">
+
+          El título es obligatorio.
+
+        </small>
+
+        <small
+          class="campo-error"
+          *ngIf="
+            libroForm.controls.titulo.touched &&
+            libroForm.controls.titulo.hasError('minlength')
+          ">
+
+          El título debe tener al menos 2 caracteres.
+
+        </small>
+
+        <small
+          class="campo-error"
+          *ngIf="
+            libroForm.controls.titulo.touched &&
+            libroForm.controls.titulo.hasError('maxlength')
+          ">
+
+          El título no puede superar los 120 caracteres.
+
+        </small>
+
+      </div>
+
+
+      <!-- AUTOR -->
+
+      <div class="form-field form-field-completo">
+
+        <label for="autor-libro">
+          Autor
+        </label>
+
+        <input
+          id="autor-libro"
+          type="text"
+          formControlName="autor"
+          placeholder="Ejemplo: Viktor Frankl"
+          maxlength="100"
+          autocomplete="off">
+
+        <small
+          class="campo-error"
+          *ngIf="
+            libroForm.controls.autor.touched &&
+            libroForm.controls.autor.hasError('maxlength')
+          ">
+
+          El autor no puede superar los 100 caracteres.
+
+        </small>
+
+      </div>
+
+
+      <!-- ESTADO -->
+
+      <div class="form-field">
+
+        <label for="estado-lectura">
+          Estado de lectura
+        </label>
+
+        <select
+          id="estado-lectura"
+          formControlName="estadoLectura">
+
+          <option value="quiero_leer">
+            📚 Quiero leer
+          </option>
+
+          <option value="leyendo">
+            👁️ Leyendo
+          </option>
+
+          <option value="leido">
+            ✅ Leído
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- PUNTUACIÓN -->
+
+      <div class="form-field">
+
+        <label for="puntuacion-libro">
+          Puntuación
+        </label>
+
+        <select
+          id="puntuacion-libro"
+          formControlName="puntuacion">
+
+          <option [ngValue]="0">
+            Sin puntuación
+          </option>
+
+          <option [ngValue]="1">
+            ⭐
+          </option>
+
+          <option [ngValue]="2">
+            ⭐⭐
+          </option>
+
+          <option [ngValue]="3">
+            ⭐⭐⭐
+          </option>
+
+          <option [ngValue]="4">
+            ⭐⭐⭐⭐
+          </option>
+
+          <option [ngValue]="5">
+            ⭐⭐⭐⭐⭐
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- RESEÑA -->
+
+      <div class="form-field form-field-completo">
+
+        <label for="resenia-libro">
+          Reseña personal
+        </label>
+
+        <textarea
+          id="resenia-libro"
+          formControlName="resenia"
+          rows="5"
+          maxlength="1000"
+          placeholder="Contá brevemente qué te pareció el libro.">
+        </textarea>
+
+        <small class="campo-ayuda">
+          Podés escribir una opinión, reflexión o enseñanza.
+        </small>
+
+        <small
+          class="campo-error"
+          *ngIf="
+            libroForm.controls.resenia.touched &&
+            libroForm.controls.resenia.hasError('maxlength')
+          ">
+
+          La reseña no puede superar los 1000 caracteres.
+
+        </small>
+
+      </div>
+
+
+      <!-- ERROR -->
+
+      <p
+        class="mensaje-error form-field-completo"
+        *ngIf="mensajeError"
+        role="alert">
+
+        <span aria-hidden="true">
+          ⚠️
+        </span>
+
+        {{ mensajeError }}
+
+      </p>
+
+
+      <!-- BOTONES -->
+
+      <div class="form-botones form-field-completo">
 
         <button
           type="button"
-          class="btn-cerrar-modal"
-          aria-label="Cerrar formulario"
-          [disabled]="guardando"
-          (click)="cancelar()">
+          class="btn-cancelar"
+          (click)="cancelar()"
+          [disabled]="guardando">
 
-          ×
+          Cancelar
 
         </button>
 
-      </header>
 
+        <button
+          type="submit"
+          class="btn-guardar"
+          [disabled]="libroForm.invalid || guardando">
 
-      <form
-        [formGroup]="libroForm"
-        (ngSubmit)="guardarLibro()"
-        novalidate>
+          {{
+            guardando
+              ? 'Guardando...'
+              : editando
+                ? 'Guardar cambios'
+                : 'Agregar libro'
+          }}
 
+        </button>
 
-        <!-- Título -->
+      </div>
 
-        <div class="form-field">
+    </form>
 
-          <label for="titulo-libro">
-            Título
-          </label>
+  </section>
 
-          <input
-            id="titulo-libro"
-            type="text"
-            formControlName="titulo"
-            placeholder="Ejemplo: El hombre en busca de sentido"
-            maxlength="120"
-            autocomplete="off">
-
-          <small
-            class="campo-ayuda"
-            *ngIf="
-              libroForm.controls.titulo.untouched ||
-              libroForm.controls.titulo.valid
-            ">
-
-            Ingresá el nombre completo del libro.
-
-          </small>
-
-          <small
-            class="campo-error"
-            *ngIf="
-              libroForm.controls.titulo.touched &&
-              libroForm.controls.titulo.hasError('required')
-            ">
-
-            El título es obligatorio.
-
-          </small>
-
-          <small
-            class="campo-error"
-            *ngIf="
-              libroForm.controls.titulo.touched &&
-              libroForm.controls.titulo.hasError('minlength')
-            ">
-
-            El título debe tener al menos 2 caracteres.
-
-          </small>
-
-          <small
-            class="campo-error"
-            *ngIf="
-              libroForm.controls.titulo.touched &&
-              libroForm.controls.titulo.hasError('maxlength')
-            ">
-
-            El título no puede superar los 120 caracteres.
-
-          </small>
-
-        </div>
-
-
-        <!-- Autor -->
-
-        <div class="form-field">
-
-          <label for="autor-libro">
-            Autor
-          </label>
-
-          <input
-            id="autor-libro"
-            type="text"
-            formControlName="autor"
-            placeholder="Ejemplo: Viktor Frankl"
-            maxlength="100"
-            autocomplete="off">
-
-          <small
-            class="campo-error"
-            *ngIf="
-              libroForm.controls.autor.touched &&
-              libroForm.controls.autor.hasError('maxlength')
-            ">
-
-            El autor no puede superar los 100 caracteres.
-
-          </small>
-
-        </div>
-
-
-        <!-- Estado y puntuación -->
-
-        <div class="form-row">
-
-          <div class="form-field">
-
-            <label for="estado-lectura">
-              Estado de lectura
-            </label>
-
-            <select
-              id="estado-lectura"
-              formControlName="estadoLectura">
-
-              <option value="quiero_leer">
-                📚 Quiero leer
-              </option>
-
-              <option value="leyendo">
-                👁️ Leyendo
-              </option>
-
-              <option value="leido">
-                ✅ Leído
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-field">
-
-            <label for="puntuacion-libro">
-              Puntuación
-            </label>
-
-            <select
-              id="puntuacion-libro"
-              formControlName="puntuacion">
-
-              <option [ngValue]="0">
-                Sin puntuación
-              </option>
-
-              <option [ngValue]="1">
-                ⭐
-              </option>
-
-              <option [ngValue]="2">
-                ⭐⭐
-              </option>
-
-              <option [ngValue]="3">
-                ⭐⭐⭐
-              </option>
-
-              <option [ngValue]="4">
-                ⭐⭐⭐⭐
-              </option>
-
-              <option [ngValue]="5">
-                ⭐⭐⭐⭐⭐
-              </option>
-
-            </select>
-
-          </div>
-
-        </div>
-
-
-        <!-- Reseña -->
-
-        <div class="form-field">
-
-          <label for="resenia-libro">
-            Reseña personal
-          </label>
-
-          <textarea
-            id="resenia-libro"
-            formControlName="resenia"
-            rows="5"
-            maxlength="1000"
-            placeholder="Contá brevemente qué te pareció el libro.">
-          </textarea>
-
-          <small class="campo-ayuda">
-            Podés escribir una opinión, reflexión o enseñanza.
-          </small>
-
-          <small
-            class="campo-error"
-            *ngIf="
-              libroForm.controls.resenia.touched &&
-              libroForm.controls.resenia.hasError('maxlength')
-            ">
-
-            La reseña no puede superar los 1000 caracteres.
-
-          </small>
-
-        </div>
-
-
-        <!-- Error general -->
-
-        <p
-          class="mensaje-error"
-          *ngIf="mensajeError"
-          role="alert">
-
-          <span aria-hidden="true">
-            ⚠️
-          </span>
-
-          {{ mensajeError }}
-
-        </p>
-
-
-        <!-- Botones -->
-
-        <div class="form-botones">
-
-          <button
-            type="button"
-            class="btn-cancelar"
-            (click)="cancelar()"
-            [disabled]="guardando">
-
-            Cancelar
-
-          </button>
-
-          <button
-            type="submit"
-            class="btn-guardar"
-            [disabled]="libroForm.invalid || guardando">
-
-            {{
-              guardando
-                ? 'Guardando...'
-                : editando
-                  ? 'Guardar cambios'
-                  : 'Agregar libro'
-            }}
-
-          </button>
-
-        </div>
-
-      </form>
-
-    </section>
-
-  </main>
-
-</div>

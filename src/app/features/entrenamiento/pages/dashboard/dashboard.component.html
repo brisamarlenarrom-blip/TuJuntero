@@ -1,499 +1,968 @@
-<div class="entrenamiento-container">
+<div class="entrenamiento-page">
 
-  <!-- ───────────────────────────────────────────── -->
-  <!-- HERO + NAVEGACIÓN -->
-  <!-- ───────────────────────────────────────────── -->
+  <!-- =====================================================
+       HERO PRINCIPAL
+       ===================================================== -->
 
-  <div class="entrenamiento-hero">
+  <header class="entrenamiento-hero">
 
-    <div class="hero-content">
+    <div
+      class="hero-decoracion hero-decoracion-uno"
+      aria-hidden="true">
+    </div>
 
-      <div class="hero-icon">
-        🏋️
+    <div
+      class="hero-decoracion hero-decoracion-dos"
+      aria-hidden="true">
+    </div>
+
+    <div class="hero-superior">
+
+      <div class="hero-presentacion">
+
+        <div
+          class="hero-icono"
+          aria-hidden="true">
+          🏋️
+        </div>
+
+        <div class="hero-texto">
+
+          <span class="hero-etiqueta">
+            Movimiento y bienestar
+          </span>
+
+          <h1>
+            Entrenamiento
+          </h1>
+
+          <p>
+            Explorá ejercicios, registrá tus entrenamientos
+            y creá rutinas adaptadas a tus objetivos.
+          </p>
+
+        </div>
+
       </div>
 
-      <div class="hero-text">
 
-        <h1 class="hero-titulo">
-          Entrenamiento
-        </h1>
+      <!-- RESUMEN SUPERIOR -->
 
-        <p class="hero-subtitulo">
-          Explorá ejercicios creados por mentores<br>
-          o generá una rutina adaptada a tus objetivos.
-        </p>
+      <div class="hero-estadisticas">
+
+        <article class="hero-stat">
+
+          <span
+            class="hero-stat-icono"
+            aria-hidden="true">
+            📋
+          </span>
+
+          <div>
+
+            <span class="hero-stat-label">
+              Rutinas
+            </span>
+
+            <strong>
+              {{ totalRutinas }}
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <article class="hero-stat">
+
+          <span
+            class="hero-stat-icono"
+            aria-hidden="true">
+            🏋️
+          </span>
+
+          <div>
+
+            <span class="hero-stat-label">
+              Entrenos hoy
+            </span>
+
+            <strong>
+              {{ entrenamientosHoy }}
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <article class="hero-stat">
+
+          <span
+            class="hero-stat-icono"
+            aria-hidden="true">
+            ✅
+          </span>
+
+          <div>
+
+            <span class="hero-stat-label">
+              Activas
+            </span>
+
+            <strong>
+              {{ rutinasActivas }}
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <article class="hero-stat">
+
+          <span
+            class="hero-stat-icono"
+            aria-hidden="true">
+            🔥
+          </span>
+
+          <div>
+
+            <span class="hero-stat-label">
+              Racha
+            </span>
+
+            <strong>
+              {{ rachaEntrenamiento }}
+            </strong>
+
+          </div>
+
+        </article>
 
       </div>
 
     </div>
 
-    <!-- Navegación principal del módulo -->
-    <nav class="entrenamiento-tabs">
+
+    <!-- NAVEGACIÓN DEL MÓDULO -->
+
+    <nav
+      class="entrenamiento-tabs"
+      aria-label="Secciones de Entrenamiento">
 
       <a
         routerLink="rutinas"
         routerLinkActive="tab-activo"
         class="tab-item">
 
-        <span class="tab-icono">📋</span>
-        Mis Rutinas
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          📋
+        </span>
+
+        <span>
+          Mis rutinas
+        </span>
 
       </a>
+
 
       <a
         routerLink="bitacora"
         routerLinkActive="tab-activo"
         class="tab-item">
 
-        <span class="tab-icono">📊</span>
-        Bitácora
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          📊
+        </span>
+
+        <span>
+          Bitácora
+        </span>
 
       </a>
 
     </nav>
 
-  </div>
+  </header>
 
-  <!-- ───────────────────────────────────────────── -->
-  <!-- ACCESO PARA MENTOR O ADMINISTRADOR -->
-  <!-- ───────────────────────────────────────────── -->
 
-  <div
-    class="mentor-card"
-    *ngIf="puedeGestionarEjercicios">
+  <!-- =====================================================
+       CONTENIDO PRINCIPAL
+       ===================================================== -->
 
-    <div class="mentor-card-info">
+  <main class="entrenamiento-contenido">
 
-      <div class="mentor-icono">
-        🧑‍🏫
-      </div>
 
-      <div class="mentor-texto">
+    <!-- ===================================================
+         ACCIONES RÁPIDAS
+         =================================================== -->
 
-        <h2 class="mentor-titulo">
-          Gestión de ejercicios
-        </h2>
+    <section class="seccion-card acciones-section">
 
-        <p class="mentor-subtitulo">
-          Cargá ejercicios de Fuerza, Cardio, Movilidad o HIIT para que el sistema pueda utilizarlos.
-        </p>
+      <header class="seccion-header">
 
-      </div>
+        <div>
 
-    </div>
-
-    <button
-      type="button"
-      class="btn-administrar"
-      (click)="administrarEjercicios()">
-
-      + Agregar ejercicio
-
-    </button>
-
-  </div>
-
-  <!-- ───────────────────────────────────────────── -->
-  <!-- BUSCADOR -->
-  <!-- ───────────────────────────────────────────── -->
-
-  <div class="busqueda-card">
-
-    <div class="busqueda-input">
-
-      <span class="busqueda-icono">
-        🔍
-      </span>
-
-      <input
-        type="text"
-        placeholder="Buscar ejercicios, grupos musculares..."
-        [(ngModel)]="busqueda"
-        (input)="aplicarFiltro()">
-
-    </div>
-
-  </div>
-
-  <!-- ───────────────────────────────────────────── -->
-  <!-- CATEGORÍAS -->
-  <!-- ───────────────────────────────────────────── -->
-
-  <div class="categorias-grid">
-
-    <button
-      type="button"
-      *ngFor="let cat of categorias"
-      class="categoria-btn"
-      [class.categoria-activa]="categoriaActiva === cat.valor"
-      (click)="setCategoria(cat.valor)">
-
-      <span class="cat-icono">
-        {{ cat.icono }}
-      </span>
-
-      <span class="cat-label">
-        {{ cat.label }}
-      </span>
-
-    </button>
-
-  </div>
-
-  <!-- ───────────────────────────────────────────── -->
-  <!-- PROGRESO DEL USUARIO -->
-  <!-- ───────────────────────────────────────────── -->
-
-  <div class="seccion-card">
-
-    <h2 class="seccion-titulo">
-      Tu progreso
-    </h2>
-
-    <div class="stats-grid">
-
-      <!-- Rutinas guardadas -->
-
-      <div class="stat-card stat-violeta">
-
-        <span class="stat-icono">
-          📋
-        </span>
-
-        <div class="stat-info">
-
-          <span class="stat-numero">
-            {{ totalRutinas }}
+          <span class="seccion-etiqueta">
+            Organizá tu actividad
           </span>
 
-          <span class="stat-label">
-            Rutinas guardadas
-          </span>
+          <h2>
+            ¿Qué querés hacer hoy?
+          </h2>
+
+          <p>
+            Accedé rápidamente a las herramientas principales
+            del módulo de entrenamiento.
+          </p>
 
         </div>
 
-      </div>
+      </header>
 
-      <!-- Entrenamientos realizados hoy -->
 
-      <div class="stat-card stat-azul">
+      <div class="acciones-grid">
 
-        <span class="stat-icono">
-          🏋️
-        </span>
+        <!-- MIS RUTINAS -->
 
-        <div class="stat-info">
+        <a
+          routerLink="rutinas"
+          class="accion-card accion-destacada">
 
-          <span class="stat-numero">
-            {{ entrenamientosHoy }}
-          </span>
-
-          <span class="stat-label">
-            Entrenos hoy
-          </span>
-
-        </div>
-
-      </div>
-
-      <!-- Rutinas activas -->
-
-      <div class="stat-card stat-verde">
-
-        <span class="stat-icono">
-          ✅
-        </span>
-
-        <div class="stat-info">
-
-          <span class="stat-numero">
-            {{ rutinasActivas }}
-          </span>
-
-          <span class="stat-label">
-            Rutinas activas
-          </span>
-
-        </div>
-
-      </div>
-
-      <!-- Racha -->
-
-      <div class="stat-card stat-naranja">
-
-        <span class="stat-icono">
-          🔥
-        </span>
-
-        <div class="stat-info">
-
-          <span class="stat-numero">
-            {{ rachaEntrenamiento }}
-          </span>
-
-          <span class="stat-label">
-            Días de racha
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- ───────────────────────────────────────────── -->
-  <!-- EJERCICIOS PUBLICADOS POR MENTORES -->
-  <!-- ───────────────────────────────────────────── -->
-
-  <div class="seccion-card">
-
-    <div class="seccion-header">
-
-      <div>
-
-        <h2 class="seccion-titulo">
-          {{ getIconoCategoria(categoriaActiva) }}
-          Ejercicios de {{ getCategoriaLabel() }}
-        </h2>
-
-        <p class="seccion-subtitulo">
-          Ejercicios publicados por mentores.
-        </p>
-
-      </div>
-
-    </div>
-
-    <!-- Lista de ejercicios -->
-
-    <div
-      class="ejercicio-row"
-      *ngFor="let ejercicio of ejerciciosFiltrados">
-
-      <div class="ejercicio-icono-box">
-
-        {{ getIconoCategoria(ejercicio.categoria) }}
-
-      </div>
-
-      <div class="ejercicio-info">
-
-        <span class="ejercicio-nombre">
-          {{ ejercicio.nombre }}
-        </span>
-
-        <span
-          class="ejercicio-descripcion"
-          *ngIf="ejercicio.descripcion">
-
-          {{ ejercicio.descripcion }}
-
-        </span>
-
-        <div class="ejercicio-meta">
-
-          <span *ngIf="ejercicio.nivel">
-            🌱 {{ ejercicio.nivel }}
-          </span>
-
-          <span *ngIf="ejercicio.grupoMuscular">
-            💪 {{ ejercicio.grupoMuscular }}
-          </span>
-
-          <span *ngIf="ejercicio.equipamiento">
-            🏋️ {{ ejercicio.equipamiento }}
-          </span>
-
-        </div>
-
-        <span
-          class="ejercicio-mentor"
-          *ngIf="ejercicio.nombreMentor">
-
-          🌟 Publicado por {{ ejercicio.nombreMentor }}
-
-        </span>
-
-      </div>
-
-      <div class="ejercicio-detalle">
-
-        <span *ngIf="ejercicio.series">
-          {{ ejercicio.series }} series
-        </span>
-
-        <span *ngIf="ejercicio.repeticiones">
-          {{ ejercicio.repeticiones }}
-        </span>
-
-        <span *ngIf="ejercicio.descanso">
-          {{ ejercicio.descanso }}
-        </span>
-
-      </div>
-
-    </div>
-
-    <!-- Estado vacío -->
-
-    <div
-      class="empty-mini"
-      *ngIf="ejerciciosFiltrados.length === 0">
-
-      <span class="empty-icono">
-        🏋️
-      </span>
-
-      <p class="empty-titulo">
-        Todavía no hay ejercicios de {{ getCategoriaLabel() }}.
-      </p>
-
-      <p
-        class="empty-subtitulo"
-        *ngIf="puedeGestionarEjercicios">
-
-        Podés cargar el primer ejercicio desde Gestión de ejercicios.
-
-      </p>
-
-    </div>
-
-  </div>
-
-  <!-- ───────────────────────────────────────────── -->
-  <!-- RUTINAS PERSONALES -->
-  <!-- ───────────────────────────────────────────── -->
-
-  <div
-    class="seccion-card"
-    *ngIf="rutinas.length > 0">
-
-    <div class="seccion-header">
-
-      <h2 class="seccion-titulo">
-        Mis rutinas
-      </h2>
-
-      <a
-        routerLink="rutinas"
-        class="ver-todas">
-
-        Ver todas
-
-      </a>
-
-    </div>
-
-    <div
-      class="rutina-row"
-      *ngFor="let rutina of rutinas">
-
-      <div
-        class="rutina-icono-box"
-        [style.background-color]="getColorEstado(rutina.estado) + '22'">
-
-        <span [style.color]="getColorEstado(rutina.estado)">
-          💪
-        </span>
-
-      </div>
-
-      <div class="rutina-info">
-
-        <span class="rutina-nombre">
-          {{ rutina.nombre }}
-        </span>
-
-        <span
-          class="rutina-sub"
-          *ngIf="rutina.nivel">
-
-          {{ rutina.nivel }}
-
-        </span>
-
-        <div
-          class="barra-fondo"
-          *ngIf="rutina.progreso">
-
-          <div
-            class="barra-progreso"
-            [style.width.%]="rutina.progreso"
-            [style.background-color]="getColorEstado(rutina.estado)">
+          <div class="accion-icono">
+            📋
           </div>
 
-        </div>
+          <div class="accion-info">
+
+            <span class="accion-etiqueta">
+              Planificación
+            </span>
+
+            <h3>
+              Ver mis rutinas
+            </h3>
+
+            <p>
+              Revisá las rutinas que guardaste
+              y continuá con tu planificación.
+            </p>
+
+          </div>
+
+          <span class="accion-flecha">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- BITÁCORA -->
+
+        <a
+          routerLink="bitacora"
+          class="accion-card">
+
+          <div class="accion-icono">
+            📊
+          </div>
+
+          <div class="accion-info">
+
+            <span class="accion-etiqueta">
+              Seguimiento
+            </span>
+
+            <h3>
+              Abrir mi bitácora
+            </h3>
+
+            <p>
+              Registrá tus entrenamientos y observá
+              cómo avanza tu actividad.
+            </p>
+
+          </div>
+
+          <span class="accion-flecha">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- CREAR RUTINA -->
+
+        <button
+          type="button"
+          class="accion-card"
+          (click)="verRutina()">
+
+          <div class="accion-icono">
+            ✨
+          </div>
+
+          <div class="accion-info">
+
+            <span class="accion-etiqueta">
+              Personalizada
+            </span>
+
+            <h3>
+              Crear una rutina
+            </h3>
+
+            <p>
+              Elegí tus objetivos y generá un plan
+              adaptado a tus preferencias.
+            </p>
+
+          </div>
+
+          <span class="accion-flecha">
+            ＋
+          </span>
+
+        </button>
 
       </div>
 
-      <span
-        class="rutina-badge"
-        [style.background-color]="getColorEstado(rutina.estado) + '22'"
-        [style.color]="getColorEstado(rutina.estado)">
+    </section>
 
-        {{ getLabelEstado(rutina.estado) }}
 
-      </span>
+    <!-- ===================================================
+         GESTIÓN PARA MENTOR O ADMINISTRADOR
+         =================================================== -->
 
-    </div>
+    <section
+      class="mentor-card"
+      *ngIf="puedeGestionarEjercicios">
 
-  </div>
+      <div class="mentor-card-info">
 
-  <!-- ───────────────────────────────────────────── -->
-  <!-- ACCESO AL GENERADOR PERSONAL -->
-  <!-- ───────────────────────────────────────────── -->
+        <div
+          class="mentor-icono"
+          aria-hidden="true">
+          🧑‍🏫
+        </div>
 
-  <div class="recomendacion-card">
+        <div class="mentor-texto">
 
-    <div class="recomendacion-info">
+          <span class="mentor-etiqueta">
+            Acceso de mentor
+          </span>
 
-      <p class="recomendacion-titulo">
-        ✨ Creá una rutina personalizada
-      </p>
+          <h2>
+            Gestión de ejercicios
+          </h2>
 
-      <p class="recomendacion-subtitulo">
-        Elegí tus objetivos, nivel, días disponibles y equipamiento. El sistema generará una rutina adaptada a tus preferencias.
-      </p>
+          <p>
+            Publicá ejercicios de fuerza, cardio, movilidad
+            o HIIT para incorporarlos al sistema.
+          </p>
+
+        </div>
+
+      </div>
 
       <button
         type="button"
-        class="btn-recomendacion"
-        (click)="verRutina()">
+        class="btn-administrar"
+        (click)="administrarEjercicios()">
 
-        Crear mi rutina →
+        <span aria-hidden="true">
+          ＋
+        </span>
+
+        Agregar ejercicio
 
       </button>
 
-    </div>
+    </section>
 
-    <div class="recomendacion-icono">
-      🏃
-    </div>
 
-  </div>
+    <!-- ===================================================
+         BUSCADOR Y CATEGORÍAS
+         =================================================== -->
 
-  <!-- ───────────────────────────────────────────── -->
-  <!-- FRASE -->
-  <!-- ───────────────────────────────────────────── -->
+    <section class="seccion-card explorador-section">
 
-  <div class="frase-card">
+      <header class="seccion-header explorador-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Biblioteca de ejercicios
+          </span>
+
+          <h2>
+            Explorá los ejercicios
+          </h2>
+
+          <p>
+            Buscá por nombre, grupo muscular
+            o seleccioná una categoría.
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <!-- BUSCADOR -->
+
+      <div class="busqueda-card">
+
+        <div class="busqueda-input">
+
+          <span
+            class="busqueda-icono"
+            aria-hidden="true">
+            🔍
+          </span>
+
+          <input
+            type="text"
+            placeholder="Buscar ejercicios o grupos musculares..."
+            aria-label="Buscar ejercicios"
+            [(ngModel)]="busqueda"
+            (input)="aplicarFiltro()">
+
+        </div>
+
+      </div>
+
+
+      <!-- CATEGORÍAS -->
+
+      <div class="categorias-grid">
+
+        <button
+          type="button"
+          *ngFor="let cat of categorias"
+          class="categoria-btn"
+          [class.categoria-activa]="categoriaActiva === cat.valor"
+          (click)="setCategoria(cat.valor)">
+
+          <span
+            class="cat-icono"
+            aria-hidden="true">
+            {{ cat.icono }}
+          </span>
+
+          <span class="cat-label">
+            {{ cat.label }}
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         PROGRESO
+         =================================================== -->
+
+    <section class="seccion-card progreso-section">
+
+      <header class="seccion-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Seguimiento personal
+          </span>
+
+          <h2>
+            Tu progreso
+          </h2>
+
+          <p>
+            Consultá rápidamente tu actividad
+            dentro del módulo de entrenamiento.
+          </p>
+
+        </div>
+
+        <div
+          class="seccion-icono"
+          aria-hidden="true">
+          📈
+        </div>
+
+      </header>
+
+
+      <div class="stats-grid">
+
+        <!-- RUTINAS GUARDADAS -->
+
+        <article class="stat-card stat-violeta">
+
+          <div class="stat-icono">
+            📋
+          </div>
+
+          <div class="stat-info">
+
+            <span class="stat-label">
+              Rutinas guardadas
+            </span>
+
+            <strong class="stat-numero">
+              {{ totalRutinas }}
+            </strong>
+
+            <span class="stat-descripcion">
+              Planes disponibles
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ENTRENAMIENTOS HOY -->
+
+        <article class="stat-card stat-azul">
+
+          <div class="stat-icono">
+            🏋️
+          </div>
+
+          <div class="stat-info">
+
+            <span class="stat-label">
+              Entrenos hoy
+            </span>
+
+            <strong class="stat-numero">
+              {{ entrenamientosHoy }}
+            </strong>
+
+            <span class="stat-descripcion">
+              Registros realizados
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- RUTINAS ACTIVAS -->
+
+        <article class="stat-card stat-verde">
+
+          <div class="stat-icono">
+            ✅
+          </div>
+
+          <div class="stat-info">
+
+            <span class="stat-label">
+              Rutinas activas
+            </span>
+
+            <strong class="stat-numero">
+              {{ rutinasActivas }}
+            </strong>
+
+            <span class="stat-descripcion">
+              Planes en progreso
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- RACHA -->
+
+        <article class="stat-card stat-naranja">
+
+          <div class="stat-icono">
+            🔥
+          </div>
+
+          <div class="stat-info">
+
+            <span class="stat-label">
+              Días de racha
+            </span>
+
+            <strong class="stat-numero">
+              {{ rachaEntrenamiento }}
+            </strong>
+
+            <span class="stat-descripcion">
+              Continuidad acumulada
+            </span>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         EJERCICIOS PUBLICADOS
+         =================================================== -->
+
+    <section class="seccion-card ejercicios-section">
+
+      <header class="seccion-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Ejercicios disponibles
+          </span>
+
+          <h2>
+            {{ getIconoCategoria(categoriaActiva) }}
+            Ejercicios de {{ getCategoriaLabel() }}
+          </h2>
+
+          <p>
+            Ejercicios publicados por los mentores de TuJuntero.
+          </p>
+
+        </div>
+
+        <span class="cantidad-badge">
+          {{ ejerciciosFiltrados.length }}
+          disponibles
+        </span>
+
+      </header>
+
+
+      <!-- LISTA DE EJERCICIOS -->
+
+      <div
+        class="ejercicios-lista"
+        *ngIf="ejerciciosFiltrados.length > 0">
+
+        <article
+          class="ejercicio-card"
+          *ngFor="let ejercicio of ejerciciosFiltrados">
+
+          <div class="ejercicio-icono-box">
+
+            {{ getIconoCategoria(ejercicio.categoria) }}
+
+          </div>
+
+
+          <div class="ejercicio-info">
+
+            <div class="ejercicio-encabezado">
+
+              <h3 class="ejercicio-nombre">
+                {{ ejercicio.nombre }}
+              </h3>
+
+              <span
+                class="ejercicio-nivel"
+                *ngIf="ejercicio.nivel">
+
+                🌱 {{ ejercicio.nivel }}
+
+              </span>
+
+            </div>
+
+
+            <p
+              class="ejercicio-descripcion"
+              *ngIf="ejercicio.descripcion">
+
+              {{ ejercicio.descripcion }}
+
+            </p>
+
+
+            <div class="ejercicio-meta">
+
+              <span *ngIf="ejercicio.grupoMuscular">
+                💪 {{ ejercicio.grupoMuscular }}
+              </span>
+
+              <span *ngIf="ejercicio.equipamiento">
+                🏋️ {{ ejercicio.equipamiento }}
+              </span>
+
+              <span *ngIf="ejercicio.series">
+                🔁 {{ ejercicio.series }} series
+              </span>
+
+              <span *ngIf="ejercicio.repeticiones">
+                🎯 {{ ejercicio.repeticiones }}
+              </span>
+
+              <span *ngIf="ejercicio.descanso">
+                ⏱️ {{ ejercicio.descanso }}
+              </span>
+
+            </div>
+
+
+            <span
+              class="ejercicio-mentor"
+              *ngIf="ejercicio.nombreMentor">
+
+              🌟 Publicado por {{ ejercicio.nombreMentor }}
+
+            </span>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+      <!-- ESTADO VACÍO -->
+
+      <div
+        class="empty-state"
+        *ngIf="ejerciciosFiltrados.length === 0">
+
+        <div class="empty-icono">
+          🏋️
+        </div>
+
+        <h3>
+          Todavía no hay ejercicios de {{ getCategoriaLabel() }}
+        </h3>
+
+        <p *ngIf="!puedeGestionarEjercicios">
+          Cuando los mentores publiquen ejercicios,
+          aparecerán en esta sección.
+        </p>
+
+        <p *ngIf="puedeGestionarEjercicios">
+          Podés cargar el primer ejercicio
+          desde Gestión de ejercicios.
+        </p>
+
+        <button
+          *ngIf="puedeGestionarEjercicios"
+          type="button"
+          class="btn-empty"
+          (click)="administrarEjercicios()">
+
+          ＋ Agregar ejercicio
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         RUTINAS PERSONALES
+         =================================================== -->
+
+    <section
+      class="seccion-card rutinas-section"
+      *ngIf="rutinas.length > 0">
+
+      <header class="seccion-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Planes personales
+          </span>
+
+          <h2>
+            Mis rutinas
+          </h2>
+
+          <p>
+            Continuá con los planes que ya guardaste.
+          </p>
+
+        </div>
+
+        <a
+          routerLink="rutinas"
+          class="seccion-enlace">
+
+          Ver todas
+
+          <span aria-hidden="true">
+            →
+          </span>
+
+        </a>
+
+      </header>
+
+
+      <div class="rutinas-lista">
+
+        <article
+          class="rutina-card"
+          *ngFor="let rutina of rutinas">
+
+          <div
+            class="rutina-icono-box"
+            [style.background-color]="
+              getColorEstado(rutina.estado) + '22'
+            ">
+
+            <span
+              [style.color]="getColorEstado(rutina.estado)">
+              💪
+            </span>
+
+          </div>
+
+
+          <div class="rutina-info">
+
+            <div class="rutina-encabezado">
+
+              <h3 class="rutina-nombre">
+                {{ rutina.nombre }}
+              </h3>
+
+              <span
+                class="rutina-badge"
+                [style.background-color]="
+                  getColorEstado(rutina.estado) + '22'
+                "
+                [style.color]="getColorEstado(rutina.estado)">
+
+                {{ getLabelEstado(rutina.estado) }}
+
+              </span>
+
+            </div>
+
+            <span
+              class="rutina-sub"
+              *ngIf="rutina.nivel">
+
+              {{ rutina.nivel }}
+
+            </span>
+
+            <div
+              class="barra-fondo"
+              *ngIf="rutina.progreso">
+
+              <div
+                class="barra-progreso"
+                [style.width.%]="rutina.progreso"
+                [style.background-color]="
+                  getColorEstado(rutina.estado)
+                ">
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         GENERADOR PERSONAL
+         =================================================== -->
+
+    <section class="recomendacion-card">
+
+      <div
+        class="recomendacion-decoracion"
+        aria-hidden="true">
+      </div>
+
+      <div class="recomendacion-info">
+
+        <span class="recomendacion-etiqueta">
+          Tu próximo desafío
+        </span>
+
+        <h2>
+          Creá una rutina personalizada
+        </h2>
+
+        <p>
+          Elegí tus objetivos, nivel, días disponibles
+          y equipamiento. El sistema generará una rutina
+          adaptada a tus preferencias.
+        </p>
+
+        <button
+          type="button"
+          class="btn-recomendacion"
+          (click)="verRutina()">
+
+          Crear mi rutina
+
+          <span aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+      </div>
+
+      <div
+        class="recomendacion-icono"
+        aria-hidden="true">
+        🏃
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FRASE FINAL
+       ===================================================== -->
+
+  <blockquote class="frase-card">
+
+    <span
+      class="frase-icono"
+      aria-hidden="true">
+      ✨
+    </span>
 
     <p class="frase-texto">
       “Todo lo puedo en Cristo que me fortalece.”
     </p>
 
-    <span class="frase-autor">
-      — Filipenses 4:13
-    </span>
+    <footer class="frase-autor">
+      Filipenses 4:13
+    </footer>
 
-  </div>
+  </blockquote>
 
-  <!-- Renderiza las rutas hijas -->
+
+  <!-- RUTAS HIJAS -->
+
   <router-outlet></router-outlet>
-
-  
 
 </div>

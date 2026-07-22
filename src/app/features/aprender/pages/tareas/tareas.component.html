@@ -1,35 +1,163 @@
-<div class="tareas-wrapper">
+<div class="tareas-page">
 
   <!-- =====================================================
-       HERO DEL MÓDULO APRENDER
+       HERO
        ===================================================== -->
 
-  <section class="aprender-hero">
+  <header class="tareas-hero">
 
-    <div class="hero-content">
+    <div
+      class="hero-decoracion hero-decoracion-uno"
+      aria-hidden="true">
+    </div>
 
-      <div
-        class="hero-icon"
-        aria-hidden="true">
-        📖
+    <div
+      class="hero-decoracion hero-decoracion-dos"
+      aria-hidden="true">
+    </div>
+
+    <div class="hero-superior">
+
+      <div class="hero-presentacion">
+
+        <div
+          class="hero-icono"
+          aria-hidden="true">
+          ☑️
+        </div>
+
+        <div class="hero-texto">
+
+          <span class="hero-etiqueta">
+            Planificación académica
+          </span>
+
+          <h1>
+            Mis tareas
+          </h1>
+
+          <p>
+            Organizá trabajos, exámenes, parciales y entregas.
+            Definí su prioridad, fecha límite y estado.
+          </p>
+
+        </div>
+
       </div>
 
-      <div class="hero-text">
 
-        <h1 class="aprender-titulo">
-          Aprender
-        </h1>
+      <div class="hero-acciones">
 
-        <p class="hero-subtitulo">
-          Organizá tus materias, tareas y lecturas
-          <br>
-          y seguí creciendo cada día.
-        </p>
+        <button
+          type="button"
+          class="btn-hero-asistente"
+          (click)="abrirAsistente()">
+
+          <span aria-hidden="true">
+            ✨
+          </span>
+
+          Abrir asistente
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn-hero-nueva"
+          (click)="abrirForm()">
+
+          <span aria-hidden="true">
+            ＋
+          </span>
+
+          Nueva tarea
+
+        </button>
 
       </div>
 
     </div>
 
+
+    <!-- RESUMEN DEL HERO -->
+
+    <div
+      class="hero-resumen"
+      aria-label="Resumen de tareas">
+
+      <article class="hero-stat">
+
+        <span
+          class="hero-stat-icono"
+          aria-hidden="true">
+          📝
+        </span>
+
+        <div>
+
+          <span class="hero-stat-label">
+            Total
+          </span>
+
+          <strong>
+            {{ tareas.length }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="hero-stat">
+
+        <span
+          class="hero-stat-icono"
+          aria-hidden="true">
+          ⏳
+        </span>
+
+        <div>
+
+          <span class="hero-stat-label">
+            Pendientes
+          </span>
+
+          <strong>
+            {{ cantidadPendientes }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="hero-stat">
+
+        <span
+          class="hero-stat-icono"
+          aria-hidden="true">
+          ✅
+        </span>
+
+        <div>
+
+          <span class="hero-stat-label">
+            Completadas
+          </span>
+
+          <strong>
+            {{ cantidadCompletadas }}
+          </strong>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- NAVEGACIÓN -->
 
     <nav
       class="aprender-tabs"
@@ -46,9 +174,12 @@
           🎓
         </span>
 
-        <span>Materias</span>
+        <span>
+          Materias
+        </span>
 
       </a>
+
 
       <a
         routerLink="/aprender/tareas"
@@ -61,9 +192,12 @@
           ☑️
         </span>
 
-        <span>Tareas</span>
+        <span>
+          Tareas
+        </span>
 
       </a>
+
 
       <a
         routerLink="/aprender/biblioteca"
@@ -76,151 +210,675 @@
           📖
         </span>
 
-        <span>Biblioteca</span>
+        <span>
+          Biblioteca
+        </span>
 
       </a>
 
     </nav>
 
-  </section>
+  </header>
 
 
   <!-- =====================================================
-       ENCABEZADO PRINCIPAL
+       CONTENIDO
        ===================================================== -->
 
-  <section class="tareas-presentacion">
+  <main class="tareas-contenido">
 
-    <div class="presentacion-texto">
+    <!-- ===================================================
+         PRESENTACIÓN
+         =================================================== -->
 
-      <span class="presentacion-etiqueta">
-        Organización personal
-      </span>
+    <section class="presentacion-card">
 
-      <h2 class="presentacion-titulo">
-        Mis tareas
-      </h2>
+      <div class="presentacion-texto">
 
-      <p class="presentacion-descripcion">
-        Registrá tus trabajos, exámenes y entregas.
-        Podés indicar su prioridad, fecha límite y estado.
+        <span class="seccion-etiqueta">
+          Organización personal
+        </span>
+
+        <h2>
+          Administrá tus actividades
+        </h2>
+
+        <p>
+          Registrá tus tareas académicas, establecé prioridades
+          y actualizá su avance a medida que las completás.
+        </p>
+
+      </div>
+
+
+      <div class="presentacion-acciones">
+
+        <button
+          type="button"
+          class="btn-asistente-principal"
+          (click)="abrirAsistente()">
+
+          <span aria-hidden="true">
+            ✨
+          </span>
+
+          Abrir asistente
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn-nueva-principal"
+          (click)="abrirForm()">
+
+          <span aria-hidden="true">
+            ＋
+          </span>
+
+          Nueva tarea
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         ESTADÍSTICAS
+         =================================================== -->
+
+    <section
+      class="resumen-grid"
+      aria-label="Resumen de tareas">
+
+      <article class="resumen-card resumen-total">
+
+        <div class="resumen-icono">
+          📝
+        </div>
+
+        <div class="resumen-info">
+
+          <span class="resumen-label">
+            Total de tareas
+          </span>
+
+          <strong class="resumen-numero">
+            {{ tareas.length }}
+          </strong>
+
+          <span class="resumen-detalle">
+            Actividades registradas
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <article class="resumen-card resumen-pendiente">
+
+        <div class="resumen-icono">
+          ⏳
+        </div>
+
+        <div class="resumen-info">
+
+          <span class="resumen-label">
+            Pendientes
+          </span>
+
+          <strong class="resumen-numero">
+            {{ cantidadPendientes }}
+          </strong>
+
+          <span class="resumen-detalle">
+            Requieren atención
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <article class="resumen-card resumen-completada">
+
+        <div class="resumen-icono">
+          ✅
+        </div>
+
+        <div class="resumen-info">
+
+          <span class="resumen-label">
+            Completadas
+          </span>
+
+          <strong class="resumen-numero">
+            {{ cantidadCompletadas }}
+          </strong>
+
+          <span class="resumen-detalle">
+            Actividades finalizadas
+          </span>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ===================================================
+         LISTADO
+         =================================================== -->
+
+    <section
+      class="tareas-seccion"
+      aria-labelledby="titulo-mis-tareas">
+
+      <header class="tareas-header">
+
+        <div class="tareas-header-texto">
+
+          <span class="seccion-etiqueta">
+            Planificación
+          </span>
+
+          <h2
+            id="titulo-mis-tareas"
+            class="seccion-titulo">
+
+            Actividades registradas
+
+          </h2>
+
+          <p class="seccion-resumen">
+
+            {{ tareas.length }}
+
+            {{
+              tareas.length === 1
+                ? 'actividad registrada'
+                : 'actividades registradas'
+            }}
+
+          </p>
+
+        </div>
+
+
+        <!-- FILTROS -->
+
+        <div
+          class="filtros"
+          role="group"
+          aria-label="Filtrar tareas">
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'todas'"
+            [attr.aria-pressed]="filtroActivo === 'todas'"
+            (click)="setFiltro('todas')">
+
+            <span>
+              Todas
+            </span>
+
+            <span class="filtro-contador">
+              {{ tareas.length }}
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'pendientes'"
+            [attr.aria-pressed]="filtroActivo === 'pendientes'"
+            (click)="setFiltro('pendientes')">
+
+            <span>
+              Pendientes
+            </span>
+
+            <span class="filtro-contador">
+              {{ cantidadPendientes }}
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'completadas'"
+            [attr.aria-pressed]="filtroActivo === 'completadas'"
+            (click)="setFiltro('completadas')">
+
+            <span>
+              Completadas
+            </span>
+
+            <span class="filtro-contador">
+              {{ cantidadCompletadas }}
+            </span>
+
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- CARGANDO -->
+
+      <div
+        *ngIf="cargando"
+        class="estado-cargando"
+        role="status">
+
+        <span
+          class="spinner"
+          aria-hidden="true">
+        </span>
+
+        <div>
+
+          <strong>
+            Cargando tareas
+          </strong>
+
+          <p>
+            Estamos buscando tus actividades.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ERROR GENERAL -->
+
+      <p
+        *ngIf="mensajeError && !mostrarForm"
+        class="mensaje-error mensaje-error-listado"
+        role="alert">
+
+        <span aria-hidden="true">
+          ⚠️
+        </span>
+
+        {{ mensajeError }}
+
       </p>
 
-    </div>
+
+      <!-- =================================================
+           TARJETAS
+           ================================================= -->
+
+      <div
+        class="tareas-grid"
+        *ngIf="
+          !cargando &&
+          tareasFiltradas.length > 0
+        ">
+
+        <article
+          *ngFor="
+            let t of tareasFiltradas;
+            trackBy: trackByTareaId
+          "
+          class="tarea-card"
+          [class.completada]="t.estado === 'completada'">
+
+          <!-- ENCABEZADO -->
+
+          <header class="tarea-card-header">
+
+            <div class="tarea-presentacion">
+
+              <div
+                class="tarea-icono-box"
+                [style.background-color]="
+                  getColorTipo(t.tipo) + '22'
+                "
+                aria-hidden="true">
+
+                <span
+                  [style.color]="getColorTipo(t.tipo)">
+
+                  {{ getIconoTipo(t.tipo) }}
+
+                </span>
+
+              </div>
 
 
-    <div class="presentacion-acciones">
+              <div class="tarea-encabezado-info">
 
-      <button
-        type="button"
-        class="btn-asistente-principal"
-        (click)="abrirAsistente()">
+                <span class="tarea-etiqueta">
+                  Actividad
+                </span>
 
-        <span aria-hidden="true">✨</span>
+                <span
+                  class="tipo-badge"
+                  [style.background-color]="
+                    getColorTipo(t.tipo) + '22'
+                  "
+                  [style.color]="getColorTipo(t.tipo)">
 
-        Abrir asistente
+                  {{ getLabelTipo(t.tipo) }}
 
-      </button>
+                </span>
 
-      <button
-        type="button"
-        class="btn-nueva-principal"
-        (click)="abrirForm()">
+              </div>
 
-        <span aria-hidden="true">＋</span>
-
-        Nueva tarea
-
-      </button>
-
-    </div>
-
-  </section>
+            </div>
 
 
-  <!-- =====================================================
-       RESUMEN DE TAREAS
-       ===================================================== -->
+            <span
+              class="tarea-badge"
+              [ngClass]="getColorEstado(t.estado)">
 
-  <section
-    class="resumen-grid"
-    aria-label="Resumen de tareas">
+              {{ getLabelEstado(t.estado) }}
 
-    <article class="resumen-card">
+            </span>
 
-      <div class="resumen-icono resumen-icono-total">
-        📝
+          </header>
+
+
+          <!-- INFORMACIÓN -->
+
+          <div class="tarea-info">
+
+            <h3 class="tarea-titulo">
+              {{ t.titulo }}
+            </h3>
+
+            <p
+              *ngIf="t.descripcion"
+              class="tarea-sub">
+
+              {{ t.descripcion }}
+
+            </p>
+
+            <p
+              *ngIf="!t.descripcion"
+              class="tarea-sub tarea-sub-vacia">
+
+              Sin descripción adicional.
+
+            </p>
+
+          </div>
+
+
+          <!-- DETALLES -->
+
+          <div class="tarea-detalles">
+
+            <div class="tarea-detalle-item">
+
+              <div class="detalle-icono">
+                🚦
+              </div>
+
+              <div>
+
+                <span class="detalle-label">
+                  Prioridad
+                </span>
+
+                <span
+                  class="prioridad-badge"
+                  [ngClass]="getClasePrioridad(t.prioridad)">
+
+                  {{ getLabelPrioridad(t.prioridad) }}
+
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div class="tarea-detalle-item">
+
+              <div class="detalle-icono">
+                📅
+              </div>
+
+              <div>
+
+                <span class="detalle-label">
+                  Fecha límite
+                </span>
+
+                <span
+                  *ngIf="t.fechaLimite"
+                  class="tarea-fecha">
+
+                  {{ formatearFecha(t.fechaLimite) }}
+
+                </span>
+
+                <span
+                  *ngIf="!t.fechaLimite"
+                  class="tarea-fecha tarea-fecha-vacia">
+
+                  Sin fecha registrada
+
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- CAMBIO DE ESTADO -->
+
+          <div class="tarea-meta">
+
+            <div>
+
+              <span class="estado-icono">
+                🔄
+              </span>
+
+              <label
+                class="estado-label"
+                [for]="'estado-' + t.id">
+
+                Cambiar estado
+
+              </label>
+
+            </div>
+
+            <select
+              class="estado-select"
+              [id]="'estado-' + t.id"
+              [value]="t.estado"
+              (change)="
+                cambiarEstado(
+                  t,
+                  $any($event.target).value
+                )
+              ">
+
+              <option value="pendiente">
+                Pendiente
+              </option>
+
+              <option value="en_progreso">
+                En proceso
+              </option>
+
+              <option value="completada">
+                Completada
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- ACCIONES -->
+
+          <footer class="tarea-card-footer">
+
+            <button
+              type="button"
+              class="btn-editar"
+              [attr.aria-label]="'Editar la tarea ' + t.titulo"
+              [disabled]="eliminandoId === t.id"
+              (click)="editarTarea(t)">
+
+              <span aria-hidden="true">
+                ✏️
+              </span>
+
+              Editar
+
+            </button>
+
+
+            <button
+              type="button"
+              class="btn-eliminar"
+              [attr.aria-label]="'Eliminar la tarea ' + t.titulo"
+              [disabled]="eliminandoId === t.id"
+              (click)="eliminarTarea(t.id)">
+
+              <span aria-hidden="true">
+
+                {{
+                  eliminandoId === t.id
+                    ? '⌛'
+                    : '🗑️'
+                }}
+
+              </span>
+
+              {{
+                eliminandoId === t.id
+                  ? 'Eliminando'
+                  : 'Eliminar'
+              }}
+
+            </button>
+
+          </footer>
+
+        </article>
+
       </div>
 
-      <div class="resumen-info">
 
-        <span class="resumen-label">
-          Total
+      <!-- =================================================
+           ESTADO VACÍO
+           ================================================= -->
+
+      <div
+        class="estado-vacio"
+        *ngIf="
+          !cargando &&
+          tareasFiltradas.length === 0 &&
+          !mostrarForm
+        ">
+
+        <div
+          class="estado-vacio-decoracion"
+          aria-hidden="true">
+        </div>
+
+        <div class="estado-vacio-icono">
+          📝
+        </div>
+
+        <span class="estado-vacio-etiqueta">
+
+          {{
+            filtroActivo === 'todas'
+              ? 'Empezá a organizarte'
+              : filtroActivo === 'pendientes'
+                ? 'Todo bajo control'
+                : 'Seguimiento académico'
+          }}
+
         </span>
 
-        <strong class="resumen-numero">
-          {{ tareas.length }}
-        </strong>
+        <h3>
 
-        <span class="resumen-detalle">
-          Actividades registradas
-        </span>
+          {{
+            filtroActivo === 'todas'
+              ? 'Todavía no tenés tareas'
+              : filtroActivo === 'pendientes'
+                ? 'No tenés tareas pendientes'
+                : 'Todavía no completaste tareas'
+          }}
+
+        </h3>
+
+        <p>
+
+          {{
+            filtroActivo === 'todas'
+              ? 'Registrá tu primera actividad para comenzar a organizar tus estudios.'
+              : filtroActivo === 'pendientes'
+                ? 'No encontramos actividades pendientes en este momento.'
+                : 'Cuando completes una tarea, aparecerá en esta sección.'
+          }}
+
+        </p>
+
+
+        <div
+          class="estado-vacio-beneficios"
+          *ngIf="filtroActivo === 'todas'">
+
+          <span>
+            ✓ Prioridades
+          </span>
+
+          <span>
+            ✓ Fechas límite
+          </span>
+
+          <span>
+            ✓ Seguimiento de estado
+          </span>
+
+        </div>
+
+
+        <button
+          *ngIf="filtroActivo === 'todas'"
+          type="button"
+          class="estado-vacio-boton"
+          (click)="abrirForm()">
+
+          <span aria-hidden="true">
+            ＋
+          </span>
+
+          Agregar primera tarea
+
+        </button>
 
       </div>
 
-    </article>
+    </section>
 
-
-    <article class="resumen-card">
-
-      <div class="resumen-icono resumen-icono-pendiente">
-        ⏳
-      </div>
-
-      <div class="resumen-info">
-
-        <span class="resumen-label">
-          Pendientes
-        </span>
-
-        <strong class="resumen-numero">
-          {{ cantidadPendientes }}
-        </strong>
-
-        <span class="resumen-detalle">
-          Requieren atención
-        </span>
-
-      </div>
-
-    </article>
-
-
-    <article class="resumen-card">
-
-      <div class="resumen-icono resumen-icono-completada">
-        ✅
-      </div>
-
-      <div class="resumen-info">
-
-        <span class="resumen-label">
-          Completadas
-        </span>
-
-        <strong class="resumen-numero">
-          {{ cantidadCompletadas }}
-        </strong>
-
-        <span class="resumen-detalle">
-          Actividades finalizadas
-        </span>
-
-      </div>
-
-    </article>
-
-  </section>
+  </main>
 
 
   <!-- =====================================================
@@ -248,25 +906,39 @@
 
     <header class="form-header">
 
-      <div>
+      <div class="form-presentacion">
 
-        <span class="form-etiqueta">
+        <div class="form-icono">
 
-          {{
-            editando
-              ? 'Modificar actividad'
-              : 'Nueva actividad'
-          }}
+          {{ editando ? '✏️' : '☑️' }}
 
-        </span>
+        </div>
 
-        <h2
-          id="titulo-form-tarea"
-          class="form-titulo">
+        <div>
 
-          {{ editando ? 'Editar tarea' : 'Nueva tarea' }}
+          <span class="form-etiqueta">
 
-        </h2>
+            {{
+              editando
+                ? 'Modificar actividad'
+                : 'Nueva actividad'
+            }}
+
+          </span>
+
+          <h2
+            id="titulo-form-tarea"
+            class="form-titulo">
+
+            {{ editando ? 'Editar tarea' : 'Nueva tarea' }}
+
+          </h2>
+
+          <p class="form-subtitulo">
+            Completá los datos necesarios para organizar la actividad.
+          </p>
+
+        </div>
 
       </div>
 
@@ -278,7 +950,7 @@
         [disabled]="guardando"
         (click)="cancelar()">
 
-        ×
+        ✕
 
       </button>
 
@@ -286,13 +958,14 @@
 
 
     <form
+      class="tarea-form"
       [formGroup]="tareaForm"
       (ngSubmit)="guardarTarea()"
       novalidate>
 
-      <!-- Título -->
+      <!-- TÍTULO -->
 
-      <div class="form-field">
+      <div class="form-field form-field-completo">
 
         <label for="titulo">
           Título
@@ -355,9 +1028,9 @@
       </div>
 
 
-      <!-- Descripción -->
+      <!-- DESCRIPCIÓN -->
 
-      <div class="form-field">
+      <div class="form-field form-field-completo">
 
         <label for="descripcion">
           Descripción
@@ -384,138 +1057,136 @@
       </div>
 
 
-      <!-- Tipo y prioridad -->
+      <!-- TIPO -->
 
-      <div class="form-row">
+      <div class="form-field">
 
-        <div class="form-field">
+        <label for="tipo">
+          Tipo de actividad
+        </label>
 
-          <label for="tipo">
-            Tipo de actividad
-          </label>
+        <select
+          id="tipo"
+          formControlName="tipo">
 
-          <select
-            id="tipo"
-            formControlName="tipo">
+          <option value="tarea">
+            📝 Tarea
+          </option>
 
-            <option value="tarea">
-              Tarea
-            </option>
+          <option value="examen">
+            📚 Examen
+          </option>
 
-            <option value="examen">
-              Examen
-            </option>
+          <option value="parcial">
+            📄 Parcial
+          </option>
 
-            <option value="parcial">
-              Parcial
-            </option>
+          <option value="final">
+            🎓 Final
+          </option>
 
-            <option value="final">
-              Final
-            </option>
+          <option value="entrega">
+            📦 Entrega
+          </option>
 
-            <option value="entrega">
-              Entrega
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <div class="form-field">
-
-          <label for="prioridad">
-            Prioridad
-          </label>
-
-          <select
-            id="prioridad"
-            formControlName="prioridad">
-
-            <option value="baja">
-              🟢 Baja
-            </option>
-
-            <option value="media">
-              🟡 Media
-            </option>
-
-            <option value="alta">
-              🔴 Alta
-            </option>
-
-          </select>
-
-        </div>
+        </select>
 
       </div>
 
 
-      <!-- Fecha y estado -->
+      <!-- PRIORIDAD -->
 
-      <div class="form-row">
+      <div class="form-field">
 
-        <div class="form-field">
+        <label for="prioridad">
+          Prioridad
+        </label>
 
-          <label for="fechaLimite">
-            Fecha límite
-          </label>
+        <select
+          id="prioridad"
+          formControlName="prioridad">
 
-          <input
-            id="fechaLimite"
-            type="date"
-            formControlName="fechaLimite">
+          <option value="baja">
+            🟢 Baja
+          </option>
 
-        </div>
+          <option value="media">
+            🟡 Media
+          </option>
 
+          <option value="alta">
+            🔴 Alta
+          </option>
 
-        <div class="form-field">
-
-          <label for="estado">
-            Estado
-          </label>
-
-          <select
-            id="estado"
-            formControlName="estado">
-
-            <option value="pendiente">
-              Pendiente
-            </option>
-
-            <option value="en_progreso">
-              En proceso
-            </option>
-
-            <option value="completada">
-              Completada
-            </option>
-
-          </select>
-
-        </div>
+        </select>
 
       </div>
 
 
-      <!-- Error -->
+      <!-- FECHA -->
+
+      <div class="form-field">
+
+        <label for="fechaLimite">
+          Fecha límite
+        </label>
+
+        <input
+          id="fechaLimite"
+          type="date"
+          formControlName="fechaLimite">
+
+      </div>
+
+
+      <!-- ESTADO -->
+
+      <div class="form-field">
+
+        <label for="estado">
+          Estado
+        </label>
+
+        <select
+          id="estado"
+          formControlName="estado">
+
+          <option value="pendiente">
+            ⏳ Pendiente
+          </option>
+
+          <option value="en_progreso">
+            🔄 En proceso
+          </option>
+
+          <option value="completada">
+            ✅ Completada
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- ERROR -->
 
       <p
         *ngIf="mensajeError"
-        class="mensaje-error"
+        class="mensaje-error form-field-completo"
         role="alert">
 
-        <span aria-hidden="true">⚠️</span>
+        <span aria-hidden="true">
+          ⚠️
+        </span>
 
         {{ mensajeError }}
 
       </p>
 
 
-      <!-- Botones -->
+      <!-- BOTONES -->
 
-      <div class="form-botones">
+      <div class="form-botones form-field-completo">
 
         <button
           type="button"
@@ -526,6 +1197,7 @@
           Cancelar
 
         </button>
+
 
         <button
           type="submit"
@@ -545,438 +1217,6 @@
       </div>
 
     </form>
-
-  </section>
-
-
-  <!-- =====================================================
-       LISTADO DE TAREAS
-       ===================================================== -->
-
-  <section
-    class="seccion-card"
-    aria-labelledby="titulo-mis-tareas">
-
-    <header class="tareas-header">
-
-      <div class="tareas-header-texto">
-
-        <span class="seccion-etiqueta">
-          Planificación
-        </span>
-
-        <h2
-          id="titulo-mis-tareas"
-          class="seccion-titulo">
-
-          Actividades registradas
-
-        </h2>
-
-        <p class="seccion-resumen">
-
-          {{ tareas.length }}
-
-          {{
-            tareas.length === 1
-              ? 'actividad registrada'
-              : 'actividades registradas'
-          }}
-
-        </p>
-
-      </div>
-
-
-      <!-- Filtros -->
-
-      <div
-        class="filtros"
-        role="group"
-        aria-label="Filtrar tareas">
-
-        <button
-          type="button"
-          class="filtro-btn"
-          [class.filtro-activo]="filtroActivo === 'todas'"
-          [attr.aria-pressed]="filtroActivo === 'todas'"
-          (click)="setFiltro('todas')">
-
-          Todas
-
-          <span class="filtro-contador">
-            {{ tareas.length }}
-          </span>
-
-        </button>
-
-        <button
-          type="button"
-          class="filtro-btn"
-          [class.filtro-activo]="filtroActivo === 'pendientes'"
-          [attr.aria-pressed]="filtroActivo === 'pendientes'"
-          (click)="setFiltro('pendientes')">
-
-          Pendientes
-
-          <span class="filtro-contador">
-            {{ cantidadPendientes }}
-          </span>
-
-        </button>
-
-        <button
-          type="button"
-          class="filtro-btn"
-          [class.filtro-activo]="filtroActivo === 'completadas'"
-          [attr.aria-pressed]="filtroActivo === 'completadas'"
-          (click)="setFiltro('completadas')">
-
-          Completadas
-
-          <span class="filtro-contador">
-            {{ cantidadCompletadas }}
-          </span>
-
-        </button>
-
-      </div>
-
-    </header>
-
-
-    <!-- Cargando -->
-
-    <div
-      *ngIf="cargando"
-      class="estado-cargando"
-      role="status">
-
-      <span
-        class="spinner"
-        aria-hidden="true">
-      </span>
-
-      <div>
-
-        <strong>
-          Cargando tareas
-        </strong>
-
-        <p>
-          Estamos buscando tus actividades.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <!-- Error general -->
-
-    <p
-      *ngIf="mensajeError && !mostrarForm"
-      class="mensaje-error"
-      role="alert">
-
-      <span aria-hidden="true">⚠️</span>
-
-      {{ mensajeError }}
-
-    </p>
-
-
-    <!-- Tarjetas -->
-
-    <div
-      class="tareas-grid"
-      *ngIf="
-        !cargando &&
-        tareasFiltradas.length > 0
-      ">
-
-      <article
-        *ngFor="
-          let t of tareasFiltradas;
-          trackBy: trackByTareaId
-        "
-        class="tarea-card"
-        [class.completada]="t.estado === 'completada'">
-
-        <!-- Encabezado -->
-
-        <header class="tarea-card-header">
-
-          <div
-            class="tarea-icono-box"
-            [style.background-color]="
-              getColorTipo(t.tipo) + '22'
-            "
-            aria-hidden="true">
-
-            <span
-              [style.color]="getColorTipo(t.tipo)">
-
-              {{ getIconoTipo(t.tipo) }}
-
-            </span>
-
-          </div>
-
-
-          <div class="tarea-encabezado-info">
-
-            <span
-              class="tipo-badge"
-              [style.background-color]="
-                getColorTipo(t.tipo) + '22'
-              "
-              [style.color]="getColorTipo(t.tipo)">
-
-              {{ getLabelTipo(t.tipo) }}
-
-            </span>
-
-            <span
-              class="tarea-badge"
-              [ngClass]="getColorEstado(t.estado)">
-
-              {{ getLabelEstado(t.estado) }}
-
-            </span>
-
-          </div>
-
-        </header>
-
-
-        <!-- Contenido -->
-
-        <div class="tarea-info">
-
-          <h3 class="tarea-titulo">
-            {{ t.titulo }}
-          </h3>
-
-          <p
-            *ngIf="t.descripcion"
-            class="tarea-sub">
-
-            {{ t.descripcion }}
-
-          </p>
-
-          <p
-            *ngIf="!t.descripcion"
-            class="tarea-sub tarea-sub-vacia">
-
-            Sin descripción adicional.
-
-          </p>
-
-        </div>
-
-
-        <!-- Información -->
-
-        <div class="tarea-detalles">
-
-          <div class="tarea-detalle-item">
-
-            <span class="detalle-label">
-              Prioridad
-            </span>
-
-            <span
-              class="prioridad-badge"
-              [ngClass]="getClasePrioridad(t.prioridad)">
-
-              {{ getLabelPrioridad(t.prioridad) }}
-
-            </span>
-
-          </div>
-
-
-          <div class="tarea-detalle-item">
-
-            <span class="detalle-label">
-              Fecha límite
-            </span>
-
-            <span
-              *ngIf="t.fechaLimite"
-              class="tarea-fecha">
-
-              📅 {{ formatearFecha(t.fechaLimite) }}
-
-            </span>
-
-            <span
-              *ngIf="!t.fechaLimite"
-              class="tarea-fecha tarea-fecha-vacia">
-
-              Sin fecha registrada
-
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <!-- Cambio de estado -->
-
-        <div class="tarea-meta">
-
-          <label
-            class="estado-label"
-            [for]="'estado-' + t.id">
-
-            Cambiar estado
-
-          </label>
-
-          <select
-            class="estado-select"
-            [id]="'estado-' + t.id"
-            [value]="t.estado"
-            (change)="
-              cambiarEstado(
-                t,
-                $any($event.target).value
-              )
-            ">
-
-            <option value="pendiente">
-              Pendiente
-            </option>
-
-            <option value="en_progreso">
-              En proceso
-            </option>
-
-            <option value="completada">
-              Completada
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- Acciones -->
-
-        <footer class="tarea-card-footer">
-
-          <button
-            type="button"
-            class="btn-editar"
-            [attr.aria-label]="'Editar la tarea ' + t.titulo"
-            [disabled]="eliminandoId === t.id"
-            (click)="editarTarea(t)">
-
-            <span aria-hidden="true">✏️</span>
-
-            Editar
-
-          </button>
-
-          <button
-            type="button"
-            class="btn-eliminar"
-            [attr.aria-label]="'Eliminar la tarea ' + t.titulo"
-            [disabled]="eliminandoId === t.id"
-            (click)="eliminarTarea(t.id)">
-
-            <span aria-hidden="true">
-
-              {{
-                eliminandoId === t.id
-                  ? '⌛'
-                  : '🗑️'
-              }}
-
-            </span>
-
-            {{
-              eliminandoId === t.id
-                ? 'Eliminando'
-                : 'Eliminar'
-            }}
-
-          </button>
-
-        </footer>
-
-      </article>
-
-    </div>
-
-
-    <!-- Estado vacío -->
-
-    <div
-      class="estado-vacio"
-      *ngIf="
-        !cargando &&
-        tareasFiltradas.length === 0 &&
-        !mostrarForm
-      ">
-
-      <div class="estado-vacio-icono">
-        📝
-      </div>
-
-      <span class="estado-vacio-etiqueta">
-
-        {{
-          filtroActivo === 'todas'
-            ? 'Empezá a organizarte'
-            : filtroActivo === 'pendientes'
-              ? 'Todo bajo control'
-              : 'Seguimiento académico'
-        }}
-
-      </span>
-
-      <h3>
-
-        {{
-          filtroActivo === 'todas'
-            ? 'Todavía no tenés tareas'
-            : filtroActivo === 'pendientes'
-              ? 'No tenés tareas pendientes'
-              : 'Todavía no completaste tareas'
-        }}
-
-      </h3>
-
-      <p>
-
-        {{
-          filtroActivo === 'todas'
-            ? 'Registrá tu primera actividad para comenzar a organizar tus estudios.'
-            : filtroActivo === 'pendientes'
-              ? 'No encontramos actividades pendientes en este momento.'
-              : 'Cuando completes una tarea, aparecerá en esta sección.'
-        }}
-
-      </p>
-
-      <button
-        *ngIf="filtroActivo === 'todas'"
-        type="button"
-        class="estado-vacio-boton"
-        (click)="abrirForm()">
-
-        <span aria-hidden="true">＋</span>
-
-        Agregar primera tarea
-
-      </button>
-
-    </div>
 
   </section>
 

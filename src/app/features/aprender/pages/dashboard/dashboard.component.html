@@ -1,38 +1,157 @@
-<div class="aprender-container">
+<div class="aprender-page">
 
-  <!-- ==================================================
-       HERO PRINCIPAL DEL MÓDULO APRENDER
-       ================================================== -->
+  <!-- =====================================================
+       HERO PRINCIPAL
+       ===================================================== -->
 
   <header class="aprender-hero">
 
-    <div class="hero-content">
+    <div
+      class="hero-decoracion hero-decoracion-uno"
+      aria-hidden="true">
+    </div>
 
-      <div
-        class="hero-icon"
-        aria-hidden="true">
-        📖
+    <div
+      class="hero-decoracion hero-decoracion-dos"
+      aria-hidden="true">
+    </div>
+
+
+    <div class="hero-superior">
+
+      <!-- PRESENTACIÓN -->
+
+      <div class="hero-presentacion">
+
+        <div
+          class="hero-icono"
+          aria-hidden="true">
+          📖
+        </div>
+
+        <div class="hero-texto">
+
+          <span class="hero-etiqueta">
+            Organización académica
+          </span>
+
+          <h1>
+            Aprender
+          </h1>
+
+          <p>
+            Organizá tus materias, tareas y lecturas
+            para avanzar con claridad en cada etapa.
+          </p>
+
+        </div>
+
       </div>
 
-      <div class="hero-text">
 
-        <h1 class="aprender-titulo">
-          Aprender
-        </h1>
+      <!-- ESTADÍSTICAS DEL HERO -->
 
-        <p class="hero-subtitulo">
-          Organizá tus materias, tareas y lecturas
-          <br>
-          y seguí creciendo cada día.
-        </p>
+      <div class="hero-estadisticas">
+
+        <article class="hero-stat">
+
+          <span
+            class="hero-stat-icono"
+            aria-hidden="true">
+            🎓
+          </span>
+
+          <div>
+
+            <span class="hero-stat-label">
+              Materias
+            </span>
+
+            <strong>
+              {{ materiasActivas.length }}
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <article class="hero-stat">
+
+          <span
+            class="hero-stat-icono"
+            aria-hidden="true">
+            📋
+          </span>
+
+          <div>
+
+            <span class="hero-stat-label">
+              Pendientes
+            </span>
+
+            <strong>
+              {{ tareasPendientes }}
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <article class="hero-stat">
+
+          <span
+            class="hero-stat-icono"
+            aria-hidden="true">
+            📗
+          </span>
+
+          <div>
+
+            <span class="hero-stat-label">
+              Lecturas
+            </span>
+
+            <strong>
+              {{ librosEnProgreso }}
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <article class="hero-stat">
+
+          <span
+            class="hero-stat-icono"
+            aria-hidden="true">
+            🔥
+          </span>
+
+          <div>
+
+            <span class="hero-stat-label">
+              Enfoque
+            </span>
+
+            <strong>
+              {{ diasEnfoque }}
+            </strong>
+
+          </div>
+
+        </article>
 
       </div>
 
     </div>
 
-    <!-- ================================================
+
+    <!-- ===================================================
          NAVEGACIÓN INTERNA
-         ================================================ -->
+         =================================================== -->
 
     <nav
       class="aprender-tabs"
@@ -41,8 +160,7 @@
       <a
         routerLink="materias"
         routerLinkActive="tab-activo"
-        class="tab-item"
-        aria-label="Ir a Materias">
+        class="tab-item">
 
         <span
           class="tab-icono"
@@ -50,15 +168,17 @@
           🎓
         </span>
 
-        <span>Materias</span>
+        <span>
+          Materias
+        </span>
 
       </a>
+
 
       <a
         routerLink="tareas"
         routerLinkActive="tab-activo"
-        class="tab-item"
-        aria-label="Ir a Tareas">
+        class="tab-item">
 
         <span
           class="tab-icono"
@@ -66,15 +186,17 @@
           ☑️
         </span>
 
-        <span>Tareas</span>
+        <span>
+          Tareas
+        </span>
 
       </a>
+
 
       <a
         routerLink="biblioteca"
         routerLinkActive="tab-activo"
-        class="tab-item"
-        aria-label="Ir a Biblioteca">
+        class="tab-item">
 
         <span
           class="tab-icono"
@@ -82,7 +204,9 @@
           📖
         </span>
 
-        <span>Biblioteca</span>
+        <span>
+          Biblioteca
+        </span>
 
       </a>
 
@@ -90,136 +214,304 @@
 
   </header>
 
-  <!-- ==================================================
-       SUBRUTAS DEL MÓDULO
-       
-       Cuando se navega hacia Materias, Tareas o Biblioteca,
-       Angular muestra el componente correspondiente aquí.
-       ================================================== -->
+
+  <!-- =====================================================
+       SUBRUTAS
+       ===================================================== -->
 
   <router-outlet #routerOutlet="outlet"></router-outlet>
 
-  <!-- ==================================================
-       CONTENIDO DEL DASHBOARD
-       
-       Solo se muestra cuando no existe una subruta activa.
-       Así se evita que el resumen aparezca debajo de
-       Materias, Tareas o Biblioteca.
-       ================================================== -->
+
+  <!-- =====================================================
+       DASHBOARD PRINCIPAL
+       ===================================================== -->
 
   <main
     *ngIf="!routerOutlet.isActivated"
     class="dashboard-contenido">
 
-    <!-- ================================================
+
+    <!-- ===================================================
+         ACCIONES PRINCIPALES
+         =================================================== -->
+
+    <section class="seccion-card acciones-section">
+
+      <header class="seccion-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Organizá tu aprendizaje
+          </span>
+
+          <h2>
+            ¿Qué querés hacer hoy?
+          </h2>
+
+          <p>
+            Accedé rápidamente a las herramientas principales
+            del módulo académico.
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <div class="acciones-grid">
+
+        <!-- MATERIAS -->
+
+        <a
+          class="accion-card accion-destacada"
+          routerLink="materias">
+
+          <div class="accion-icono">
+            🎓
+          </div>
+
+          <div class="accion-info">
+
+            <span class="accion-etiqueta">
+              Organización
+            </span>
+
+            <h3>
+              Gestionar materias
+            </h3>
+
+            <p>
+              Registrá tus materias y organizalas
+              según su estado académico.
+            </p>
+
+          </div>
+
+          <span
+            class="accion-flecha"
+            aria-hidden="true">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- TAREAS -->
+
+        <a
+          class="accion-card"
+          routerLink="tareas">
+
+          <div class="accion-icono">
+            ☑️
+          </div>
+
+          <div class="accion-info">
+
+            <span class="accion-etiqueta">
+              Planificación
+            </span>
+
+            <h3>
+              Ver mis tareas
+            </h3>
+
+            <p>
+              Organizá trabajos, parciales,
+              finales y fechas de entrega.
+            </p>
+
+          </div>
+
+          <span
+            class="accion-flecha"
+            aria-hidden="true">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- BIBLIOTECA -->
+
+        <a
+          class="accion-card"
+          routerLink="biblioteca">
+
+          <div class="accion-icono">
+            📚
+          </div>
+
+          <div class="accion-info">
+
+            <span class="accion-etiqueta">
+              Lecturas
+            </span>
+
+            <h3>
+              Abrir biblioteca
+            </h3>
+
+            <p>
+              Guardá libros y registrá
+              cuáles querés leer o ya terminaste.
+            </p>
+
+          </div>
+
+          <span
+            class="accion-flecha"
+            aria-hidden="true">
+            →
+          </span>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
          RESUMEN GENERAL
-         ================================================ -->
+         =================================================== -->
 
     <section
-      class="seccion-card"
+      class="seccion-card resumen-section"
       aria-labelledby="titulo-resumen">
 
-      <h2
-        id="titulo-resumen"
-        class="seccion-titulo">
-        Resumen
-      </h2>
+      <header class="seccion-header">
 
-      <div class="resumen-grid-nuevo">
+        <div>
 
-        <!-- Materias activas -->
+          <span class="seccion-etiqueta">
+            Seguimiento académico
+          </span>
+
+          <h2 id="titulo-resumen">
+            Tu progreso
+          </h2>
+
+          <p>
+            Consultá rápidamente el estado
+            de tus materias, tareas y lecturas.
+          </p>
+
+        </div>
+
+        <div
+          class="seccion-icono"
+          aria-hidden="true">
+          📈
+        </div>
+
+      </header>
+
+
+      <div class="stats-grid">
+
+        <!-- MATERIAS -->
 
         <article class="stat-card stat-azul">
 
-          <span
-            class="stat-icono"
-            aria-hidden="true">
+          <div class="stat-icono">
             🎓
-          </span>
+          </div>
 
           <div class="stat-info">
-
-            <strong class="stat-numero">
-              {{ materiasActivas.length }}
-            </strong>
 
             <span class="stat-label">
               Materias activas
             </span>
 
+            <strong class="stat-numero">
+              {{ materiasActivas.length }}
+            </strong>
+
+            <span class="stat-descripcion">
+              Materias en curso
+            </span>
+
           </div>
 
         </article>
 
-        <!-- Tareas pendientes -->
+
+        <!-- TAREAS -->
 
         <article class="stat-card stat-violeta">
 
-          <span
-            class="stat-icono"
-            aria-hidden="true">
+          <div class="stat-icono">
             📋
-          </span>
+          </div>
 
           <div class="stat-info">
-
-            <strong class="stat-numero">
-              {{ tareasPendientes }}
-            </strong>
 
             <span class="stat-label">
               Tareas pendientes
             </span>
 
-          </div>
-
-        </article>
-
-        <!-- Libros en progreso -->
-
-        <article class="stat-card stat-verde">
-
-          <span
-            class="stat-icono"
-            aria-hidden="true">
-            📗
-          </span>
-
-          <div class="stat-info">
-
             <strong class="stat-numero">
-              {{ librosEnProgreso }}
+              {{ tareasPendientes }}
             </strong>
 
-            <span class="stat-label">
-              Libros en progreso
+            <span class="stat-descripcion">
+              Actividades por completar
             </span>
 
           </div>
 
         </article>
 
-        <!-- Días de enfoque -->
+
+        <!-- LIBROS -->
+
+        <article class="stat-card stat-verde">
+
+          <div class="stat-icono">
+            📗
+          </div>
+
+          <div class="stat-info">
+
+            <span class="stat-label">
+              Libros en progreso
+            </span>
+
+            <strong class="stat-numero">
+              {{ librosEnProgreso }}
+            </strong>
+
+            <span class="stat-descripcion">
+              Lecturas actuales
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ENFOQUE -->
 
         <article class="stat-card stat-naranja">
 
-          <span
-            class="stat-icono"
-            aria-hidden="true">
+          <div class="stat-icono">
             🔥
-          </span>
+          </div>
 
           <div class="stat-info">
+
+            <span class="stat-label">
+              Días de enfoque
+            </span>
 
             <strong class="stat-numero">
               {{ diasEnfoque }}
             </strong>
 
-            <span class="stat-label">
-              {{ diasEnfoque === 1
-                ? 'Día de enfoque'
-                : 'Días de enfoque'
-              }}
+            <span class="stat-descripcion">
+              Continuidad acumulada
             </span>
 
           </div>
@@ -230,67 +522,121 @@
 
     </section>
 
-    <!-- ================================================
+
+    <!-- ===================================================
          MATERIAS ACTIVAS
-         ================================================ -->
+         =================================================== -->
 
     <section
       *ngIf="materiasActivas.length > 0"
-      class="seccion-card"
+      class="seccion-card materias-section"
       aria-labelledby="titulo-materias-activas">
 
-      <div class="seccion-header">
+      <header class="seccion-header">
 
-        <h2
-          id="titulo-materias-activas"
-          class="seccion-titulo">
-          Materias activas
-        </h2>
+        <div>
+
+          <span class="seccion-etiqueta">
+            Cursada actual
+          </span>
+
+          <h2 id="titulo-materias-activas">
+            Materias activas
+          </h2>
+
+          <p>
+            Revisá el estado y las próximas fechas
+            de las materias que estás cursando.
+          </p>
+
+        </div>
 
         <a
           routerLink="materias"
-          class="ver-todas"
-          aria-label="Ver todas las materias">
+          class="seccion-enlace">
+
           Ver todas
+
+          <span aria-hidden="true">
+            →
+          </span>
+
         </a>
 
-      </div>
+      </header>
+
 
       <div class="materias-lista">
 
         <article
           *ngFor="let materia of materiasActivas"
-          class="materia-row">
+          class="materia-card">
 
-          <!-- Información principal de la materia -->
+          <!-- ICONO -->
 
-          <div class="materia-row-izq">
+          <div
+            class="materia-icono-box"
+            [style.background-color]="
+              getColorMateria(materia.estado) + '22'
+            ">
 
-            <div
-              class="materia-icono-box"
-              [style.background-color]="
-                getColorMateria(materia.estado) + '22'
-              "
-              aria-hidden="true">
+            <span
+              [style.color]="getColorMateria(materia.estado)">
+              📚
+            </span>
+
+          </div>
+
+
+          <!-- INFORMACIÓN -->
+
+          <div class="materia-info">
+
+            <div class="materia-encabezado">
+
+              <div>
+
+                <span class="materia-etiqueta">
+                  Materia
+                </span>
+
+                <h3 class="materia-nombre">
+                  {{ materia.nombre }}
+                </h3>
+
+              </div>
 
               <span
-                [style.color]="getColorMateria(materia.estado)">
-                📚
+                class="materia-estado"
+                [style.background-color]="
+                  getColorMateria(materia.estado) + '22'
+                "
+                [style.color]="
+                  getColorMateria(materia.estado)
+                ">
+
+                {{ getNombreEstadoMateria(materia.estado) }}
+
               </span>
 
             </div>
 
-            <div class="materia-row-info">
 
-              <h3 class="materia-row-nombre">
-                {{ materia.nombre }}
-              </h3>
+            <!-- PROGRESO -->
 
-              <span class="materia-row-estado">
-                {{ getNombreEstadoMateria(materia.estado) }}
-              </span>
+            <div class="progreso-contenedor">
 
-              <!-- Barra visual de progreso -->
+              <div class="progreso-header">
+
+                <span>
+                  Progreso académico
+                </span>
+
+                <strong>
+                  {{ getProgresoMateria(materia.estado) }}%
+                </strong>
+
+              </div>
 
               <div
                 class="barra-fondo"
@@ -320,19 +666,19 @@
 
           </div>
 
-          <!-- Próxima fecha relacionada con la materia -->
+
+          <!-- PRÓXIMA FECHA -->
 
           <div
             *ngIf="getProximaFechaMateria(materia) as proxima"
-            class="materia-row-der">
+            class="materia-fecha">
 
-            <span class="prox-label">
+            <span class="fecha-etiqueta">
               {{ proxima.label }}
             </span>
 
-            <span class="prox-fecha">
-              <span aria-hidden="true">📅</span>
-              {{ proxima.fecha }}
+            <span class="fecha-valor">
+              📅 {{ proxima.fecha }}
             </span>
 
           </div>
@@ -343,158 +689,72 @@
 
     </section>
 
-    <!-- ================================================
+
+    <!-- ===================================================
          ESTADO VACÍO DE MATERIAS
-         ================================================ -->
+         =================================================== -->
 
     <section
       *ngIf="materiasActivas.length === 0"
       class="seccion-card estado-vacio"
       aria-labelledby="titulo-sin-materias">
 
-      <span
-        class="estado-vacio-icono"
-        aria-hidden="true">
+      <div class="estado-vacio-decoracion"></div>
+
+      <div class="estado-vacio-icono">
         🎓
+      </div>
+
+      <span class="estado-vacio-etiqueta">
+        Comenzá a organizarte
       </span>
 
       <h2
         id="titulo-sin-materias"
         class="estado-vacio-titulo">
+
         Todavía no tenés materias activas
+
       </h2>
 
       <p class="estado-vacio-texto">
         Agregá una materia para comenzar a organizar
-        tu recorrido académico.
+        tu recorrido académico y sus próximas fechas.
       </p>
 
       <a
         routerLink="materias"
         class="estado-vacio-boton">
-        Agregar materia
+
+        ＋ Agregar materia
+
       </a>
 
     </section>
 
-    <!-- ================================================
-         ACCIONES RÁPIDAS
-         ================================================ -->
 
-    <section
-      class="seccion-card"
-      aria-labelledby="titulo-acciones">
+    <!-- ===================================================
+         FRASE FINAL
+         =================================================== -->
 
-      <h2
-        id="titulo-acciones"
-        class="seccion-titulo">
-        Acciones rápidas
-      </h2>
+    <blockquote class="frase-card">
 
-      <div class="acciones-grid">
+      <span
+        class="frase-icono"
+        aria-hidden="true">
+        ✨
+      </span>
 
-        <!-- Agregar materia -->
+      <p class="frase-texto">
+        “Todo lo que hagan, háganlo de corazón,
+        como para el Señor.”
+      </p>
 
-        <a
-          class="accion-item"
-          routerLink="materias"
-          aria-label="Ir a Materias para agregar una nueva materia">
+      <footer class="frase-autor">
+        Colosenses 3:23
+      </footer>
 
-          <div
-            class="accion-icono-box accion-azul"
-            aria-hidden="true">
-            🎓
-          </div>
-
-          <div class="accion-texto">
-
-            <span class="accion-titulo">
-              Agregar materia
-            </span>
-
-            <span class="accion-sub">
-              Registrá una nueva materia y su estado
-            </span>
-
-          </div>
-
-          <span
-            class="accion-flecha"
-            aria-hidden="true">
-            →
-          </span>
-
-        </a>
-
-        <!-- Nueva tarea -->
-
-        <a
-          class="accion-item"
-          routerLink="tareas"
-          aria-label="Ir a Tareas para crear una nueva tarea">
-
-          <div
-            class="accion-icono-box accion-violeta"
-            aria-hidden="true">
-            📋
-          </div>
-
-          <div class="accion-texto">
-
-            <span class="accion-titulo">
-              Nueva tarea
-            </span>
-
-            <span class="accion-sub">
-              Creá una nueva tarea o actividad académica
-            </span>
-
-          </div>
-
-          <span
-            class="accion-flecha"
-            aria-hidden="true">
-            →
-          </span>
-
-        </a>
-
-        <!-- Agregar libro -->
-
-        <a
-          class="accion-item"
-          routerLink="biblioteca"
-          aria-label="Ir a Biblioteca para agregar un libro">
-
-          <div
-            class="accion-icono-box accion-verde"
-            aria-hidden="true">
-            📗
-          </div>
-
-          <div class="accion-texto">
-
-            <span class="accion-titulo">
-              Agregar libro
-            </span>
-
-            <span class="accion-sub">
-              Guardá un libro en tu biblioteca personal
-            </span>
-
-          </div>
-
-          <span
-            class="accion-flecha"
-            aria-hidden="true">
-            →
-          </span>
-
-        </a>
-
-      </div>
-
-    </section>
+    </blockquote>
 
   </main>
 

@@ -1,126 +1,694 @@
-<div class="page-wrapper">
+<div class="bitacora-page">
 
-  <!-- ── HERO ──────────────────────────────────────────── -->
-  <div class="entrenamiento-hero">
-    <div class="hero-content">
-      <div class="hero-icon">🏋️</div>
-      <div class="hero-text">
-        <h1 class="hero-titulo">Entrenamiento</h1>
-        <p class="hero-subtitulo">Rutinas personalizadas con IA<br>para alcanzar tus objetivos.</p>
-      </div>
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <header class="bitacora-hero">
+
+    <div
+      class="hero-decoracion hero-decoracion-uno"
+      aria-hidden="true">
     </div>
-    <nav class="entrenamiento-tabs">
-      <a routerLink="/entrenamiento/rutinas" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">📋</span> Mis Rutinas
+
+    <div
+      class="hero-decoracion hero-decoracion-dos"
+      aria-hidden="true">
+    </div>
+
+    <div class="hero-superior">
+
+      <div class="hero-presentacion">
+
+        <div
+          class="hero-icono"
+          aria-hidden="true">
+          📊
+        </div>
+
+        <div class="hero-texto">
+
+          <span class="hero-etiqueta">
+            Seguimiento personal
+          </span>
+
+          <h1>
+            Bitácora
+          </h1>
+
+          <p>
+            Registrá tus entrenamientos, observá tu constancia
+            y llevá un seguimiento de tu actividad.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-hero-registrar"
+        (click)="mostrarForm = true">
+
+        <span aria-hidden="true">
+          ＋
+        </span>
+
+        Registrar entrenamiento
+
+      </button>
+
+    </div>
+
+
+    <!-- NAVEGACIÓN -->
+
+    <nav
+      class="entrenamiento-tabs"
+      aria-label="Secciones de Entrenamiento">
+
+      <a
+        routerLink="/entrenamiento/rutinas"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          📋
+        </span>
+
+        <span>
+          Mis rutinas
+        </span>
+
       </a>
-      <a routerLink="/entrenamiento/bitacora" routerLinkActive="tab-activo" class="tab-item">
-        <span class="tab-icono">📊</span> Bitácora
+
+      <a
+        routerLink="/entrenamiento/bitacora"
+        routerLinkActive="tab-activo"
+        class="tab-item">
+
+        <span
+          class="tab-icono"
+          aria-hidden="true">
+          📊
+        </span>
+
+        <span>
+          Bitácora
+        </span>
+
       </a>
+
     </nav>
+
+  </header>
+
+
+  <!-- =====================================================
+       CONTENIDO
+       ===================================================== -->
+
+  <main class="bitacora-contenido">
+
+    <!-- ===================================================
+         RESUMEN
+         =================================================== -->
+
+    <section class="seccion-card resumen-section">
+
+      <header class="seccion-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Tu actividad
+          </span>
+
+          <h2>
+            Resumen de entrenamiento
+          </h2>
+
+          <p>
+            Consultá rápidamente tus entrenamientos,
+            tu racha y el tiempo total acumulado.
+          </p>
+
+        </div>
+
+        <div
+          class="seccion-icono"
+          aria-hidden="true">
+          📈
+        </div>
+
+      </header>
+
+
+      <div class="stats-grid">
+
+        <!-- ENTRENAMIENTOS SEMANALES -->
+
+        <article class="stat-card stat-violeta">
+
+          <div class="stat-icono">
+            🏋️
+          </div>
+
+          <div class="stat-info">
+
+            <span class="stat-label">
+              Entrenamientos
+            </span>
+
+            <strong class="stat-numero">
+              {{ entrenamientosSemana }}/5
+            </strong>
+
+            <span class="stat-descripcion">
+              Durante esta semana
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- RACHA -->
+
+        <article class="stat-card stat-verde">
+
+          <div class="stat-icono">
+            🔥
+          </div>
+
+          <div class="stat-info">
+
+            <span class="stat-label">
+              Días de racha
+            </span>
+
+            <strong class="stat-numero">
+              {{ diasRacha }}
+            </strong>
+
+            <span class="stat-descripcion">
+              Continuidad acumulada
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- MINUTOS -->
+
+        <article class="stat-card stat-azul">
+
+          <div class="stat-icono">
+            ⏱️
+          </div>
+
+          <div class="stat-info">
+
+            <span class="stat-label">
+              Minutos totales
+            </span>
+
+            <strong class="stat-numero">
+              {{ minutosTotales }}
+            </strong>
+
+            <span class="stat-descripcion">
+              Tiempo registrado
+            </span>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         HISTORIAL
+         =================================================== -->
+
+    <section class="seccion-card historial-section">
+
+      <header class="seccion-header historial-header">
+
+        <div>
+
+          <span class="seccion-etiqueta">
+            Registro personal
+          </span>
+
+          <h2>
+            Historial
+          </h2>
+
+          <p>
+            Revisá los entrenamientos que registraste
+            y cómo te sentiste en cada sesión.
+          </p>
+
+        </div>
+
+
+        <!-- FILTROS -->
+
+        <div
+          class="filtros"
+          aria-label="Filtrar historial">
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'semana'"
+            (click)="filtroActivo = 'semana'">
+
+            Semana
+
+          </button>
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'mes'"
+            (click)="filtroActivo = 'mes'">
+
+            Mes
+
+          </button>
+
+          <button
+            type="button"
+            class="filtro-btn"
+            [class.filtro-activo]="filtroActivo === 'todo'"
+            (click)="filtroActivo = 'todo'">
+
+            Todo
+
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- REGISTROS -->
+
+      <div
+        class="entrenamientos-lista"
+        *ngIf="entrenamientosFiltrados.length > 0">
+
+        <article
+          class="entreno-card"
+          *ngFor="let e of entrenamientosFiltrados">
+
+          <div
+            class="entreno-icono-box"
+            [style.background-color]="
+              getColorIntensidad(e.intensidad) + '22'
+            ">
+
+            <span
+              [style.color]="getColorIntensidad(e.intensidad)">
+              💪
+            </span>
+
+          </div>
+
+
+          <div class="entreno-info">
+
+            <div class="entreno-encabezado">
+
+              <h3 class="entreno-nombre">
+                {{ e.rutina }}
+              </h3>
+
+              <span
+                class="intensidad-badge"
+                [style.background-color]="
+                  getColorIntensidad(e.intensidad) + '22'
+                "
+                [style.color]="getColorIntensidad(e.intensidad)">
+
+                {{ e.intensidad }}
+
+              </span>
+
+            </div>
+
+            <div class="entreno-meta">
+
+              <span>
+                📅 {{ getFechaLabel(e.fecha) }}
+              </span>
+
+              <span>
+                ⏱️ {{ e.duracion }} minutos
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="entreno-sensacion-box">
+
+            <span class="sensacion-etiqueta">
+              Sensación
+            </span>
+
+            <span class="entreno-sensacion">
+              {{ e.sensacion }}
+            </span>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="btn-eliminar"
+            aria-label="Eliminar entrenamiento"
+            (click)="eliminarEntreno(e.id)">
+
+            🗑️
+
+          </button>
+
+        </article>
+
+      </div>
+
+
+      <!-- ESTADO VACÍO -->
+
+      <div
+        class="empty-state"
+        *ngIf="entrenamientosFiltrados.length === 0">
+
+        <div class="empty-icono">
+          🏋️
+        </div>
+
+        <span class="empty-etiqueta">
+          Tu bitácora está vacía
+        </span>
+
+        <h3>
+          Todavía no hay entrenamientos
+        </h3>
+
+        <p>
+          Registrá tu primera sesión para comenzar
+          a observar tu actividad y tu progreso.
+        </p>
+
+        <button
+          type="button"
+          class="btn-empty-registrar"
+          (click)="mostrarForm = true">
+
+          ＋ Registrar entrenamiento
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         ACCIÓN FINAL
+         =================================================== -->
+
+    <section class="registro-cta">
+
+      <div class="registro-cta-decoracion"></div>
+
+      <div class="registro-cta-info">
+
+        <span class="registro-cta-etiqueta">
+          Seguimiento diario
+        </span>
+
+        <h2>
+          Registrá cómo fue tu entrenamiento
+        </h2>
+
+        <p>
+          Anotá la rutina realizada, la duración,
+          la intensidad y cómo te sentiste.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn-registrar"
+        (click)="mostrarForm = true">
+
+        <span aria-hidden="true">
+          ＋
+        </span>
+
+        Registrar entrenamiento de hoy
+
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FONDO DEL MODAL
+       ===================================================== -->
+
+  <div
+    class="form-overlay"
+    *ngIf="mostrarForm"
+    (click)="mostrarForm = false">
   </div>
 
-  <div class="bitacora-wrapper">
 
-    <!-- ── FORMULARIO MODAL ───────────────────────────── -->
-    <div class="form-overlay" *ngIf="mostrarForm" (click)="mostrarForm = false"></div>
-    <div class="form-modal" *ngIf="mostrarForm">
-      <h3 class="form-titulo">Registrar entrenamiento</h3>
+  <!-- =====================================================
+       MODAL
+       ===================================================== -->
 
-      <form [formGroup]="entrenoForm" (ngSubmit)="guardarEntreno()">
+  <section
+    class="form-modal"
+    *ngIf="mostrarForm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="entreno-form-titulo">
 
-        <div class="form-field">
-          <label>Rutina realizada</label>
-          <input formControlName="rutina" placeholder="Ej: Piernas y glúteos">
+    <header class="form-modal-header">
+
+      <div class="form-presentacion">
+
+        <div class="form-icono">
+          🏋️
         </div>
 
-        <div class="form-row">
-          <div class="form-field">
-            <label>Duración (min)</label>
-            <input formControlName="duracion" type="number">
+        <div>
+
+          <span class="form-etiqueta">
+            Nueva actividad
+          </span>
+
+          <h2
+            id="entreno-form-titulo"
+            class="form-titulo">
+
+            Registrar entrenamiento
+
+          </h2>
+
+          <p class="form-subtitulo">
+            Completá los datos de la sesión que realizaste.
+          </p>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn-cerrar"
+        aria-label="Cerrar formulario"
+        (click)="mostrarForm = false">
+
+        ✕
+
+      </button>
+
+    </header>
+
+
+    <form
+      class="entreno-form"
+      [formGroup]="entrenoForm"
+      (ngSubmit)="guardarEntreno()">
+
+      <!-- RUTINA -->
+
+      <div class="form-field form-field-completo">
+
+        <label for="rutina">
+          Rutina realizada
+        </label>
+
+        <input
+          id="rutina"
+          type="text"
+          formControlName="rutina"
+          placeholder="Ejemplo: Piernas y glúteos">
+
+      </div>
+
+
+      <!-- DURACIÓN -->
+
+      <div class="form-field">
+
+        <label for="duracion">
+          Duración
+        </label>
+
+        <div class="input-con-unidad">
+
+          <input
+            id="duracion"
+            type="number"
+            min="1"
+            formControlName="duracion"
+            placeholder="45">
+
+          <span class="input-unidad">
+            minutos
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- INTENSIDAD -->
+
+      <div class="form-field">
+
+        <label for="intensidad">
+          Intensidad
+        </label>
+
+        <select
+          id="intensidad"
+          formControlName="intensidad">
+
+          <option value="baja">
+            🟢 Baja
+          </option>
+
+          <option value="media">
+            🟡 Media
+          </option>
+
+          <option value="alta">
+            🔴 Alta
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- SENSACIÓN -->
+
+      <div class="form-field form-field-completo">
+
+        <div class="sensaciones-header">
+
+          <div>
+
+            <label>
+              ¿Cómo te sentiste?
+            </label>
+
+            <p class="campo-ayuda">
+              Seleccioná la opción que mejor represente tu sesión.
+            </p>
+
           </div>
-          <div class="form-field">
-            <label>Intensidad</label>
-            <select formControlName="intensidad">
-              <option value="baja">🟢 Baja</option>
-              <option value="media">🟡 Media</option>
-              <option value="alta">🔴 Alta</option>
-            </select>
-          </div>
+
         </div>
 
-        <div class="form-field">
-          <label>¿Cómo te sentiste?</label>
-          <div class="sensaciones-row">
-            <button
-              type="button"
-              *ngFor="let s of sensaciones"
-              class="sensacion-btn"
-              [class.sensacion-activa]="sensacionSeleccionada === s.value"
-              (click)="seleccionarSensacion(s.value)">
-              <span class="sensacion-emoji">{{ s.value }}</span>
-              <span class="sensacion-label">{{ s.label }}</span>
-            </button>
-          </div>
+        <div class="sensaciones-row">
+
+          <button
+            type="button"
+            *ngFor="let s of sensaciones"
+            class="sensacion-btn"
+            [class.sensacion-activa]="
+              sensacionSeleccionada === s.value
+            "
+            (click)="seleccionarSensacion(s.value)">
+
+            <span class="sensacion-emoji">
+              {{ s.value }}
+            </span>
+
+            <span class="sensacion-label">
+              {{ s.label }}
+            </span>
+
+            <span
+              class="sensacion-check"
+              *ngIf="sensacionSeleccionada === s.value">
+              ✓
+            </span>
+
+          </button>
+
         </div>
 
-        <div class="form-botones">
-          <button type="button" class="btn-cancelar" (click)="mostrarForm = false">Cancelar</button>
-          <button type="submit" class="btn-guardar" [disabled]="entrenoForm.invalid">Guardar</button>
-        </div>
-
-      </form>
-    </div>
-
-    <!-- ── STATS ─────────────────────────────────────── -->
-    <div class="stats-hero">
-      <div class="stat-hero-item">
-        <span class="stat-hero-num" style="color: #8B5CF6;">{{ entrenamientosSemana }}/5</span>
-        <span class="stat-hero-label">Semana 1</span>
-      </div>
-      <div class="stat-hero-item">
-        <span class="stat-hero-num" style="color: #34D399;">{{ diasRacha }}</span>
-        <span class="stat-hero-label">Días de racha</span>
-      </div>
-      <div class="stat-hero-item">
-        <span class="stat-hero-num" style="color: #4A9EFF;">{{ minutosTotales }}</span>
-        <span class="stat-hero-label">Min totales</span>
-      </div>
-    </div>
-
-    <!-- ── HISTORIAL ──────────────────────────────────── -->
-    <div class="seccion-card">
-      <div class="seccion-header">
-        <h2 class="seccion-titulo">Historial</h2>
-        <div class="filtros">
-          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'semana'" (click)="filtroActivo = 'semana'">Semana</button>
-          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'mes'" (click)="filtroActivo = 'mes'">Mes</button>
-          <button class="filtro-btn" [class.filtro-activo]="filtroActivo === 'todo'" (click)="filtroActivo = 'todo'">Todo</button>
-        </div>
       </div>
 
-      <div class="entreno-row" *ngFor="let e of entrenamientosFiltrados">
-        <div class="entreno-icono-box" [style.background-color]="getColorIntensidad(e.intensidad) + '22'">
-          <span [style.color]="getColorIntensidad(e.intensidad)">💪</span>
-        </div>
-        <div class="entreno-info">
-          <span class="entreno-nombre">{{ e.rutina }}</span>
-          <span class="entreno-meta">{{ getFechaLabel(e.fecha) }} · {{ e.duracion }} min · {{ e.intensidad }}</span>
-        </div>
-        <span class="entreno-sensacion">{{ e.sensacion }}</span>
-        <button class="btn-accion" (click)="eliminarEntreno(e.id)">🗑️</button>
+
+      <!-- BOTONES -->
+
+      <div class="form-botones">
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          (click)="mostrarForm = false">
+
+          Cancelar
+
+        </button>
+
+        <button
+          type="submit"
+          class="btn-guardar"
+          [disabled]="entrenoForm.invalid">
+
+          💾 Guardar entrenamiento
+
+        </button>
+
       </div>
 
-      <div class="empty-state" *ngIf="entrenamientosFiltrados.length === 0">
-        <span style="font-size: 32px;">🏋️</span>
-        <p>Sin registros aún</p>
-      </div>
+    </form>
 
-    </div>
+  </section>
 
-    <!-- ── BOTÓN REGISTRAR ────────────────────────────── -->
-    <button class="btn-registrar" (click)="mostrarForm = true">
-      + Registrar entrenamiento de hoy
-    </button>
-
-  </div>
 </div>
